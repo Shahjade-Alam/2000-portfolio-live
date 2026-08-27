@@ -7,14 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --bg-primary: #0a0c12;
-            --bg-card: #12151e;
-            --border-color: #1e293b;
-            --text-primary: #e2e8f0;
-            --text-secondary: #94a3b8;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-blue: #3b82f6;
+            --bg-primary: #ffffff;
+            --bg-subtle: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-green: #059669;
+            --accent-red: #dc2626;
+            --accent-blue: #2563eb;
         }
         body {
             background-color: var(--bg-primary);
@@ -22,11 +22,12 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
         .card {
-            background-color: var(--bg-card);
+            background-color: #ffffff;
             border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
         }
         .compact-row {
-            padding: 8px 12px;
+            padding: 10px 16px;
         }
         .tab-active {
             border-bottom: 2px solid var(--accent-blue);
@@ -35,21 +36,29 @@
         }
         .tab-inactive {
             color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
         }
         .tab-inactive:hover {
             color: var(--text-primary);
+            border-bottom-color: var(--border-color);
         }
-        .quadrant-extended { background-color: rgba(239, 68, 68, 0.1); border-left: 3px solid var(--accent-red); }
-        .quadrant-neutral { background-color: rgba(148, 163, 184, 0.1); border-left: 3px solid var(--text-secondary); }
-        .quadrant-recovery { background-color: rgba(59, 130, 246, 0.1); border-left: 3px solid var(--accent-blue); }
-        .quadrant-dip { background-color: rgba(16, 185, 129, 0.1); border-left: 3px solid var(--accent-green); }
         
-        .positive { color: var(--accent-green); }
-        .negative { color: var(--accent-red); }
+        /* RRG Quadrants - Light Mode Optimized */
+        .quadrant-extended { background-color: rgba(220, 38, 38, 0.08); border-left: 3px solid var(--accent-red); }
+        .quadrant-neutral { background-color: rgba(100, 116, 139, 0.08); border-left: 3px solid var(--text-secondary); }
+        .quadrant-recovery { background-color: rgba(37, 99, 235, 0.08); border-left: 3px solid var(--accent-blue); }
+        .quadrant-dip { background-color: rgba(5, 150, 105, 0.08); border-left: 3px solid var(--accent-green); }
+        
+        .positive { color: var(--accent-green); font-weight: 500; }
+        .negative { color: var(--accent-red); font-weight: 500; }
         
         /* Smooth transitions */
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Table hover states */
+        tbody tr { transition: background-color 0.15s ease; }
+        tbody tr:hover { background-color: var(--bg-subtle); }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
@@ -58,15 +67,15 @@
     <header class="max-w-6xl mx-auto mb-6">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Portfolio Live + Sector Rotation Map</h1>
-                <p class="text-sm text-slate-400 mt-1">Alam ShahJade • South Tampa, Florida • Aug 26, 2026</p>
+                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">Portfolio Live + Sector Rotation Map</h1>
+                <p class="text-sm text-slate-500 mt-1">Alam ShahJade • South Tampa, Florida • Aug 26, 2026</p>
             </div>
             <div class="flex gap-3 text-sm">
-                <a href="https://github.com/shahjade-alam/2000-portfolio-live" target="_blank" class="px-3 py-1.5 rounded-md card hover:bg-slate-800 transition-colors flex items-center gap-2">
+                <a href="https://github.com/shahjade-alam/2000-portfolio-live" target="_blank" class="px-4 py-2 rounded-lg card hover:bg-slate-50 transition-colors flex items-center gap-2 font-medium text-slate-700">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                     GitHub
                 </a>
-                <a href="https://shahjade-alam.github.io/2000-portfolio-live/" target="_blank" class="px-3 py-1.5 rounded-md card hover:bg-slate-800 transition-colors flex items-center gap-2">
+                <a href="https://shahjade-alam.github.io/2000-portfolio-live/" target="_blank" class="px-4 py-2 rounded-lg card hover:bg-slate-50 transition-colors flex items-center gap-2 font-medium text-slate-700">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     Live Site
                 </a>
@@ -78,28 +87,28 @@
     <main class="max-w-6xl mx-auto">
         
         <!-- Tabs -->
-        <div class="flex border-b border-slate-800 mb-6">
+        <div class="flex border-b border-slate-200 mb-6">
             <button onclick="switchTab('portfolio')" id="tab-portfolio" class="tab-active px-4 py-3 text-sm transition-colors">Portfolio $2K/mo</button>
             <button onclick="switchTab('sector')" id="tab-sector" class="tab-inactive px-4 py-3 text-sm transition-colors">Sector Rotation Map</button>
         </div>
 
         <!-- Portfolio Tab -->
         <div id="view-portfolio" class="fade-in">
-            <div class="card rounded-lg p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="card rounded-lg p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-50/50">
                 <div>
-                    <h2 class="text-lg font-semibold">Monthly Allocation: $2,000</h2>
-                    <p class="text-xs text-slate-400">Stocks: $435 • Long-Term: $565 • Income: $500 • Risk: $500</p>
+                    <h2 class="text-lg font-semibold text-slate-900">Monthly Allocation: $2,000</h2>
+                    <p class="text-xs text-slate-500 mt-1">Stocks: $435 • Long-Term: $565 • Income: $500 • Risk: $500</p>
                 </div>
                 <div class="text-right">
-                    <div id="refresh-timer" class="text-sm font-mono text-slate-300">Initializing...</div>
-                    <p class="text-xs text-slate-500">Cache: &lt;200ms • 5-min refresh</p>
+                    <div id="refresh-timer" class="text-sm font-mono font-medium text-slate-700 bg-white px-3 py-1 rounded border border-slate-200">Initializing...</div>
+                    <p class="text-xs text-slate-400 mt-1">Cache: &lt;200ms • 5-min refresh</p>
                 </div>
             </div>
 
             <div class="card rounded-lg overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
-                        <thead class="text-xs text-slate-400 uppercase bg-slate-900/50 border-b border-slate-800">
+                        <thead class="text-xs font-semibold text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
                             <tr>
                                 <th class="compact-row">Ticker</th>
                                 <th class="compact-row">Description</th>
@@ -109,7 +118,7 @@
                                 <th class="compact-row text-right">Change %</th>
                             </tr>
                         </thead>
-                        <tbody id="portfolio-body" class="divide-y divide-slate-800">
+                        <tbody id="portfolio-body" class="divide-y divide-slate-100">
                             <!-- Rows injected by JS -->
                         </tbody>
                     </table>
@@ -121,35 +130,47 @@
         <div id="view-sector" class="hidden fade-in">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <!-- RRG Quadrants Legend -->
-                <div class="card rounded-lg p-4">
-                    <h3 class="text-sm font-semibold mb-3 text-slate-300">RRG 4 Quadrants</h3>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="quadrant-extended p-3 rounded">
-                            <div class="font-semibold text-sm text-red-400">Extended</div>
-                            <div class="text-xs text-slate-400 mt-1">Overbought, consider trimming or taking profits.</div>
+                <div class="card rounded-lg p-5">
+                    <h3 class="text-sm font-semibold mb-4 text-slate-900">RRG 4 Quadrants</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="quadrant-extended p-3 rounded-md">
+                            <div class="font-semibold text-sm text-red-700">Extended</div>
+                            <div class="text-xs text-slate-600 mt-1">Overbought, consider trimming or taking profits.</div>
                         </div>
-                        <div class="quadrant-neutral p-3 rounded">
-                            <div class="font-semibold text-sm text-slate-300">Neutral</div>
-                            <div class="text-xs text-slate-400 mt-1">Stable momentum, hold current positions.</div>
+                        <div class="quadrant-neutral p-3 rounded-md">
+                            <div class="font-semibold text-sm text-slate-700">Neutral</div>
+                            <div class="text-xs text-slate-600 mt-1">Stable momentum, hold current positions.</div>
                         </div>
-                        <div class="quadrant-recovery p-3 rounded">
-                            <div class="font-semibold text-sm text-blue-400">Early Recovery</div>
-                            <div class="text-xs text-slate-400 mt-1">Improving relative strength, accumulate.</div>
+                        <div class="quadrant-recovery p-3 rounded-md">
+                            <div class="font-semibold text-sm text-blue-700">Early Recovery</div>
+                            <div class="text-xs text-slate-600 mt-1">Improving relative strength, accumulate.</div>
                         </div>
-                        <div class="quadrant-dip p-3 rounded">
-                            <div class="font-semibold text-sm text-green-400">Buy-the-Dip</div>
-                            <div class="text-xs text-slate-400 mt-1">Oversold contrarian opportunities, scale in.</div>
+                        <div class="quadrant-dip p-3 rounded-md">
+                            <div class="font-semibold text-sm text-emerald-700">Buy-the-Dip</div>
+                            <div class="text-xs text-slate-600 mt-1">Oversold contrarian opportunities, scale in.</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card rounded-lg p-4 flex flex-col justify-center">
-                    <h3 class="text-sm font-semibold mb-2 text-slate-300">Market Context (Aug 26, 2026)</h3>
-                    <ul class="text-xs text-slate-400 space-y-2">
-                        <li>• <span class="text-slate-200">Tech (VGT/XLK):</span> YTD +27-28%, but weakening last month (-3.3%).</li>
-                        <li>• <span class="text-slate-200">Financials (XLF):</span> YTD +4.95% to 7.2%, 1M +5.78% (Buy leadership).</li>
-                        <li>• <span class="text-slate-200">Health (XLV):</span> Strong +4.33% gain last week.</li>
-                        <li>• <span class="text-slate-200">Energy (XLE):</span> YTD +11.90%, recent positive momentum.</li>
+                <div class="card rounded-lg p-5 flex flex-col justify-center">
+                    <h3 class="text-sm font-semibold mb-3 text-slate-900">Market Context (Aug 26, 2026)</h3>
+                    <ul class="text-xs text-slate-600 space-y-2.5">
+                        <li class="flex items-start gap-2">
+                            <span class="text-slate-400 mt-0.5">•</span>
+                            <span><span class="font-medium text-slate-800">Tech (VGT/XLK):</span> YTD +27-28%, but weakening last month (-3.3%).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-slate-400 mt-0.5">•</span>
+                            <span><span class="font-medium text-slate-800">Financials (XLF):</span> YTD +4.95% to 7.2%, 1M +5.78% (Buy leadership).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-slate-400 mt-0.5">•</span>
+                            <span><span class="font-medium text-slate-800">Health (XLV):</span> Strong +4.33% gain last week.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-slate-400 mt-0.5">•</span>
+                            <span><span class="font-medium text-slate-800">Energy (XLE):</span> YTD +11.90%, recent positive momentum.</span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -157,7 +178,7 @@
             <div class="card rounded-lg overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
-                        <thead class="text-xs text-slate-400 uppercase bg-slate-900/50 border-b border-slate-800">
+                        <thead class="text-xs font-semibold text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
                             <tr>
                                 <th class="compact-row">Sector</th>
                                 <th class="compact-row">Ticker</th>
@@ -166,7 +187,7 @@
                                 <th class="compact-row text-right">Weight / Change</th>
                             </tr>
                         </thead>
-                        <tbody id="sector-body" class="divide-y divide-slate-800">
+                        <tbody id="sector-body" class="divide-y divide-slate-100">
                             <!-- Rows injected by JS -->
                         </tbody>
                     </table>
@@ -222,7 +243,7 @@
         ];
 
         // --- CACHE & API LOGIC ---
-        const CACHE_KEY = 'portfolio_data_v1';
+        const CACHE_KEY = 'portfolio_data_v1_light';
         const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
         function getCachedData() {
@@ -303,19 +324,19 @@
 
         // --- RENDER LOGIC ---
         function formatCurrency(val) {
-            if (val === null || val === undefined) return '<span class="text-slate-600">N/A</span>';
+            if (val === null || val === undefined) return '<span class="text-slate-400">N/A</span>';
             return `$${val.toFixed(2)}`;
         }
 
         function formatChange(val) {
-            if (val === null || val === undefined) return '<span class="text-slate-600">N/A</span>';
+            if (val === null || val === undefined) return '<span class="text-slate-400">N/A</span>';
             const sign = val >= 0 ? '+' : '';
             const colorClass = val >= 0 ? 'positive' : 'negative';
             return `<span class="${colorClass}">${sign}${val.toFixed(2)}</span>`;
         }
 
         function formatChangePercent(val) {
-            if (val === null || val === undefined) return '<span class="text-slate-600">N/A</span>';
+            if (val === null || val === undefined) return '<span class="text-slate-400">N/A</span>';
             const sign = val >= 0 ? '+' : '';
             const colorClass = val >= 0 ? 'positive' : 'negative';
             return `<span class="${colorClass}">${sign}${val.toFixed(2)}%</span>`;
@@ -327,17 +348,16 @@
 
             data.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-800/50 transition-colors";
                 tr.innerHTML = `
                     <td class="compact-row">
-                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="font-semibold text-blue-400 hover:text-blue-300 hover:underline">${item.ticker}</a>
+                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="font-semibold text-blue-600 hover:text-blue-800 hover:underline">${item.ticker}</a>
                     </td>
                     <td class="compact-row">
-                        <div class="text-slate-200">${item.desc}</div>
-                        <div class="text-xs text-slate-500">${item.note}</div>
+                        <div class="font-medium text-slate-800">${item.desc}</div>
+                        <div class="text-xs text-slate-500 mt-0.5">${item.note}</div>
                     </td>
-                    <td class="compact-row text-right font-mono text-slate-300">$${item.amount}</td>
-                    <td class="compact-row text-right font-mono">${formatCurrency(item.price)}</td>
+                    <td class="compact-row text-right font-mono text-slate-700 font-medium">$${item.amount}</td>
+                    <td class="compact-row text-right font-mono text-slate-700">${formatCurrency(item.price)}</td>
                     <td class="compact-row text-right font-mono">${formatChange(item.change)}</td>
                     <td class="compact-row text-right font-mono">${formatChangePercent(item.changePercent)}</td>
                 `;
@@ -360,23 +380,22 @@
                 const changeSign = changeVal >= 0 ? '+' : '';
 
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-800/50 transition-colors";
                 tr.innerHTML = `
                     <td class="compact-row">
-                        <div class="font-medium text-slate-200">${item.name}</div>
-                        ${item.note ? `<div class="text-xs text-blue-400">${item.note}</div>` : ''}
+                        <div class="font-medium text-slate-800">${item.name}</div>
+                        ${item.note ? `<div class="text-xs text-blue-600 font-medium mt-0.5">${item.note}</div>` : ''}
                     </td>
                     <td class="compact-row">
-                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="font-mono text-blue-400 hover:text-blue-300 hover:underline">${item.ticker}</a>
+                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="font-mono font-semibold text-blue-600 hover:text-blue-800 hover:underline">${item.ticker}</a>
                     </td>
                     <td class="compact-row">
-                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${phaseClass} bg-opacity-20">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold ${phaseClass}">
                             ${item.phase}
                         </span>
                     </td>
-                    <td class="compact-row text-slate-300">${item.action}</td>
+                    <td class="compact-row text-slate-700 font-medium">${item.action}</td>
                     <td class="compact-row text-right font-mono">
-                        <div class="text-slate-400 text-xs">${item.weight}</div>
+                        <div class="text-slate-500 text-xs mb-0.5">${item.weight}</div>
                         <div class="${changeColor}">${changeSign}${item.change}</div>
                     </td>
                 `;
