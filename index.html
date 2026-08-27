@@ -3,213 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Live + Sector Rotation Map | Alam ShahJade</title>
+    <meta name="theme-color" content="#090b10">
+    <meta name="description" content="Live portfolio dashboard and sector rotation map">
+    <title>Portfolio Command Center | Alam ShahJade</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['DM Sans', 'Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
                     },
                     colors: {
-                        brand: {
-                            50: '#e6f7f4', 100: '#b3ebe3', 500: '#00BFA5', 600: '#00a891', 700: '#008f7a',
-                        }
+                        ink: '#090b10',
+                        panel: '#10141c',
+                        panel2: '#151a24',
+                        line: '#252c39',
+                        mint: '#2dd4bf'
                     }
                 }
             }
-        }
+        };
     </script>
-    <style>
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f8fafc; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
-            border-color: rgba(203, 213, 225, 0.8);
-        }
-        
-        .animate-fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
+    <style>
+        :root { color-scheme: dark; }
+        * { scrollbar-width: thin; scrollbar-color: #374151 #090b10; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 15% 0%, rgba(45,212,191,.10), transparent 30%),
+                radial-gradient(circle at 85% 10%, rgba(99,102,241,.09), transparent 28%),
+                #090b10;
+            color: #e5e7eb;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .grid-bg {
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .glass {
+            background: rgba(16,20,28,.82);
+            border: 1px solid rgba(148,163,184,.13);
+            box-shadow: 0 18px 60px rgba(0,0,0,.22);
+            backdrop-filter: blur(18px);
+        }
+        .glass-soft {
+            background: rgba(21,26,36,.72);
+            border: 1px solid rgba(148,163,184,.10);
+        }
+        .hover-lift {
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            border-color: rgba(45,212,191,.28);
+            box-shadow: 0 18px 40px rgba(0,0,0,.22);
+        }
+        .tab-active {
+            color: #5eead4;
+            background: rgba(45,212,191,.10);
+            box-shadow: inset 0 0 0 1px rgba(45,212,191,.18);
+        }
+        .tab-inactive { color: #94a3b8; }
+        .tab-inactive:hover { color: #e2e8f0; background: rgba(255,255,255,.04); }
+        .ticker {
+            color: #5eead4;
+            text-decoration: none;
+        }
+        .ticker:hover { color: #99f6e4; text-decoration: underline; text-underline-offset: 4px; }
         .skeleton {
-            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background: linear-gradient(90deg, #171c26 25%, #232a36 50%, #171c26 75%);
             background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 6px;
-            height: 16px;
+            animation: shimmer 1.35s infinite;
+            border-radius: 7px;
+            height: 14px;
         }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-        .tab-active { color: #00BFA5; border-bottom: 2px solid #00BFA5; font-weight: 600; }
-        .tab-inactive { color: #64748b; border-bottom: 2px solid transparent; }
-        .tab-inactive:hover { color: #334155; border-bottom-color: #cbd5e1; }
-
-        .badge-extended { @apply bg-red-50 text-red-700 border border-red-100; }
-        .badge-neutral { @apply bg-slate-100 text-slate-700 border border-slate-200; }
-        .badge-recovery { @apply bg-blue-50 text-blue-700 border border-blue-100; }
-        .badge-dip { @apply bg-emerald-50 text-emerald-700 border border-emerald-100; }
+        @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 0 0 rgba(45,212,191,.0); } 50% { box-shadow: 0 0 0 5px rgba(45,212,191,.08); } }
+        .live-dot { animation: pulseGlow 2s infinite; }
+        .animate-in { animation: enter .45s cubic-bezier(.16,1,.3,1) both; }
+        @keyframes enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .number { font-variant-numeric: tabular-nums; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { scrollbar-width: none; }
+        .phase-extended { color:#fda4af; background:rgba(244,63,94,.09); border-color:rgba(244,63,94,.18); }
+        .phase-neutral { color:#cbd5e1; background:rgba(148,163,184,.08); border-color:rgba(148,163,184,.14); }
+        .phase-recovery { color:#93c5fd; background:rgba(59,130,246,.09); border-color:rgba(59,130,246,.18); }
+        .phase-dip { color:#6ee7b7; background:rgba(16,185,129,.09); border-color:rgba(16,185,129,.18); }
+        @media (max-width: 640px) {
+            .mobile-tight { padding-left: 14px !important; padding-right: 14px !important; }
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
 
-    <div class="h-1 w-full bg-gradient-to-r from-brand-500 via-brand-600 to-teal-400"></div>
+<body class="min-h-screen grid-bg">
+    <div class="h-px bg-gradient-to-r from-transparent via-teal-400 to-transparent"></div>
 
-    <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Portfolio Live <span class="text-brand-500">+</span> Sector Rotation</h1>
-                    <p class="text-sm text-slate-500 mt-1 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                        Alam ShahJade • South Tampa, FL • Aug 26, 2026
-                    </p>
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-[#090b10]/85 backdrop-blur-xl">
+        <div class="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-teal-400/10 border border-teal-300/20">
+                        <span class="text-teal-300 font-bold text-lg">A</span>
+                        <span class="live-dot absolute -right-1 -top-1 h-3 w-3 rounded-full bg-teal-400 border-2 border-[#090b10]"></span>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">Portfolio Command Center</h1>
+                            <span class="rounded-full border border-teal-400/20 bg-teal-400/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.14em] text-teal-300">Live</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-0.5">Alam ShahJade · Long-term portfolio + sector rotation · Aug 26, 2026</p>
+                    </div>
                 </div>
-                <div class="flex gap-3">
-                    <a href="https://github.com/shahjade-alam/2000-portfolio-live" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <div id="market-status" class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[.03] px-3 py-2 text-xs text-slate-400">
+                        <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+                        <span>Connecting to market data…</span>
+                    </div>
+                    <button onclick="manualRefresh()" class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[.04] px-3.5 py-2 text-xs font-semibold text-slate-200 hover:bg-white/[.08] transition">
+                        <svg id="refresh-icon" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M20 9a8 8 0 0 0-14.9-3M4 15a8 8 0 0 0 14.9 3"/></svg>
+                        Refresh
+                    </button>
+                    <a href="https://github.com/shahjade-alam/2000-portfolio-live" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl bg-white text-slate-900 px-3.5 py-2 text-xs font-bold hover:bg-slate-200 transition">
                         GitHub
-                    </a>
-                    <a href="https://shahjade-alam.github.io/2000-portfolio-live/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-50 text-brand-700 border border-brand-100 text-sm font-medium hover:bg-brand-100 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                        Live Site
                     </a>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="flex border-b border-slate-200 mb-8">
-            <button onclick="switchTab('portfolio')" id="tab-portfolio" class="tab-active px-6 py-3 text-sm transition-all">Portfolio $2K/mo</button>
-            <button onclick="switchTab('sector')" id="tab-sector" class="tab-inactive px-6 py-3 text-sm transition-all">Sector Rotation Map</button>
-        </div>
-
-        <div id="view-portfolio" class="animate-fade-in">
-            <div class="glass-card rounded-2xl p-6 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <main class="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <!-- Hero -->
+        <section class="glass rounded-3xl p-5 sm:p-7 mb-5 animate-in">
+            <div class="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-6">
                 <div>
-                    <div class="flex items-center gap-3 mb-1">
-                        <h2 class="text-xl font-bold text-slate-900">Monthly Allocation: $2,000</h2>
-                        <span class="px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-700 text-xs font-bold uppercase tracking-wide border border-brand-100">Live Data</span>
-                    </div>
-                    <p class="text-sm text-slate-500">Stocks: $435 • Long-Term: $565 • Income: $500 • Risk: $500</p>
+                    <p class="text-[11px] uppercase tracking-[.2em] text-teal-300 font-bold mb-2">Investment dashboard</p>
+                    <h2 class="text-2xl sm:text-4xl font-bold tracking-tight text-white">A $2,000/month diversified engine.</h2>
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
+                        Core index exposure, quality growth, international diversification, income generation and targeted innovation — organized for long-term compounding.
+                    </p>
                 </div>
-                <div class="text-right">
-                    <div id="refresh-timer" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-slate-700 text-sm font-mono font-medium border border-slate-200">
-                        <svg class="w-4 h-4 text-brand-500 animate-spin" id="loading-spinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        <span id="timer-text">Initializing...</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 min-w-0 xl:min-w-[520px]">
+                    <div class="glass-soft rounded-2xl p-3.5">
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500">Monthly</p>
+                        <p class="mt-1 text-xl font-bold text-white number">$2,000</p>
                     </div>
-                    <p class="text-xs text-slate-400 mt-2">Cache: &lt;200ms • 5-min auto-refresh</p>
+                    <div class="glass-soft rounded-2xl p-3.5">
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500">Holdings</p>
+                        <p id="holding-count" class="mt-1 text-xl font-bold text-white number">24</p>
+                    </div>
+                    <div class="glass-soft rounded-2xl p-3.5">
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500">Core</p>
+                        <p class="mt-1 text-xl font-bold text-teal-300 number">28.3%</p>
+                    </div>
+                    <div class="glass-soft rounded-2xl p-3.5">
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500">Income</p>
+                        <p class="mt-1 text-xl font-bold text-white number">$500</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="flex items-center gap-1 rounded-2xl border border-white/10 bg-[#0d1118]/90 p-1.5 mb-5 w-fit">
+            <button onclick="switchTab('portfolio')" id="tab-portfolio" class="tab-active rounded-xl px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition">
+                Portfolio
+            </button>
+            <button onclick="switchTab('sector')" id="tab-sector" class="tab-inactive rounded-xl px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition">
+                Sector Rotation
+            </button>
+        </div>
+
+        <!-- PORTFOLIO VIEW -->
+        <div id="view-portfolio" class="animate-in">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-5">
+                <div class="glass hover-lift rounded-2xl p-4">
+                    <div class="flex items-center justify-between"><span class="text-xs text-slate-500">Stocks</span><span class="text-[10px] text-slate-600">22%</span></div>
+                    <div class="mt-2 flex items-end justify-between"><span class="text-2xl font-bold text-white">$435</span><span class="text-xs text-slate-500">/ month</span></div>
+                    <div class="mt-3 h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full rounded-full bg-sky-400" style="width:21.75%"></div></div>
+                </div>
+                <div class="glass hover-lift rounded-2xl p-4">
+                    <div class="flex items-center justify-between"><span class="text-xs text-slate-500">Long-term</span><span class="text-[10px] text-slate-600">28%</span></div>
+                    <div class="mt-2 flex items-end justify-between"><span class="text-2xl font-bold text-white">$565</span><span class="text-xs text-slate-500">/ month</span></div>
+                    <div class="mt-3 h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full rounded-full bg-teal-400" style="width:28.25%"></div></div>
+                </div>
+                <div class="glass hover-lift rounded-2xl p-4">
+                    <div class="flex items-center justify-between"><span class="text-xs text-slate-500">Income</span><span class="text-[10px] text-slate-600">25%</span></div>
+                    <div class="mt-2 flex items-end justify-between"><span class="text-2xl font-bold text-white">$500</span><span class="text-xs text-slate-500">/ month</span></div>
+                    <div class="mt-3 h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full rounded-full bg-violet-400" style="width:25%"></div></div>
+                </div>
+                <div class="glass hover-lift rounded-2xl p-4">
+                    <div class="flex items-center justify-between"><span class="text-xs text-slate-500">Risk / thematic</span><span class="text-[10px] text-slate-600">25%</span></div>
+                    <div class="mt-2 flex items-end justify-between"><span class="text-2xl font-bold text-white">$500</span><span class="text-xs text-slate-500">/ month</span></div>
+                    <div class="mt-3 h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full rounded-full bg-amber-400" style="width:25%"></div></div>
                 </div>
             </div>
 
-            <div class="glass-card rounded-2xl overflow-hidden">
+            <div class="glass rounded-3xl overflow-hidden">
+                <div class="p-4 sm:p-5 border-b border-white/10 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-bold text-white">Monthly allocation</h3>
+                            <span class="rounded-full bg-teal-400/10 border border-teal-400/20 px-2 py-0.5 text-[10px] font-bold text-teal-300">24 holdings</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Prices and daily changes are fetched live when the data endpoint is available.</p>
+                    </div>
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" d="m21 21-4.35-4.35M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z"/></svg>
+                        <input id="portfolio-search" oninput="filterPortfolio()" type="search" placeholder="Search ticker or holding…" class="w-full md:w-64 rounded-xl border border-white/10 bg-white/[.04] pl-9 pr-3 py-2 text-xs text-white placeholder:text-slate-600 outline-none focus:border-teal-400/40">
+                    </div>
+                </div>
+
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <thead class="bg-slate-50/80 border-b border-slate-200 backdrop-blur-sm sticky top-0 z-10">
+                        <thead class="bg-white/[.025] border-b border-white/10">
                             <tr>
-                                <th class="px-6 py-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Ticker</th>
-                                <th class="px-6 py-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Description</th>
-                                <th class="px-6 py-4 text-right font-semibold text-slate-600 uppercase tracking-wider text-xs">Amount</th>
-                                <th class="px-6 py-4 text-right font-semibold text-slate-600 uppercase tracking-wider text-xs">Price</th>
-                                <th class="px-6 py-4 text-right font-semibold text-slate-600 uppercase tracking-wider text-xs">Change</th>
-                                <th class="px-6 py-4 text-right font-semibold text-slate-600 uppercase tracking-wider text-xs">Change %</th>
+                                <th class="px-4 sm:px-5 py-3 text-left text-[10px] uppercase tracking-wider text-slate-500 font-bold">Ticker</th>
+                                <th class="px-4 sm:px-5 py-3 text-left text-[10px] uppercase tracking-wider text-slate-500 font-bold">Role</th>
+                                <th class="px-4 sm:px-5 py-3 text-right text-[10px] uppercase tracking-wider text-slate-500 font-bold">Monthly</th>
+                                <th class="px-4 sm:px-5 py-3 text-right text-[10px] uppercase tracking-wider text-slate-500 font-bold">Price</th>
+                                <th class="px-4 sm:px-5 py-3 text-right text-[10px] uppercase tracking-wider text-slate-500 font-bold">Day</th>
+                                <th class="px-4 sm:px-5 py-3 text-right text-[10px] uppercase tracking-wider text-slate-500 font-bold">%</th>
                             </tr>
                         </thead>
-                        <tbody id="portfolio-body" class="divide-y divide-slate-100 bg-white">
-                        </tbody>
+                        <tbody id="portfolio-body" class="divide-y divide-white/[.055]"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <div id="view-sector" class="hidden animate-fade-in">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                        RRG 4 Quadrants
-                    </h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div class="p-4 rounded-xl bg-red-50 border border-red-100">
-                            <div class="font-bold text-sm text-red-800 mb-1">Extended</div>
-                            <div class="text-xs text-red-600/80 leading-relaxed">Overbought, consider trimming or taking profits.</div>
+        <!-- SECTOR VIEW -->
+        <div id="view-sector" class="hidden animate-in">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-5">
+                <div class="xl:col-span-2 glass rounded-3xl p-5 sm:p-6">
+                    <div class="flex items-start justify-between gap-4 mb-5">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-[.18em] text-teal-300 font-bold">Relative rotation</p>
+                            <h3 class="text-lg font-bold text-white mt-1">RRG signal framework</h3>
+                            <p class="text-xs text-slate-500 mt-1">Use the phase as a decision aid, not as a standalone trading signal.</p>
                         </div>
-                        <div class="p-4 rounded-xl bg-slate-100 border border-slate-200">
-                            <div class="font-bold text-sm text-slate-800 mb-1">Neutral</div>
-                            <div class="text-xs text-slate-600 leading-relaxed">Stable momentum, hold current positions.</div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
-                            <div class="font-bold text-sm text-blue-800 mb-1">Early Recovery</div>
-                            <div class="text-xs text-blue-600/80 leading-relaxed">Improving relative strength, accumulate.</div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-100">
-                            <div class="font-bold text-sm text-emerald-800 mb-1">Buy-the-Dip</div>
-                            <div class="text-xs text-emerald-600/80 leading-relaxed">Oversold contrarian opportunities, scale in.</div>
-                        </div>
+                        <span class="mono text-[10px] text-slate-600">13 sectors</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="rounded-2xl border phase-extended p-4"><div class="font-bold text-sm">Extended</div><p class="mt-1 text-[11px] opacity-70">Trim / take profits</p></div>
+                        <div class="rounded-2xl border phase-neutral p-4"><div class="font-bold text-sm">Neutral</div><p class="mt-1 text-[11px] opacity-70">Hold / monitor</p></div>
+                        <div class="rounded-2xl border phase-recovery p-4"><div class="font-bold text-sm">Early recovery</div><p class="mt-1 text-[11px] opacity-70">Accumulate selectively</p></div>
+                        <div class="rounded-2xl border phase-dip p-4"><div class="font-bold text-sm">Buy-the-dip</div><p class="mt-1 text-[11px] opacity-70">Scale in carefully</p></div>
                     </div>
                 </div>
 
-                <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                        Market Context (Aug 26, 2026)
-                    </h3>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></span>
-                            <span><span class="font-semibold text-slate-800">Tech (VGT/XLK):</span> YTD +27-28%, but weakening last month (-3.3%).</span>
-                        </li>
-                        <li class="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></span>
-                            <span><span class="font-semibold text-slate-800">Financials (XLF):</span> YTD +4.95% to 7.2%, 1M +5.78% (Buy leadership).</span>
-                        </li>
-                        <li class="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></span>
-                            <span><span class="font-semibold text-slate-800">Health (XLV):</span> Strong +4.33% gain last week.</span>
-                        </li>
-                        <li class="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></span>
-                            <span><span class="font-semibold text-slate-800">Energy (XLE):</span> YTD +11.90%, recent positive momentum.</span>
-                        </li>
-                    </ul>
+                <div class="glass rounded-3xl p-5 sm:p-6">
+                    <p class="text-[10px] uppercase tracking-[.18em] text-slate-500 font-bold">Market snapshot</p>
+                    <h3 class="text-lg font-bold text-white mt-1">Aug 26, 2026</h3>
+                    <div class="mt-4 space-y-3 text-xs">
+                        <div class="flex justify-between gap-3"><span class="text-slate-400">Technology</span><span class="text-amber-300">Strong YTD / weakening</span></div>
+                        <div class="flex justify-between gap-3"><span class="text-slate-400">Industrials</span><span class="text-teal-300">Strong / extended</span></div>
+                        <div class="flex justify-between gap-3"><span class="text-slate-400">Financials</span><span class="text-teal-300">Leadership shift</span></div>
+                        <div class="flex justify-between gap-3"><span class="text-slate-400">Health Care</span><span class="text-sky-300">Early recovery</span></div>
+                        <div class="flex justify-between gap-3"><span class="text-slate-400">Energy</span><span class="text-teal-300">Positive momentum</span></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="glass-card rounded-2xl overflow-hidden">
+            <div class="glass rounded-3xl overflow-hidden">
+                <div class="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between">
+                    <div><h3 class="font-bold text-white">Sector rotation map</h3><p class="text-xs text-slate-500 mt-1">Current phase, action and relative change from the supplied research snapshot.</p></div>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <thead class="bg-slate-50/80 border-b border-slate-200 backdrop-blur-sm sticky top-0 z-10">
+                        <thead class="bg-white/[.025] border-b border-white/10">
                             <tr>
-                                <th class="px-6 py-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Sector</th>
-                                <th class="px-6 py-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Ticker</th>
-                                <th class="px-6 py-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Phase</th>
-                                <th class="px-6 py-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Action</th>
-                                <th class="px-6 py-4 text-right font-semibold text-slate-600 uppercase tracking-wider text-xs">Weight / Change</th>
+                                <th class="px-4 sm:px-5 py-3 text-left text-[10px] uppercase tracking-wider text-slate-500 font-bold">Sector</th>
+                                <th class="px-4 sm:px-5 py-3 text-left text-[10px] uppercase tracking-wider text-slate-500 font-bold">Ticker</th>
+                                <th class="px-4 sm:px-5 py-3 text-left text-[10px] uppercase tracking-wider text-slate-500 font-bold">Phase</th>
+                                <th class="px-4 sm:px-5 py-3 text-left text-[10px] uppercase tracking-wider text-slate-500 font-bold">Action</th>
+                                <th class="px-4 sm:px-5 py-3 text-right text-[10px] uppercase tracking-wider text-slate-500 font-bold">Weight</th>
+                                <th class="px-4 sm:px-5 py-3 text-right text-[10px] uppercase tracking-wider text-slate-500 font-bold">Change</th>
                             </tr>
                         </thead>
-                        <tbody id="sector-body" class="divide-y divide-slate-100 bg-white">
-                        </tbody>
+                        <tbody id="sector-body" class="divide-y divide-white/[.055]"></tbody>
                     </table>
                 </div>
             </div>
         </div>
+
+        <footer class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-[10px] text-slate-600">
+            <span>Dashboard for personal research · Market data may be delayed or unavailable.</span>
+            <span id="last-updated" class="mono">Last update: —</span>
+        </footer>
     </main>
 
     <script>
-        // --- DATA ---
         const portfolioData = [
             { ticker: "MSFT", desc: "Cloud + AI • Azure AAA moat", amount: 60, note: "AAA Core compounder" },
             { ticker: "AVGO", desc: "Chips + Infra SW", amount: 60, note: "AA AI enabler" },
@@ -253,266 +350,257 @@
             { ticker: "KIE", name: "Insurance", weight: "-1.9%", phase: "Early Recovery", action: "Buy", change: "+3.9%" }
         ];
 
+
         // --- CACHE & API LOGIC ---
-        const CACHE_KEY = 'portfolio_data_modern_v2'; // Bumped to clear broken N/A cache
+        const CACHE_KEY = 'portfolio_command_center_v3';
         const CACHE_DURATION = 5 * 60 * 1000;
+        let countdownInterval;
+        let currentPortfolioData = [];
 
         function getCachedData() {
             const cached = localStorage.getItem(CACHE_KEY);
-            if (cached) {
-                try {
-                    const parsed = JSON.parse(cached);
-                    // Ensure cache actually has valid prices, not just N/A fallbacks
-                    const hasValidData = parsed.data.some(item => item.price !== null && item.price !== undefined);
-                    if (Date.now() - parsed.timestamp < CACHE_DURATION && hasValidData) {
-                        return parsed.data;
-                    }
-                } catch (e) {
-                    localStorage.removeItem(CACHE_KEY);
-                }
+            if (!cached) return null;
+            try {
+                const parsed = JSON.parse(cached);
+                if (!parsed.data || !Array.isArray(parsed.data)) return null;
+                const hasValidData = parsed.data.some(item => item.price !== null && item.price !== undefined);
+                if (hasValidData && Date.now() - parsed.timestamp < CACHE_DURATION) return parsed;
+            } catch (e) {
+                localStorage.removeItem(CACHE_KEY);
             }
             return null;
         }
 
         function setCachedData(data) {
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: data }));
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
         }
 
-        let countdownInterval;
-
-        function updateTimerUI(text, isLoading = false) {
-            const timerText = document.getElementById('timer-text');
-            const spinner = document.getElementById('loading-spinner');
-            timerText.textContent = text;
-            spinner.style.display = isLoading ? 'block' : 'none';
+        function updateStatus(text, kind='neutral') {
+            const el = document.getElementById('market-status');
+            const dot = el.querySelector('span');
+            const colors = {
+                good: ['bg-teal-400', 'Live market data'],
+                loading: ['bg-amber-400', text],
+                warn: ['bg-orange-400', text],
+                neutral: ['bg-slate-500', text]
+            };
+            const [dotClass, label] = colors[kind] || colors.neutral;
+            dot.className = 'h-1.5 w-1.5 rounded-full ' + dotClass;
+            el.querySelectorAll('span')[1].textContent = label;
         }
 
         function startCountdown(initialMs) {
             clearInterval(countdownInterval);
             let remaining = Math.max(0, initialMs);
-            
-            const mins = Math.floor(remaining / 60000);
-            const secs = Math.floor((remaining % 60000) / 1000);
-            updateTimerUI(`Next refresh in ${mins}:${secs.toString().padStart(2, '0')}`, false);
-
-            countdownInterval = setInterval(() => {
-                remaining -= 1000;
+            const tick = () => {
                 if (remaining <= 0) {
                     clearInterval(countdownInterval);
-                    updateTimerUI("Refreshing data...", true);
-                    fetchPortfolioData();
-                } else {
-                    const m = Math.floor(remaining / 60000);
-                    const s = Math.floor((remaining % 60000) / 1000);
-                    updateTimerUI(`Next refresh in ${m}:${s.toString().padStart(2, '0')}`, false);
+                    return;
                 }
-            }, 1000);
+                remaining -= 1000;
+            };
+            tick();
+            countdownInterval = setInterval(tick, 1000);
         }
 
-        async function fetchPortfolioData() {
-            const cached = getCachedData();
-            if (cached) {
-                renderPortfolio(cached);
-                const cachedObj = JSON.parse(localStorage.getItem(CACHE_KEY));
-                startCountdown(CACHE_DURATION - (Date.now() - cachedObj.timestamp));
-                return;
+        async function fetchPortfolioData(force=false) {
+            if (!force) {
+                const cached = getCachedData();
+                if (cached) {
+                    currentPortfolioData = cached.data;
+                    renderPortfolio(currentPortfolioData);
+                    updateStatus('Cached data', 'good');
+                    document.getElementById('last-updated').textContent = 'Last update: ' + new Date(cached.timestamp).toLocaleTimeString();
+                    startCountdown(CACHE_DURATION - (Date.now() - cached.timestamp));
+                    return;
+                }
             }
 
-            renderSkeleton();
-            updateTimerUI("Fetching live data...", true);
+            updateStatus('Fetching live market data…', 'loading');
+            document.getElementById('refresh-icon').classList.add('animate-spin');
 
             const symbols = portfolioData.map(h => h.ticker).join(',');
-            // Use v8 spark endpoint which bypasses Yahoo's v7 crumb restriction
-            const targetUrl = `https://query1.finance.yahoo.com/v8/finance/spark?symbols=${symbols}&range=1d&interval=1d&includePrePost=false`;
-
-            // Multi-proxy fallback system
+            // Yahoo's public quote endpoint can be restricted by CORS depending on the browser/network.
+            // Keep multiple fallbacks so the dashboard degrades gracefully.
+            const targetUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(symbols)}`;
             const proxies = [
-                (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-                (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-                (url) => `https://corsproxy.org/?${encodeURIComponent(url)}`
+                url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+                url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+                url => `https://corsproxy.org/?${encodeURIComponent(url)}`
             ];
 
             let result = null;
-
             for (const proxyFn of proxies) {
                 try {
-                    const proxyUrl = proxyFn(targetUrl);
-                    const response = await fetch(proxyUrl);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    const text = await response.text();
-                    if (text.trim().startsWith('{')) {
-                        const json = JSON.parse(text);
-                        if (json.spark && json.spark.result) {
-                            result = json;
-                            break; // Success
-                        }
+                    const response = await fetch(proxyFn(targetUrl), { cache: 'no-store' });
+                    if (!response.ok) continue;
+                    const json = await response.json();
+                    if (json?.quoteResponse?.result) {
+                        result = json;
+                        break;
                     }
                 } catch (e) {
-                    console.warn(`Proxy failed, trying next...`, e);
+                    console.warn('Market-data proxy failed', e);
                 }
             }
 
-            if (result && result.spark && result.spark.result) {
+            if (result?.quoteResponse?.result) {
                 const processedData = portfolioData.map(holding => {
-                    const sparkResult = result.spark.result.find(r => r.symbol === holding.ticker);
-                    let price = null, change = null, changePercent = null;
-                    
-                    if (sparkResult && sparkResult.response && sparkResult.response[0] && sparkResult.response[0].meta) {
-                        const meta = sparkResult.response[0].meta;
-                        price = meta.regularMarketPrice;
-                        const prevClose = meta.previousClose || meta.chartPreviousClose;
-                        
-                        if (price !== null && price !== undefined && prevClose !== null && prevClose !== undefined && prevClose !== 0) {
-                            change = price - prevClose;
-                            changePercent = (change / prevClose) * 100;
-                        }
-                    }
-                    return { ...holding, price, change, changePercent };
+                    const q = result.quoteResponse.result.find(r => r.symbol === holding.ticker);
+                    return {
+                        ...holding,
+                        price: q?.regularMarketPrice ?? null,
+                        change: q?.regularMarketChange ?? null,
+                        changePercent: q?.regularMarketChangePercent ?? null
+                    };
                 });
-
+                currentPortfolioData = processedData;
                 setCachedData(processedData);
                 renderPortfolio(processedData);
-                updateTimerUI("Data synced", false);
-                setTimeout(() => startCountdown(CACHE_DURATION), 1500);
+                updateStatus('Live market data', 'good');
+                document.getElementById('last-updated').textContent = 'Last update: ' + new Date().toLocaleTimeString();
+                startCountdown(CACHE_DURATION);
             } else {
-                console.error("All proxies failed or returned invalid data.");
-                const expiredCache = localStorage.getItem(CACHE_KEY);
-                if (expiredCache) {
+                const old = localStorage.getItem(CACHE_KEY);
+                if (old) {
                     try {
-                        const parsed = JSON.parse(expiredCache);
-                        if (parsed.data.some(item => item.price !== null)) {
+                        const parsed = JSON.parse(old);
+                        if (parsed.data?.length) {
+                            currentPortfolioData = parsed.data;
                             renderPortfolio(parsed.data);
-                            updateTimerUI("Using cached data (API limited)", false);
-                            document.getElementById('refresh-timer').classList.add('bg-amber-50', 'text-amber-700', 'border-amber-200');
-                            return;
+                            updateStatus('Using last cached prices', 'warn');
+                            document.getElementById('last-updated').textContent = 'Last update: cached';
                         }
-                    } catch(e) {}
+                    } catch (e) {}
+                } else {
+                    currentPortfolioData = portfolioData.map(h => ({...h, price:null, change:null, changePercent:null}));
+                    renderPortfolio(currentPortfolioData);
+                    updateStatus('Market API unavailable', 'warn');
                 }
-                renderPortfolio(portfolioData.map(h => ({...h, price: null, change: null, changePercent: null})));
-                updateTimerUI("API Error. Showing N/A", false);
             }
+            document.getElementById('refresh-icon').classList.remove('animate-spin');
         }
 
-        // --- RENDER LOGIC ---
-        function renderSkeleton() {
-            const tbody = document.getElementById('portfolio-body');
-            tbody.innerHTML = '';
-            for (let i = 0; i < 8; i++) {
-                tbody.innerHTML += `
-                    <tr class="animate-pulse">
-                        <td class="px-6 py-4"><div class="skeleton w-16"></div></td>
-                        <td class="px-6 py-4"><div class="skeleton w-48"></div></td>
-                        <td class="px-6 py-4"><div class="skeleton w-12 ml-auto"></div></td>
-                        <td class="px-6 py-4"><div class="skeleton w-16 ml-auto"></div></td>
-                        <td class="px-6 py-4"><div class="skeleton w-14 ml-auto"></div></td>
-                        <td class="px-6 py-4"><div class="skeleton w-16 ml-auto"></div></td>
-                    </tr>
-                `;
-            }
+        function manualRefresh() {
+            localStorage.removeItem(CACHE_KEY);
+            fetchPortfolioData(true);
         }
 
         function formatCurrency(val) {
-            if (val === null || val === undefined) return '<span class="text-slate-400">N/A</span>';
-            return `<span class="text-slate-700">$${val.toFixed(2)}</span>`;
+            if (val === null || val === undefined || Number.isNaN(val)) return '<span class="text-slate-600">—</span>';
+            return `<span class="text-slate-200">$${Number(val).toFixed(2)}</span>`;
         }
 
         function formatChange(val) {
-            if (val === null || val === undefined) return '<span class="text-slate-400">N/A</span>';
+            if (val === null || val === undefined || Number.isNaN(val)) return '<span class="text-slate-600">—</span>';
             const sign = val >= 0 ? '+' : '';
-            const colorClass = val >= 0 ? 'text-emerald-600' : 'text-red-600';
-            return `<span class="${colorClass} font-medium">${sign}${val.toFixed(2)}</span>`;
+            const cls = val >= 0 ? 'text-emerald-400' : 'text-rose-400';
+            return `<span class="${cls}">${sign}${Number(val).toFixed(2)}</span>`;
         }
 
         function formatChangePercent(val) {
-            if (val === null || val === undefined) return '<span class="text-slate-400">N/A</span>';
+            if (val === null || val === undefined || Number.isNaN(val)) return '<span class="text-slate-600">—</span>';
             const sign = val >= 0 ? '+' : '';
-            const colorClass = val >= 0 ? 'text-emerald-600' : 'text-red-600';
-            return `<span class="${colorClass} font-medium">${sign}${val.toFixed(2)}%</span>`;
+            const cls = val >= 0 ? 'text-emerald-400' : 'text-rose-400';
+            return `<span class="${cls} font-semibold">${sign}${Number(val).toFixed(2)}%</span>`;
+        }
+
+        function renderSkeleton() {
+            const tbody = document.getElementById('portfolio-body');
+            tbody.innerHTML = Array.from({length: 10}, () => `
+                <tr>
+                    <td class="px-5 py-4"><div class="skeleton w-14"></div></td>
+                    <td class="px-5 py-4"><div class="skeleton w-40"></div></td>
+                    <td class="px-5 py-4"><div class="skeleton w-10 ml-auto"></div></td>
+                    <td class="px-5 py-4"><div class="skeleton w-16 ml-auto"></div></td>
+                    <td class="px-5 py-4"><div class="skeleton w-14 ml-auto"></div></td>
+                    <td class="px-5 py-4"><div class="skeleton w-12 ml-auto"></div></td>
+                </tr>`).join('');
         }
 
         function renderPortfolio(data) {
             const tbody = document.getElementById('portfolio-body');
             tbody.innerHTML = '';
+            document.getElementById('holding-count').textContent = data.length;
 
             data.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-brand-50/40 transition-colors duration-150 group";
+                tr.dataset.search = `${item.ticker} ${item.desc} ${item.note}`.toLowerCase();
+                tr.className = 'portfolio-row hover:bg-teal-400/[.025] transition';
                 tr.innerHTML = `
-                    <td class="px-6 py-4">
-                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="font-bold text-brand-600 hover:text-brand-700 hover:underline decoration-brand-300 underline-offset-4 transition-all">${item.ticker}</a>
+                    <td class="px-4 sm:px-5 py-3.5">
+                        <a class="ticker mono font-bold text-xs" href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" rel="noopener">${item.ticker}</a>
                     </td>
-                    <td class="px-6 py-4">
-                        <div class="font-medium text-slate-800">${item.desc}</div>
-                        <div class="text-xs text-slate-500 mt-0.5">${item.note}</div>
+                    <td class="px-4 sm:px-5 py-3.5">
+                        <div class="text-xs font-semibold text-slate-200">${item.desc}</div>
+                        <div class="text-[10px] text-slate-600 mt-0.5">${item.note}</div>
                     </td>
-                    <td class="px-6 py-4 text-right font-mono text-slate-600 font-medium">$${item.amount}</td>
-                    <td class="px-6 py-4 text-right font-mono">${formatCurrency(item.price)}</td>
-                    <td class="px-6 py-4 text-right font-mono">${formatChange(item.change)}</td>
-                    <td class="px-6 py-4 text-right font-mono">${formatChangePercent(item.changePercent)}</td>
-                `;
+                    <td class="px-4 sm:px-5 py-3.5 text-right mono text-xs text-slate-300">${item.amount}</td>
+                    <td class="px-4 sm:px-5 py-3.5 text-right mono text-xs">${formatCurrency(item.price)}</td>
+                    <td class="px-4 sm:px-5 py-3.5 text-right mono text-xs">${formatChange(item.change)}</td>
+                    <td class="px-4 sm:px-5 py-3.5 text-right mono text-xs">${formatChangePercent(item.changePercent)}</td>`;
                 tbody.appendChild(tr);
             });
+        }
+
+        function filterPortfolio() {
+            const query = document.getElementById('portfolio-search').value.trim().toLowerCase();
+            document.querySelectorAll('.portfolio-row').forEach(row => {
+                row.style.display = row.dataset.search.includes(query) ? '' : 'none';
+            });
+        }
+
+        function phaseClass(phase) {
+            if (phase === 'Extended') return 'phase-extended';
+            if (phase === 'Early Recovery') return 'phase-recovery';
+            if (phase === 'Buy-the-Dip') return 'phase-dip';
+            return 'phase-neutral';
         }
 
         function renderSectors() {
             const tbody = document.getElementById('sector-body');
             tbody.innerHTML = '';
-
             sectorData.forEach(item => {
-                let badgeClass = "badge-neutral";
-                if (item.phase === "Extended") badgeClass = "badge-extended";
-                else if (item.phase === "Early Recovery") badgeClass = "badge-recovery";
-                else if (item.phase === "Buy-the-Dip") badgeClass = "badge-dip";
-
-                const changeVal = parseFloat(item.change.replace('%', ''));
-                const changeColor = changeVal >= 0 ? 'text-emerald-600' : 'text-red-600';
-                const changeSign = changeVal >= 0 ? '+' : '';
-
+                const changeVal = parseFloat(item.change);
+                const changeCls = changeVal >= 0 ? 'text-emerald-400' : 'text-rose-400';
+                const sign = changeVal >= 0 ? '+' : '';
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-brand-50/40 transition-colors duration-150";
+                tr.className = 'hover:bg-white/[.025] transition';
                 tr.innerHTML = `
-                    <td class="px-6 py-4">
-                        <div class="font-semibold text-slate-800">${item.name}</div>
-                        ${item.note ? `<div class="text-xs text-brand-600 font-medium mt-0.5 flex items-center gap-1"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>${item.note}</div>` : ''}
+                    <td class="px-4 sm:px-5 py-3.5">
+                        <div class="font-semibold text-xs text-slate-200">${item.name}</div>
+                        ${item.note ? `<div class="text-[10px] text-teal-300 mt-1">${item.note}</div>` : ''}
                     </td>
-                    <td class="px-6 py-4">
-                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="font-mono font-bold text-brand-600 hover:text-brand-700 hover:underline decoration-brand-300 underline-offset-4 transition-all">${item.ticker}</a>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${badgeClass}">
-                            ${item.phase}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-slate-700 font-medium">${item.action}</td>
-                    <td class="px-6 py-4 text-right font-mono">
-                        <div class="text-slate-500 text-xs mb-1">${item.weight}</div>
-                        <div class="${changeColor} font-semibold">${changeSign}${item.change}</div>
-                    </td>
-                `;
+                    <td class="px-4 sm:px-5 py-3.5"><a class="ticker mono text-xs font-bold" href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" rel="noopener">${item.ticker}</a></td>
+                    <td class="px-4 sm:px-5 py-3.5"><span class="inline-flex rounded-lg border px-2 py-1 text-[10px] font-bold ${phaseClass(item.phase)}">${item.phase}</span></td>
+                    <td class="px-4 sm:px-5 py-3.5 text-xs font-semibold text-slate-300">${item.action}</td>
+                    <td class="px-4 sm:px-5 py-3.5 text-right mono text-xs text-slate-500">${item.weight}</td>
+                    <td class="px-4 sm:px-5 py-3.5 text-right mono text-xs font-semibold ${changeCls}">${sign}${item.change}</td>`;
                 tbody.appendChild(tr);
             });
         }
 
         function switchTab(tabName) {
-            const portfolioView = document.getElementById('view-portfolio');
-            const sectorView = document.getElementById('view-sector');
-            const tabPortfolio = document.getElementById('tab-portfolio');
-            const tabSector = document.getElementById('tab-sector');
+            const portfolio = document.getElementById('view-portfolio');
+            const sector = document.getElementById('view-sector');
+            const pTab = document.getElementById('tab-portfolio');
+            const sTab = document.getElementById('tab-sector');
 
             if (tabName === 'portfolio') {
-                portfolioView.classList.remove('hidden');
-                sectorView.classList.add('hidden');
-                tabPortfolio.className = "tab-active px-6 py-3 text-sm transition-all";
-                tabSector.className = "tab-inactive px-6 py-3 text-sm transition-all";
+                portfolio.classList.remove('hidden');
+                sector.classList.add('hidden');
+                pTab.className = 'tab-active rounded-xl px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition';
+                sTab.className = 'tab-inactive rounded-xl px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition';
             } else {
-                portfolioView.classList.add('hidden');
-                sectorView.classList.remove('hidden');
-                tabSector.className = "tab-active px-6 py-3 text-sm transition-all";
-                tabPortfolio.className = "tab-inactive px-6 py-3 text-sm transition-all";
+                portfolio.classList.add('hidden');
+                sector.classList.remove('hidden');
+                sTab.className = 'tab-active rounded-xl px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition';
+                pTab.className = 'tab-inactive rounded-xl px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition';
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            renderSkeleton();
             renderSectors();
             fetchPortfolioData();
         });
