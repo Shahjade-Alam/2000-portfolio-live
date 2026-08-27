@@ -5,120 +5,265 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Live + Sector Rotation Map | Alam ShahJade</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
+            --dhan-primary: #00BFA5;
+            --dhan-primary-dark: #00a891;
+            --dhan-primary-light: #e6f7f4;
+            --dhan-secondary: #1a1a1a;
+            --dhan-accent: #FF6B35;
             --bg-primary: #ffffff;
-            --bg-subtle: #f8fafc;
-            --border-color: #e2e8f0;
-            --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --accent-green: #059669;
-            --accent-red: #dc2626;
-            --accent-blue: #2563eb;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #f0f2f5;
+            --border-color: #e8ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
         }
+        
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        
         body {
-            background-color: var(--bg-primary);
+            background-color: var(--bg-secondary);
             color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-        .card {
-            background-color: #ffffff;
+        
+        .dhan-card {
+            background: white;
             border: 1px solid var(--border-color);
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+            transition: all 0.2s ease;
         }
+        
+        .dhan-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+        
+        .dhan-btn-primary {
+            background: linear-gradient(135deg, var(--dhan-primary) 0%, var(--dhan-primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 191, 165, 0.25);
+        }
+        
+        .dhan-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 191, 165, 0.35);
+        }
+        
+        .dhan-btn-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .dhan-btn-secondary:hover {
+            border-color: var(--dhan-primary);
+            color: var(--dhan-primary);
+            background: var(--dhan-primary-light);
+        }
+        
         .compact-row {
-            padding: 10px 16px;
+            padding: 12px 16px;
         }
-        .tab-active {
-            border-bottom: 2px solid var(--accent-blue);
-            color: var(--accent-blue);
+        
+        .tab-button {
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            color: var(--text-secondary);
+            background: transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text-primary);
+        }
+        
+        .tab-button.active {
+            color: var(--dhan-primary);
+            border-bottom-color: var(--dhan-primary);
+        }
+        
+        .quadrant-extended { 
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); 
+            border-left: 4px solid var(--danger);
+            color: #991b1b;
+        }
+        
+        .quadrant-neutral { 
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); 
+            border-left: 4px solid var(--text-secondary);
+            color: #374151;
+        }
+        
+        .quadrant-recovery { 
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); 
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+        
+        .quadrant-dip { 
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); 
+            border-left: 4px solid var(--success);
+            color: #065f46;
+        }
+        
+        .positive { 
+            color: var(--success); 
             font-weight: 600;
         }
-        .tab-inactive {
-            color: var(--text-secondary);
-            border-bottom: 2px solid transparent;
-        }
-        .tab-inactive:hover {
-            color: var(--text-primary);
-            border-bottom-color: var(--border-color);
+        
+        .negative { 
+            color: var(--danger); 
+            font-weight: 600;
         }
         
-        /* RRG Quadrants - Light Mode Optimized */
-        .quadrant-extended { background-color: rgba(220, 38, 38, 0.08); border-left: 3px solid var(--accent-red); }
-        .quadrant-neutral { background-color: rgba(100, 116, 139, 0.08); border-left: 3px solid var(--text-secondary); }
-        .quadrant-recovery { background-color: rgba(37, 99, 235, 0.08); border-left: 3px solid var(--accent-blue); }
-        .quadrant-dip { background-color: rgba(5, 150, 105, 0.08); border-left: 3px solid var(--accent-green); }
+        .ticker-link {
+            color: var(--dhan-primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
         
-        .positive { color: var(--accent-green); font-weight: 500; }
-        .negative { color: var(--accent-red); font-weight: 500; }
+        .ticker-link:hover {
+            color: var(--dhan-primary-dark);
+            text-decoration: underline;
+        }
         
-        /* Smooth transitions */
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { 
+            animation: fadeIn 0.3s ease-in-out; 
+        }
         
-        /* Table hover states */
-        tbody tr { transition: background-color 0.15s ease; }
-        tbody tr:hover { background-color: var(--bg-subtle); }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(8px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        tbody tr { 
+            transition: background-color 0.15s ease; 
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        tbody tr:hover { 
+            background-color: var(--dhan-primary-light); 
+        }
+        
+        .header-gradient {
+            background: linear-gradient(135deg, var(--dhan-primary) 0%, var(--dhan-primary-dark) 100%);
+        }
+        
+        .timer-badge {
+            background: var(--dhan-primary-light);
+            color: var(--dhan-primary-dark);
+            border: 1px solid rgba(0, 191, 165, 0.3);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .section-badge {
+            background: linear-gradient(135deg, var(--dhan-primary) 0%, var(--dhan-primary-dark) 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
+<body class="min-h-screen">
 
     <!-- Header -->
-    <header class="max-w-6xl mx-auto mb-6">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">Portfolio Live + Sector Rotation Map</h1>
-                <p class="text-sm text-slate-500 mt-1">Alam ShahJade • South Tampa, Florida • Aug 26, 2026</p>
-            </div>
-            <div class="flex gap-3 text-sm">
-                <a href="https://github.com/shahjade-alam/2000-portfolio-live" target="_blank" class="px-4 py-2 rounded-lg card hover:bg-slate-50 transition-colors flex items-center gap-2 font-medium text-slate-700">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    GitHub
-                </a>
-                <a href="https://shahjade-alam.github.io/2000-portfolio-live/" target="_blank" class="px-4 py-2 rounded-lg card hover:bg-slate-50 transition-colors flex items-center gap-2 font-medium text-slate-700">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    Live Site
-                </a>
+    <header class="header-gradient text-white py-6 px-4 md:px-8 shadow-lg">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Portfolio Live + Sector Rotation Map</h1>
+                    <p class="text-sm text-white/90 mt-1">Alam ShahJade • South Tampa, Florida • Aug 26, 2026</p>
+                </div>
+                <div class="flex gap-3 text-sm">
+                    <a href="https://github.com/shahjade-alam/2000-portfolio-live" target="_blank" class="dhan-btn-secondary flex items-center gap-2 text-white border-white/30 hover:bg-white/10 hover:border-white/50">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        GitHub
+                    </a>
+                    <a href="https://shahjade-alam.github.io/2000-portfolio-live/" target="_blank" class="dhan-btn-secondary flex items-center gap-2 text-white border-white/30 hover:bg-white/10 hover:border-white/50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        Live Site
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-6xl mx-auto">
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
         
         <!-- Tabs -->
-        <div class="flex border-b border-slate-200 mb-6">
-            <button onclick="switchTab('portfolio')" id="tab-portfolio" class="tab-active px-4 py-3 text-sm transition-colors">Portfolio $2K/mo</button>
-            <button onclick="switchTab('sector')" id="tab-sector" class="tab-inactive px-4 py-3 text-sm transition-colors">Sector Rotation Map</button>
+        <div class="dhan-card mb-6 p-2">
+            <div class="flex border-b-0">
+                <button onclick="switchTab('portfolio')" id="tab-portfolio" class="tab-button active">Portfolio $2K/mo</button>
+                <button onclick="switchTab('sector')" id="tab-sector" class="tab-button">Sector Rotation Map</button>
+            </div>
         </div>
 
         <!-- Portfolio Tab -->
         <div id="view-portfolio" class="fade-in">
-            <div class="card rounded-lg p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-50/50">
-                <div>
-                    <h2 class="text-lg font-semibold text-slate-900">Monthly Allocation: $2,000</h2>
-                    <p class="text-xs text-slate-500 mt-1">Stocks: $435 • Long-Term: $565 • Income: $500 • Risk: $500</p>
-                </div>
-                <div class="text-right">
-                    <div id="refresh-timer" class="text-sm font-mono font-medium text-slate-700 bg-white px-3 py-1 rounded border border-slate-200">Initializing...</div>
-                    <p class="text-xs text-slate-400 mt-1">Cache: &lt;200ms • 5-min refresh</p>
+            <div class="dhan-card p-5 mb-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <h2 class="text-xl font-bold text-gray-900">Monthly Allocation: $2,000</h2>
+                            <span class="section-badge">Live Data</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Stocks: $435 • Long-Term: $565 • Income: $500 • Risk: $500</p>
+                    </div>
+                    <div class="text-right">
+                        <div id="refresh-timer" class="timer-badge mb-2">Initializing...</div>
+                        <p class="text-xs text-gray-500">Cache: &lt;200ms • 5-min refresh</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="card rounded-lg overflow-hidden">
+            <div class="dhan-card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left">
-                        <thead class="text-xs font-semibold text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
-                                <th class="compact-row">Ticker</th>
-                                <th class="compact-row">Description</th>
-                                <th class="compact-row text-right">Amount</th>
-                                <th class="compact-row text-right">Price</th>
-                                <th class="compact-row text-right">Change</th>
-                                <th class="compact-row text-right">Change %</th>
+                                <th class="compact-row text-left font-semibold text-gray-700">Ticker</th>
+                                <th class="compact-row text-left font-semibold text-gray-700">Description</th>
+                                <th class="compact-row text-right font-semibold text-gray-700">Amount</th>
+                                <th class="compact-row text-right font-semibold text-gray-700">Price</th>
+                                <th class="compact-row text-right font-semibold text-gray-700">Change</th>
+                                <th class="compact-row text-right font-semibold text-gray-700">Change %</th>
                             </tr>
                         </thead>
-                        <tbody id="portfolio-body" class="divide-y divide-slate-100">
+                        <tbody id="portfolio-body" class="bg-white">
                             <!-- Rows injected by JS -->
                         </tbody>
                     </table>
@@ -128,66 +273,66 @@
 
         <!-- Sector Rotation Tab -->
         <div id="view-sector" class="hidden fade-in">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- RRG Quadrants Legend -->
-                <div class="card rounded-lg p-5">
-                    <h3 class="text-sm font-semibold mb-4 text-slate-900">RRG 4 Quadrants</h3>
+                <div class="dhan-card p-6">
+                    <h3 class="text-base font-bold mb-4 text-gray-900">RRG 4 Quadrants</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div class="quadrant-extended p-3 rounded-md">
-                            <div class="font-semibold text-sm text-red-700">Extended</div>
-                            <div class="text-xs text-slate-600 mt-1">Overbought, consider trimming or taking profits.</div>
+                        <div class="quadrant-extended p-4 rounded-lg">
+                            <div class="font-bold text-sm mb-1">Extended</div>
+                            <div class="text-xs opacity-90">Overbought, consider trimming or taking profits.</div>
                         </div>
-                        <div class="quadrant-neutral p-3 rounded-md">
-                            <div class="font-semibold text-sm text-slate-700">Neutral</div>
-                            <div class="text-xs text-slate-600 mt-1">Stable momentum, hold current positions.</div>
+                        <div class="quadrant-neutral p-4 rounded-lg">
+                            <div class="font-bold text-sm mb-1">Neutral</div>
+                            <div class="text-xs opacity-90">Stable momentum, hold current positions.</div>
                         </div>
-                        <div class="quadrant-recovery p-3 rounded-md">
-                            <div class="font-semibold text-sm text-blue-700">Early Recovery</div>
-                            <div class="text-xs text-slate-600 mt-1">Improving relative strength, accumulate.</div>
+                        <div class="quadrant-recovery p-4 rounded-lg">
+                            <div class="font-bold text-sm mb-1">Early Recovery</div>
+                            <div class="text-xs opacity-90">Improving relative strength, accumulate.</div>
                         </div>
-                        <div class="quadrant-dip p-3 rounded-md">
-                            <div class="font-semibold text-sm text-emerald-700">Buy-the-Dip</div>
-                            <div class="text-xs text-slate-600 mt-1">Oversold contrarian opportunities, scale in.</div>
+                        <div class="quadrant-dip p-4 rounded-lg">
+                            <div class="font-bold text-sm mb-1">Buy-the-Dip</div>
+                            <div class="text-xs opacity-90">Oversold contrarian opportunities, scale in.</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card rounded-lg p-5 flex flex-col justify-center">
-                    <h3 class="text-sm font-semibold mb-3 text-slate-900">Market Context (Aug 26, 2026)</h3>
-                    <ul class="text-xs text-slate-600 space-y-2.5">
+                <div class="dhan-card p-6">
+                    <h3 class="text-base font-bold mb-4 text-gray-900">Market Context (Aug 26, 2026)</h3>
+                    <ul class="space-y-3 text-sm">
                         <li class="flex items-start gap-2">
-                            <span class="text-slate-400 mt-0.5">•</span>
-                            <span><span class="font-medium text-slate-800">Tech (VGT/XLK):</span> YTD +27-28%, but weakening last month (-3.3%).</span>
+                            <span class="text-gray-400 mt-1">•</span>
+                            <span><span class="font-semibold text-gray-800">Tech (VGT/XLK):</span> YTD +27-28%, but weakening last month (-3.3%).</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <span class="text-slate-400 mt-0.5">•</span>
-                            <span><span class="font-medium text-slate-800">Financials (XLF):</span> YTD +4.95% to 7.2%, 1M +5.78% (Buy leadership).</span>
+                            <span class="text-gray-400 mt-1">•</span>
+                            <span><span class="font-semibold text-gray-800">Financials (XLF):</span> YTD +4.95% to 7.2%, 1M +5.78% (Buy leadership).</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <span class="text-slate-400 mt-0.5">•</span>
-                            <span><span class="font-medium text-slate-800">Health (XLV):</span> Strong +4.33% gain last week.</span>
+                            <span class="text-gray-400 mt-1">•</span>
+                            <span><span class="font-semibold text-gray-800">Health (XLV):</span> Strong +4.33% gain last week.</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <span class="text-slate-400 mt-0.5">•</span>
-                            <span><span class="font-medium text-slate-800">Energy (XLE):</span> YTD +11.90%, recent positive momentum.</span>
+                            <span class="text-gray-400 mt-1">•</span>
+                            <span><span class="font-semibold text-gray-800">Energy (XLE):</span> YTD +11.90%, recent positive momentum.</span>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <div class="card rounded-lg overflow-hidden">
+            <div class="dhan-card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left">
-                        <thead class="text-xs font-semibold text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
-                                <th class="compact-row">Sector</th>
-                                <th class="compact-row">Ticker</th>
-                                <th class="compact-row">Phase</th>
-                                <th class="compact-row">Action</th>
-                                <th class="compact-row text-right">Weight / Change</th>
+                                <th class="compact-row text-left font-semibold text-gray-700">Sector</th>
+                                <th class="compact-row text-left font-semibold text-gray-700">Ticker</th>
+                                <th class="compact-row text-left font-semibold text-gray-700">Phase</th>
+                                <th class="compact-row text-left font-semibold text-gray-700">Action</th>
+                                <th class="compact-row text-right font-semibold text-gray-700">Weight / Change</th>
                             </tr>
                         </thead>
-                        <tbody id="sector-body" class="divide-y divide-slate-100">
+                        <tbody id="sector-body" class="bg-white">
                             <!-- Rows injected by JS -->
                         </tbody>
                     </table>
@@ -243,8 +388,8 @@
         ];
 
         // --- CACHE & API LOGIC ---
-        const CACHE_KEY = 'portfolio_data_v1_light';
-        const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+        const CACHE_KEY = 'portfolio_data_dhan_v1';
+        const CACHE_DURATION = 5 * 60 * 1000;
 
         function getCachedData() {
             const cached = localStorage.getItem(CACHE_KEY);
@@ -324,19 +469,19 @@
 
         // --- RENDER LOGIC ---
         function formatCurrency(val) {
-            if (val === null || val === undefined) return '<span class="text-slate-400">N/A</span>';
+            if (val === null || val === undefined) return '<span class="text-gray-400">N/A</span>';
             return `$${val.toFixed(2)}`;
         }
 
         function formatChange(val) {
-            if (val === null || val === undefined) return '<span class="text-slate-400">N/A</span>';
+            if (val === null || val === undefined) return '<span class="text-gray-400">N/A</span>';
             const sign = val >= 0 ? '+' : '';
             const colorClass = val >= 0 ? 'positive' : 'negative';
             return `<span class="${colorClass}">${sign}${val.toFixed(2)}</span>`;
         }
 
         function formatChangePercent(val) {
-            if (val === null || val === undefined) return '<span class="text-slate-400">N/A</span>';
+            if (val === null || val === undefined) return '<span class="text-gray-400">N/A</span>';
             const sign = val >= 0 ? '+' : '';
             const colorClass = val >= 0 ? 'positive' : 'negative';
             return `<span class="${colorClass}">${sign}${val.toFixed(2)}%</span>`;
@@ -350,14 +495,14 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="compact-row">
-                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="font-semibold text-blue-600 hover:text-blue-800 hover:underline">${item.ticker}</a>
+                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="ticker-link">${item.ticker}</a>
                     </td>
                     <td class="compact-row">
-                        <div class="font-medium text-slate-800">${item.desc}</div>
-                        <div class="text-xs text-slate-500 mt-0.5">${item.note}</div>
+                        <div class="font-medium text-gray-900">${item.desc}</div>
+                        <div class="text-xs text-gray-500 mt-0.5">${item.note}</div>
                     </td>
-                    <td class="compact-row text-right font-mono text-slate-700 font-medium">$${item.amount}</td>
-                    <td class="compact-row text-right font-mono text-slate-700">${formatCurrency(item.price)}</td>
+                    <td class="compact-row text-right font-mono font-semibold text-gray-700">$${item.amount}</td>
+                    <td class="compact-row text-right font-mono text-gray-700">${formatCurrency(item.price)}</td>
                     <td class="compact-row text-right font-mono">${formatChange(item.change)}</td>
                     <td class="compact-row text-right font-mono">${formatChangePercent(item.changePercent)}</td>
                 `;
@@ -382,20 +527,20 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="compact-row">
-                        <div class="font-medium text-slate-800">${item.name}</div>
+                        <div class="font-semibold text-gray-900">${item.name}</div>
                         ${item.note ? `<div class="text-xs text-blue-600 font-medium mt-0.5">${item.note}</div>` : ''}
                     </td>
                     <td class="compact-row">
-                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="font-mono font-semibold text-blue-600 hover:text-blue-800 hover:underline">${item.ticker}</a>
+                        <a href="https://finance.yahoo.com/quote/${item.ticker}/" target="_blank" class="ticker-link font-mono">${item.ticker}</a>
                     </td>
                     <td class="compact-row">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold ${phaseClass}">
+                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-bold ${phaseClass}">
                             ${item.phase}
                         </span>
                     </td>
-                    <td class="compact-row text-slate-700 font-medium">${item.action}</td>
+                    <td class="compact-row text-gray-700 font-medium">${item.action}</td>
                     <td class="compact-row text-right font-mono">
-                        <div class="text-slate-500 text-xs mb-0.5">${item.weight}</div>
+                        <div class="text-gray-500 text-xs mb-0.5">${item.weight}</div>
                         <div class="${changeColor}">${changeSign}${item.change}</div>
                     </td>
                 `;
@@ -413,17 +558,13 @@
             if (tabName === 'portfolio') {
                 portfolioView.classList.remove('hidden');
                 sectorView.classList.add('hidden');
-                tabPortfolio.classList.add('tab-active');
-                tabPortfolio.classList.remove('tab-inactive');
-                tabSector.classList.add('tab-inactive');
-                tabSector.classList.remove('tab-active');
+                tabPortfolio.classList.add('active');
+                tabSector.classList.remove('active');
             } else {
                 portfolioView.classList.add('hidden');
                 sectorView.classList.remove('hidden');
-                tabSector.classList.add('tab-active');
-                tabSector.classList.remove('tab-inactive');
-                tabPortfolio.classList.add('tab-inactive');
-                tabPortfolio.classList.remove('tab-active');
+                tabSector.classList.add('active');
+                tabPortfolio.classList.remove('active');
             }
         }
 
