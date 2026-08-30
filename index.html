@@ -1,452 +1,610 @@
 <!DOCTYPE html>
-<html lang="en" class="antialiased">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0f1724">
-  <meta name="description" content="Live portfolio dashboard and sector rotation map — New Era theme">
-  <title>Portfolio Command Center | Alam ShahJade — New Era</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Command Center | Alam ShahJade</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --border-color: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --accent-purple: #8b5cf6;
+        }
 
-  <!-- Tailwind + fonts -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- Charts (Chart.js) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+        }
 
-  <style>
-    :root { color-scheme: dark light; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: 'DM Sans', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-      background: linear-gradient(180deg,#081226 0%, #061226 45%, #071022 100%);
-      color: #e6eef8;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    /* New Era theme accents */
-    .accent-1 { background: linear-gradient(120deg,#6ee7b7 0%, #60a5fa 50%, #a78bfa 100%); }
-    .accent-2 { background: linear-gradient(90deg,#7c3aed 0%, #06b6d4 100%); }
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-    /* Glass + modern */
-    .glass {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border: 1px solid rgba(255,255,255,0.04);
-      backdrop-filter: blur(10px) saturate(1.05);
-      box-shadow: 0 8px 30px rgba(2,6,23,0.7);
-    }
+        .header-left h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    /* New era card highlight */
-    .card-hero { background: linear-gradient(90deg, rgba(124,58,237,0.12), rgba(6,182,212,0.06)); }
+        .badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    .sparkline { width: 100px; height: 36px; }
+        .badge.live {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+            animation: pulse 2s infinite;
+        }
 
-    .toggle {
-      appearance:none; width:48px; height:28px; background:linear-gradient(180deg,#0b1220,#071022); border-radius:999px; position:relative; border:1px solid rgba(255,255,255,0.06);
-    }
-    .toggle:after { content:''; width:20px;height:20px;border-radius:50%;background:white;position:absolute;left:4px;top:3px;transition:all .22s; }
-    .toggle[data-mode='light'] { background: linear-gradient(90deg,#f1f5f9,#e6eef8); }
-    .toggle[data-mode='light']:after { left:24px; background:#0b1220; }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
 
-    /* responsive tweaks */
-    @media (max-width:720px) {
-      .hide-sm { display:none; }
-      .grid-cols-responsive { grid-template-columns: repeat(1, minmax(0,1fr)); }
-    }
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
 
-    /* subtle hover lift */
-    .hover-lift { transition: transform .18s ease, box-shadow .18s ease; }
-    .hover-lift:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,0.6); }
+        .header-right {
+            display: flex;
+            gap: 10px;
+        }
 
-  </style>
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #334155;
+        }
+
+        /* Intro & Stats */
+        .intro {
+            margin-bottom: 30px;
+        }
+
+        .intro h2 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .intro p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 800px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card .label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Allocation Section */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .allocation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .alloc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alloc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .alloc-card.stocks::before { background: var(--accent-blue); }
+        .alloc-card.long-term::before { background: var(--accent-green); }
+        .alloc-card.income::before { background: var(--accent-yellow); }
+        .alloc-card.risk::before { background: var(--accent-purple); }
+
+        .alloc-card h4 {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .alloc-card .alloc-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .alloc-card .alloc-pct {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .alloc-card .alloc-amt {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Tables */
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .table-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th, td {
+            padding: 12px 20px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: rgba(0,0,0,0.2);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:not(:last-child) {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* RRG Framework */
+        .rrg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .rrg-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .rrg-card h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .rrg-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .rrg-card.extended { border-top: 3px solid var(--accent-red); }
+        .rrg-card.neutral { border-top: 3px solid var(--text-muted); }
+        .rrg-card.recovery { border-top: 3px solid var(--accent-blue); }
+        .rrg-card.dip { border-top: 3px solid var(--accent-green); }
+
+        /* Market Snapshot */
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .snapshot-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px 20px;
+        }
+
+        .snapshot-card h5 {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .snapshot-card p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+            }
+            .header-right {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
+<div class="container">
     <!-- Header -->
-    <header class="flex items-center justify-between gap-4 mb-6">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl accent-1 flex items-center justify-center text-slate-900 font-extrabold">A</div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-lg sm:text-2xl font-semibold">Portfolio Command Center</h1>
-            <span class="text-xs px-2 py-1 rounded-full bg-white/6 text-white/90">New Era</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-0.5">Alam ShahJade · Live portfolio + sector rotation</p>
+    <header class="header">
+        <div class="header-left">
+            <h1>
+                Portfolio Command Center
+                <span class="badge live">Live</span>
+            </h1>
+            <p class="subtitle">Alam ShahJade · Long-term portfolio + sector rotation · <span id="current-date">Aug 26, 2026</span></p>
         </div>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <div id="market-status" class="text-sm rounded-xl px-3 py-2 bg-white/3 border border-white/6 flex items-center gap-2">
-          <span id="market-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
-          <span id="market-text">Connecting…</span>
+        <div class="header-right">
+            <button class="btn btn-secondary" id="refresh-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                Refresh
+            </button>
+            <a href="https://github.com/shahjade-alam/2000-portfolio-live" target="_blank" class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+            </a>
         </div>
-
-        <div class="flex items-center gap-2">
-          <button id="theme-toggle" class="toggle" aria-label="Toggle theme" title="Toggle theme" data-mode="dark"></button>
-        </div>
-
-        <button id="refresh-btn" class="px-3 py-2 rounded-xl bg-white/6 hover:bg-white/8">Refresh</button>
-        <a href="https://github.com/shahjade-alam/2000-portfolio-live" target="_blank" rel="noopener" class="px-3 py-2 rounded-xl bg-slate-50 text-slate-900">GitHub</a>
-      </div>
     </header>
 
-    <!-- Hero -->
-    <section class="glass rounded-2xl p-6 mb-6 card-hero hover-lift">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        <div>
-          <p class="text-xs uppercase tracking-wide text-teal-200 font-semibold">Investment Dashboard</p>
-          <h2 class="text-2xl sm:text-4xl font-bold tracking-tight mt-1">A $2,000/month diversified engine — New Era</h2>
-          <p class="mt-2 text-sm text-slate-300 max-w-xl">Modern visuals, live data, interactive charts and a fresh design language to help you manage long-term compounding and sector rotation.</p>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 min-w-[340px]">
-          <div class="bg-white/3 rounded-2xl p-4 text-center">
-            <p class="text-xs uppercase text-slate-300">Monthly</p>
-            <div class="mt-1 text-xl font-bold">$2,000</div>
-          </div>
-          <div class="bg-white/3 rounded-2xl p-4 text-center">
-            <p class="text-xs uppercase text-slate-300">Holdings</p>
-            <div id="holding-count" class="mt-1 text-xl font-bold">—</div>
-          </div>
-          <div class="bg-white/3 rounded-2xl p-4 text-center">
-            <p class="text-xs uppercase text-slate-300">Core</p>
-            <div class="mt-1 text-xl font-bold text-teal-300">28.3%</div>
-          </div>
-          <div class="bg-white/3 rounded-2xl p-4 text-center">
-            <p class="text-xs uppercase text-slate-300">Income</p>
-            <div class="mt-1 text-xl font-bold">$500</div>
-          </div>
-        </div>
-      </div>
+    <!-- Intro -->
+    <section class="intro">
+        <h2>Investment dashboard</h2>
+        <p>A $2,000/month diversified engine. Core index exposure, quality growth, international diversification, income generation and targeted innovation — organized for long-term compounding.</p>
     </section>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Left: portfolio list + table -->
-      <div class="lg:col-span-2 space-y-4">
-        <div class="glass rounded-2xl p-4">
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <h3 class="font-semibold">Portfolio</h3>
-              <p class="text-xs text-slate-400">Click any holding to load its recent price history into the main chart.</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <input id="search" type="search" placeholder="Search ticker or holding…" class="rounded-xl bg-white/3 px-3 py-2 text-sm" />
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="text-xs text-slate-400 uppercase">
-                <tr>
-                  <th class="text-left px-3 py-2">Ticker</th>
-                  <th class="text-left px-3 py-2">Name</th>
-                  <th class="text-right px-3 py-2">Monthly</th>
-                  <th class="text-right px-3 py-2">Price</th>
-                  <th class="text-right px-3 py-2">Day</th>
-                  <th class="text-right px-3 py-2">%</th>
-                  <th class="text-right px-3 py-2">Trend</th>
-                </tr>
-              </thead>
-              <tbody id="portfolio-body" class="divide-y divide-white/5"></tbody>
-            </table>
-          </div>
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="label">Monthly</span>
+            <span class="value">$2,000</span>
         </div>
-
-        <div class="glass rounded-2xl p-4">
-          <h3 class="font-semibold">Sector Rotation</h3>
-          <p class="text-xs text-slate-400">RRG-inspired phases and actions — use as an input to your allocation decisions.</p>
-
-          <div class="mt-4 overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="text-xs text-slate-400 uppercase">
-                <tr>
-                  <th class="text-left px-3 py-2">Sector</th>
-                  <th class="text-left px-3 py-2">Ticker</th>
-                  <th class="text-left px-3 py-2">Phase</th>
-                  <th class="text-left px-3 py-2">Action</th>
-                  <th class="text-right px-3 py-2">Weight</th>
-                  <th class="text-right px-3 py-2">Change</th>
-                </tr>
-              </thead>
-              <tbody id="sector-body" class="divide-y divide-white/6"></tbody>
-            </table>
-          </div>
+        <div class="stat-card">
+            <span class="label">Holdings</span>
+            <span class="value">24</span>
         </div>
-      </div>
-
-      <!-- Right: main chart + small stats -->
-      <div class="space-y-4">
-        <div class="glass rounded-2xl p-4">
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <h3 class="font-semibold">Live Price</h3>
-              <p class="text-xs text-slate-400">Select a ticker to view the last month of price data.</p>
-            </div>
-            <div class="text-right">
-              <div id="live-price" class="text-lg font-bold">—</div>
-              <div id="live-change" class="text-xs text-slate-400">—</div>
-            </div>
-          </div>
-
-          <canvas id="mainChart" style="height:260px;width:100%;"></canvas>
-
-          <div class="mt-3 flex items-center justify-between text-xs text-slate-400">
-            <span id="chart-range">1M · Daily</span>
-            <span id="last-updated" class="mono">Last update: —</span>
-          </div>
+        <div class="stat-card">
+            <span class="label">Core</span>
+            <span class="value">28.3%</span>
         </div>
-
-        <div class="glass rounded-2xl p-4 text-sm">
-          <div class="flex items-center justify-between mb-2">
-            <h4 class="font-semibold">Quick Stats</h4>
-            <div class="text-slate-400">Interactive</div>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-white/3 rounded-md p-3">
-              <div class="text-xs text-slate-300">Portfolio Value (est)</div>
-              <div class="font-bold mt-1">$23,450</div>
-            </div>
-            <div class="bg-white/3 rounded-md p-3">
-              <div class="text-xs text-slate-300">Monthly Contribution</div>
-              <div class="font-bold mt-1">$2,000</div>
-            </div>
-            <div class="bg-white/3 rounded-md p-3">
-              <div class="text-xs text-slate-300">Holdings</div>
-              <div id="quick-holdings" class="font-bold mt-1">—</div>
-            </div>
-            <div class="bg-white/3 rounded-md p-3">
-              <div class="text-xs text-slate-300">Live Status</div>
-              <div id="quick-status" class="font-bold mt-1">Connecting</div>
-            </div>
-          </div>
+        <div class="stat-card">
+            <span class="label">Income</span>
+            <span class="value">$500</span>
         </div>
-      </div>
     </div>
 
-    <footer class="mt-6 text-xs text-slate-400">Dashboard for personal research · Market data may be delayed or unavailable.</footer>
-  </div>
+    <!-- Allocation -->
+    <h3 class="section-title">Monthly allocation</h3>
+    <div class="allocation-grid">
+        <div class="alloc-card stocks">
+            <h4>Stocks</h4>
+            <div class="alloc-details">
+                <span class="alloc-pct">22%</span>
+                <span class="alloc-amt">$435 / month</span>
+            </div>
+        </div>
+        <div class="alloc-card long-term">
+            <h4>Long-term</h4>
+            <div class="alloc-details">
+                <span class="alloc-pct">28%</span>
+                <span class="alloc-amt">$565 / month</span>
+            </div>
+        </div>
+        <div class="alloc-card income">
+            <h4>Income</h4>
+            <div class="alloc-details">
+                <span class="alloc-pct">25%</span>
+                <span class="alloc-amt">$500 / month</span>
+            </div>
+        </div>
+        <div class="alloc-card risk">
+            <h4>Risk / thematic</h4>
+            <div class="alloc-details">
+                <span class="alloc-pct">25%</span>
+                <span class="alloc-amt">$500 / month</span>
+            </div>
+        </div>
+    </div>
 
-  <script>
-    // --- Data (kept similar to original but trimmed) ---
-    const portfolioData = [
-      { ticker: "MSFT", desc: "Cloud + AI • Azure", amount: 60 },
-      { ticker: "AVGO", desc: "Chips + Infra", amount: 60 },
-      { ticker: "AAPL", desc: "Consumer + Services", amount: 50 },
-      { ticker: "GOOGL", desc: "Search + Cloud + AI", amount: 50 },
-      { ticker: "SPYM", desc: "S&P 500", amount: 200 },
-      { ticker: "VXUS", desc: "Intl", amount: 100 },
-      { ticker: "SPMO", desc: "Momentum factor", amount: 75 },
-      { ticker: "SPYI", desc: "Covered call SPY", amount: 250 }
-    ];
+    <!-- Holdings Table -->
+    <div class="table-container">
+        <div class="table-header">
+            <h3 class="section-title" style="margin-bottom:0;">Portfolio Holdings <span style="color:var(--text-muted); font-weight:normal; font-size:0.85rem;">(24 holdings)</span></h3>
+            <span style="font-size: 0.8rem; color: var(--text-muted);" id="data-status">Connecting to market data…</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Role</th>
+                        <th>Monthly</th>
+                        <th>Price</th>
+                        <th>Day</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody id="holdings-body">
+                    <tr>
+                        <td colspan="6" class="empty-state">Awaiting live data feed...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    const sectorData = [
-      { ticker: "XLE", name: "Energy", weight: "18.7%", phase: "Extended", action: "Trim", change: "+2.1%" },
-      { ticker: "XLI", name: "Industrials", weight: "17.9%", phase: "Extended", action: "Take profits", change: "+4.8%" },
-      { ticker: "XLV", name: "Health Care", weight: "3.9%", phase: "Early Recovery", action: "Accumulate", change: "+3.6%" }
-    ];
+    <!-- RRG Signal Framework -->
+    <h3 class="section-title">Relative rotation <span style="color:var(--text-muted); font-weight:normal; font-size:0.85rem;">RRG signal framework</span></h3>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Use the phase as a decision aid, not as a standalone trading signal. (13 sectors tracked)</p>
+    
+    <div class="rrg-grid">
+        <div class="rrg-card extended">
+            <h4>Extended</h4>
+            <p>Trim / take profits</p>
+        </div>
+        <div class="rrg-card neutral">
+            <h4>Neutral</h4>
+            <p>Hold / monitor</p>
+        </div>
+        <div class="rrg-card recovery">
+            <h4>Early recovery</h4>
+            <p>Accumulate selectively</p>
+        </div>
+        <div class="rrg-card dip">
+            <h4>Buy-the-dip</h4>
+            <p>Scale in carefully</p>
+        </div>
+    </div>
 
-    // --- Helpers ---
-    function fmtCurrency(v){ if(v==null||isNaN(v)) return '—'; return '$' + Number(v).toFixed(2); }
-    function fmtChange(v){ if(v==null||isNaN(v)) return '—'; return (v>=0?'+':'') + Number(v).toFixed(2); }
+    <!-- Market Snapshot -->
+    <h3 class="section-title">Market snapshot</h3>
+    <div class="snapshot-grid">
+        <div class="snapshot-card">
+            <h5>Technology</h5>
+            <p>Strong YTD / weakening</p>
+        </div>
+        <div class="snapshot-card">
+            <h5>Industrials</h5>
+            <p>Strong / extended</p>
+        </div>
+        <div class="snapshot-card">
+            <h5>Financials</h5>
+            <p>Leadership shift</p>
+        </div>
+        <div class="snapshot-card">
+            <h5>Health Care</h5>
+            <p>Early recovery</p>
+        </div>
+        <div class="snapshot-card">
+            <h5>Energy</h5>
+            <p>Positive momentum</p>
+        </div>
+    </div>
 
-    // --- DOM rendering ---
-    function renderPortfolioRows(data){
-      const tb = document.getElementById('portfolio-body'); tb.innerHTML='';
-      document.getElementById('holding-count').textContent = data.length;
-      data.forEach(item=>{
-        const tr = document.createElement('tr');
-        tr.className = 'hover-lift cursor-pointer';
-        tr.innerHTML = `
-          <td class="px-3 py-3 font-semibold"><a class="text-sky-300" href="https://finance.yahoo.com/quote/${item.ticker}" target="_blank" rel="noopener">${item.ticker}</a></td>
-          <td class="px-3 py-3 text-slate-300 text-xs">${item.desc}</td>
-          <td class="px-3 py-3 text-right">${item.amount}</td>
-          <td class="px-3 py-3 text-right" id="price-${item.ticker}">—</td>
-          <td class="px-3 py-3 text-right" id="change-${item.ticker}">—</td>
-          <td class="px-3 py-3 text-right" id="changePct-${item.ticker}">—</td>
-          <td class="px-3 py-3 text-right"><canvas id="spark-${item.ticker}" class="sparkline"></canvas></td>
-        `;
-        tr.addEventListener('click', ()=> loadMainChart(item.ticker));
-        tb.appendChild(tr);
-      });
+    <!-- Sector Rotation Map -->
+    <div class="table-container">
+        <div class="table-header">
+            <h3 class="section-title" style="margin-bottom:0;">Sector rotation map</h3>
+        </div>
+        <p style="padding: 0 20px 15px; font-size: 0.85rem; color: var(--text-muted);">Current phase, action and relative change from the supplied research snapshot.</p>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sector</th>
+                        <th>Ticker</th>
+                        <th>Phase</th>
+                        <th>Action</th>
+                        <th>Weight</th>
+                        <th>Change</th>
+                    </tr>
+                </thead>
+                <tbody id="rotation-body">
+                    <tr>
+                        <td colspan="6" class="empty-state">Awaiting live data feed...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Dashboard for personal research · Market data may be delayed or unavailable.</p>
+        <p>Last update: <span id="last-update">—</span></p>
+    </footer>
+</div>
+
+<script>
+    // Simulate live data fetching
+    const refreshBtn = document.getElementById('refresh-btn');
+    const dataStatus = document.getElementById('data-status');
+    const lastUpdate = document.getElementById('last-update');
+    const holdingsBody = document.getElementById('holdings-body');
+    const rotationBody = document.getElementById('rotation-body');
+
+    function updateTimestamp() {
+        const now = new Date();
+        const options = { 
+            year: 'numeric', month: 'short', day: 'numeric', 
+            hour: '2-digit', minute: '2-digit', second: '2-digit' 
+        };
+        lastUpdate.textContent = now.toLocaleDateString('en-US', options);
     }
 
-    function renderSectors(){
-      const tb = document.getElementById('sector-body'); tb.innerHTML='';
-      sectorData.forEach(s=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="px-3 py-3 font-semibold">${s.name}</td>
-          <td class="px-3 py-3"><a class="text-sky-300" href="https://finance.yahoo.com/quote/${s.ticker}" target="_blank">${s.ticker}</a></td>
-          <td class="px-3 py-3"><span class="px-2 py-1 rounded-md bg-white/3 text-xs">${s.phase}</span></td>
-          <td class="px-3 py-3">${s.action}</td>
-          <td class="px-3 py-3 text-right">${s.weight}</td>
-          <td class="px-3 py-3 text-right">${s.change}</td>
-        `;
-        tb.appendChild(tr);
-      });
-    }
+    refreshBtn.addEventListener('click', () => {
+        // Show loading state
+        dataStatus.textContent = 'Fetching latest data...';
+        dataStatus.style.color = 'var(--accent-yellow)';
+        refreshBtn.disabled = true;
+        refreshBtn.style.opacity = '0.6';
 
-    // --- Market data fetching with Yahoo endpoints + proxy fallbacks ---
-    const proxies = [
-      url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-      url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-      url => `https://corsproxy.org/?${encodeURIComponent(url)}`
-    ];
-
-    async function fetchQuotes(tickers){
-      const symbols = tickers.join(',');
-      const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(symbols)}`;
-      for(const p of proxies){
-        try{
-          const res = await fetch(p(url), { cache: 'no-store' });
-          if(!res.ok) continue;
-          const json = await res.json();
-          if(json?.quoteResponse?.result) return json.quoteResponse.result;
-        }catch(e){ console.warn('proxy failed', e); }
-      }
-      return null;
-    }
-
-    async function fetchHistory(symbol, range='1mo', interval='1d'){
-      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=${range}&interval=${interval}`;
-      for(const p of proxies){
-        try{
-          const res = await fetch(p(url), { cache: 'no-store' });
-          if(!res.ok) continue;
-          const json = await res.json();
-          if(json?.chart?.result?.[0]) return json.chart.result[0];
-        }catch(e){ console.warn('history proxy failed', e); }
-      }
-      return null;
-    }
-
-    // --- Charts setup ---
-    let mainChart = null;
-    function makeMainChart(ctx){
-      const cfg = {
-        type: 'line',
-        data: { datasets: [{ label: 'Price', data: [], borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.08)', tension:0.18, pointRadius:0, fill:true }]},
-        options: {
-          responsive:true, maintainAspectRatio:false,
-          scales: { x: { type: 'time', time: { unit: 'day' }, ticks: { color: '#9aa8bf' } }, y: { ticks:{ color:'#9aa8bf' } } },
-          plugins:{ legend:{ display:false }, tooltip: { mode: 'index', intersect:false } }
-        }
-      };
-      if(mainChart) mainChart.destroy();
-      mainChart = new Chart(ctx, cfg);
-    }
-
-    async function loadMainChart(symbol){
-      document.getElementById('live-price').textContent = 'Loading…';
-      const data = await fetchHistory(symbol, '1mo', '1d');
-      if(!data){ document.getElementById('live-price').textContent = 'Unavailable'; return; }
-      const timestamps = data.timestamp.map(t=>t*1000);
-      const closes = data.indicators?.quote?.[0]?.close || [];
-      const points = timestamps.map((ts,i)=> ({ x: ts, y: closes[i] }));
-
-      mainChart.data.datasets[0].data = points;
-      mainChart.update();
-
-      // live price & change
-      const last = closes[closes.length-1];
-      const prev = closes[closes.length-2] || last;
-      const change = last - prev;
-      const changePct = prev? (change/prev)*100 : 0;
-      document.getElementById('live-price').textContent = fmtCurrency(last);
-      const chEl = document.getElementById('live-change');
-      chEl.textContent = `${change>=0?'+':''}${change.toFixed(2)} (${changePct>=0?'+':''}${changePct.toFixed(2)}%)`;
-
-      document.getElementById('last-updated').textContent = 'Last update: ' + new Date().toLocaleTimeString();
-    }
-
-    // --- Render sparklines for portfolio rows ---
-    async function renderSparklines(tickers){
-      for(const t of tickers){
-        const hist = await fetchHistory(t, '1mo', '1d');
-        const canvas = document.getElementById('spark-'+t);
-        if(!canvas || !hist) continue;
-        const ctx = canvas.getContext('2d');
-        const ts = hist.timestamp.map(x=>x*1000);
-        const closes = hist.indicators?.quote?.[0]?.close || [];
-        // Draw simple sparkline using Chart.js
-        new Chart(ctx, { type:'line', data:{ labels: ts, datasets:[{ data: closes, borderColor: '#60a5fa', backgroundColor:'rgba(96,165,250,0.06)', radius:0, fill:true, tension:0.25 }] }, options:{ responsive:true, maintainAspectRatio:false, scales:{ x:{ display:false }, y:{ display:false } }, plugins:{ legend:{display:false}, tooltip:{enabled:false} } } });
-      }
-    }
-
-    // --- Main fetch + update loop ---
-    async function refreshAll(){
-      document.getElementById('market-text').textContent = 'Fetching live quotes…';
-      const tickers = portfolioData.map(p=>p.ticker);
-      const quotes = await fetchQuotes(tickers);
-      if(quotes){
-        document.getElementById('market-text').textContent = 'Live market data';
-        document.getElementById('quick-status').textContent = 'Connected';
-        // map by symbol
-        const map = {};
-        quotes.forEach(q=> map[q.symbol]=q);
-        for(const p of portfolioData){
-          const q = map[p.ticker];
-          const priceEl = document.getElementById('price-'+p.ticker);
-          const changeEl = document.getElementById('change-'+p.ticker);
-          const pctEl = document.getElementById('changePct-'+p.ticker);
-          if(q){
-            priceEl.textContent = fmtCurrency(q.regularMarketPrice);
-            changeEl.textContent = fmtChange(q.regularMarketChange);
-            pctEl.textContent = (q.regularMarketChangePercent!=null)? (q.regularMarketChangePercent.toFixed(2)+'%') : '—';
-          } else {
-            priceEl.textContent = '—'; changeEl.textContent='—'; pctEl.textContent='—';
-          }
-        }
-        document.getElementById('quick-holdings').textContent = portfolioData.length;
-      } else {
-        document.getElementById('market-text').textContent = 'Market API unavailable';
-        document.getElementById('quick-status').textContent = 'Disconnected';
-      }
-    }
-
-    // --- UI hooks ---
-    document.getElementById('refresh-btn').addEventListener('click', ()=>{ refreshAll(); renderSparklines(portfolioData.map(p=>p.ticker)); });
-    document.getElementById('search').addEventListener('input', (e)=>{
-      const q = e.target.value.trim().toLowerCase();
-      document.querySelectorAll('#portfolio-body tr').forEach(r=> r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none');
+        // Simulate network delay
+        setTimeout(() => {
+            dataStatus.textContent = 'Data endpoint unavailable (Demo Mode)';
+            dataStatus.style.color = 'var(--text-muted)';
+            refreshBtn.disabled = false;
+            refreshBtn.style.opacity = '1';
+            updateTimestamp();
+            
+            // In a real app, you would fetch data here and populate the tables
+            // For now, we just update the timestamp to show the refresh worked
+        }, 1500);
     });
 
-    // theme toggle (light/dark switch for experimentation)
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('click', ()=>{
-      const mode = themeToggle.getAttribute('data-mode');
-      if(mode === 'dark'){
-        document.documentElement.style.background = 'linear-gradient(180deg,#f8fafc,#eef2ff)';
-        document.body.style.color = '#0f1724';
-        themeToggle.setAttribute('data-mode','light');
-        document.querySelectorAll('.glass').forEach(el=> el.style.backdropFilter='none');
-      } else {
-        document.documentElement.style.background = '';
-        document.body.style.color = '';
-        themeToggle.setAttribute('data-mode','dark');
-        document.querySelectorAll('.glass').forEach(el=> el.style.backdropFilter='blur(10px)');
-      }
-    });
+    // Initial timestamp
+    updateTimestamp();
+</script>
 
-    // --- Init ---
-    document.addEventListener('DOMContentLoaded', async ()=>{
-      renderPortfolioRows(portfolioData);
-      renderSectors();
-      const ctx = document.getElementById('mainChart').getContext('2d');
-      makeMainChart(ctx);
-
-      // initial refresh + sparklines (sparklines fetch many requests; be mindful of rate limits)
-      await refreshAll();
-      // load default chart
-      loadMainChart(portfolioData[0].ticker);
-      // render sparklines in background (non-blocking)
-      renderSparklines(portfolioData.map(p=>p.ticker));
-    });
-  </script>
 </body>
 </html>
