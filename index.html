@@ -5,606 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Command Center | Alam ShahJade</title>
     <style>
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #1e293b;
-            --border-color: #334155;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-yellow: #f59e0b;
-            --accent-purple: #8b5cf6;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .header-left h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .badge {
-            font-size: 0.7rem;
-            padding: 3px 8px;
-            border-radius: 999px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge.live {
-            background-color: rgba(16, 185, 129, 0.15);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-
-        .header-right {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-blue);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #2563eb;
-        }
-
-        .btn-secondary {
-            background-color: var(--bg-secondary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: #334155;
-        }
-
-        /* Intro & Stats */
-        .intro {
-            margin-bottom: 30px;
-        }
-
-        .intro h2 {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-
-        .intro p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            max-width: 800px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .stat-card .label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .stat-card .value {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        /* Allocation Section */
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .allocation-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-
-        .alloc-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .alloc-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-        }
-
-        .alloc-card.stocks::before { background: var(--accent-blue); }
-        .alloc-card.long-term::before { background: var(--accent-green); }
-        .alloc-card.income::before { background: var(--accent-yellow); }
-        .alloc-card.risk::before { background: var(--accent-purple); }
-
-        .alloc-card h4 {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-        }
-
-        .alloc-card .alloc-details {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-
-        .alloc-card .alloc-pct {
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-
-        .alloc-card .alloc-amt {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* Tables */
-        .table-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 40px;
-        }
-
-        .table-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-        }
-
-        th, td {
-            padding: 12px 20px;
-            text-align: left;
-            font-size: 0.9rem;
-        }
-
-        th {
-            background: rgba(0,0,0,0.2);
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
-        }
-
-        tr:not(:last-child) {
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        tbody tr:hover {
-            background: rgba(255,255,255,0.02);
-        }
-
-        .empty-state {
-            padding: 40px 20px;
-            text-align: center;
-            color: var(--text-muted);
-            font-style: italic;
-        }
-
-        /* RRG Framework */
-        .rrg-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-
-        .rrg-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .rrg-card h4 {
-            font-size: 1rem;
-            margin-bottom: 8px;
-        }
-
-        .rrg-card p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .rrg-card.extended { border-top: 3px solid var(--accent-red); }
-        .rrg-card.neutral { border-top: 3px solid var(--text-muted); }
-        .rrg-card.recovery { border-top: 3px solid var(--accent-blue); }
-        .rrg-card.dip { border-top: 3px solid var(--accent-green); }
-
-        /* Market Snapshot */
-        .snapshot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-
-        .snapshot-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 15px 20px;
-        }
-
-        .snapshot-card h5 {
-            font-size: 0.95rem;
-            margin-bottom: 5px;
-            color: var(--text-primary);
-        }
-
-        .snapshot-card p {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 30px 0;
-            border-top: 1px solid var(--border-color);
-            margin-top: 40px;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-            }
-            .header-right {
-                width: 100%;
-                justify-content: flex-start;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        :root { --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #f8fafc; --muted: #94a3b8; --blue: #3b82f6; --green: #10b981; --red: #ef4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; flex-wrap: wrap; gap: 15px;}
+        h1 { font-size: 1.5rem; }
+        .badge { background: rgba(16,185,129,0.15); color: var(--green); padding: 2px 8px; border-radius: 99px; font-size: 0.7rem; font-weight: bold; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 8px; text-align: center; }
+        .stat span { display: block; font-size: 0.8rem; color: var(--muted); text-transform: uppercase; }
+        .stat strong { font-size: 1.5rem; display: block; margin-top: 5px; }
+        .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow-x: auto; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { background: rgba(0,0,0,0.2); color: var(--muted); font-size: 0.75rem; text-transform: uppercase; }
+        .positive { color: var(--green); }
+        .negative { color: var(--red); }
+        .footer { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 40px; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <!-- Header -->
     <header class="header">
-        <div class="header-left">
-            <h1>
-                Portfolio Command Center
-                <span class="badge live">Live</span>
-            </h1>
-            <p class="subtitle">Alam ShahJade · Long-term portfolio + sector rotation · <span id="current-date">Aug 26, 2026</span></p>
+        <div>
+            <h1>Portfolio Command Center <span class="badge">LIVE</span></h1>
+            <p style="color: var(--muted); font-size: 0.9rem;">Alam ShahJade · Auto-updated via GitHub Actions</p>
         </div>
-        <div class="header-right">
-            <button class="btn btn-secondary" id="refresh-btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-                Refresh
-            </button>
-            <a href="https://github.com/shahjade-alam/2000-portfolio-live" target="_blank" class="btn btn-primary">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                GitHub
-            </a>
-        </div>
+        <p style="font-size: 0.8rem; color: var(--muted);">Last updated: <span id="last-update">Loading...</span></p>
     </header>
 
-    <!-- Intro -->
-    <section class="intro">
-        <h2>Investment dashboard</h2>
-        <p>A $2,000/month diversified engine. Core index exposure, quality growth, international diversification, income generation and targeted innovation — organized for long-term compounding.</p>
-    </section>
-
-    <!-- Stats -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <span class="label">Monthly</span>
-            <span class="value">$2,000</span>
-        </div>
-        <div class="stat-card">
-            <span class="label">Holdings</span>
-            <span class="value">24</span>
-        </div>
-        <div class="stat-card">
-            <span class="label">Core</span>
-            <span class="value">28.3%</span>
-        </div>
-        <div class="stat-card">
-            <span class="label">Income</span>
-            <span class="value">$500</span>
-        </div>
+    <div class="stats">
+        <div class="stat"><span>Monthly Invest</span><strong>$1,500</strong></div>
+        <div class="stat"><span>Cash Savings</span><strong>$1,500</strong></div>
+        <div class="stat"><span>Holdings</span><strong>20 Tickers</strong></div>
+        <div class="stat"><span>High Income Yield</span><strong>~$78/mo</strong></div>
     </div>
 
-    <!-- Allocation -->
-    <h3 class="section-title">Monthly allocation</h3>
-    <div class="allocation-grid">
-        <div class="alloc-card stocks">
-            <h4>Stocks</h4>
-            <div class="alloc-details">
-                <span class="alloc-pct">22%</span>
-                <span class="alloc-amt">$435 / month</span>
-            </div>
-        </div>
-        <div class="alloc-card long-term">
-            <h4>Long-term</h4>
-            <div class="alloc-details">
-                <span class="alloc-pct">28%</span>
-                <span class="alloc-amt">$565 / month</span>
-            </div>
-        </div>
-        <div class="alloc-card income">
-            <h4>Income</h4>
-            <div class="alloc-details">
-                <span class="alloc-pct">25%</span>
-                <span class="alloc-amt">$500 / month</span>
-            </div>
-        </div>
-        <div class="alloc-card risk">
-            <h4>Risk / thematic</h4>
-            <div class="alloc-details">
-                <span class="alloc-pct">25%</span>
-                <span class="alloc-amt">$500 / month</span>
-            </div>
-        </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Category / Role</th>
+                    <th>Monthly ($)</th>
+                    <th>Current Price</th>
+                    <th>Day Change</th>
+                </tr>
+            </thead>
+            <tbody id="holdings-body">
+                <tr><td colspan="5" style="text-align:center; padding: 20px;">Loading portfolio data...</td></tr>
+            </tbody>
+        </table>
     </div>
 
-    <!-- Holdings Table -->
-    <div class="table-container">
-        <div class="table-header">
-            <h3 class="section-title" style="margin-bottom:0;">Portfolio Holdings <span style="color:var(--text-muted); font-weight:normal; font-size:0.85rem;">(24 holdings)</span></h3>
-            <span style="font-size: 0.8rem; color: var(--text-muted);" id="data-status">Connecting to market data…</span>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ticker</th>
-                        <th>Role</th>
-                        <th>Monthly</th>
-                        <th>Price</th>
-                        <th>Day</th>
-                        <th>%</th>
-                    </tr>
-                </thead>
-                <tbody id="holdings-body">
-                    <tr>
-                        <td colspan="6" class="empty-state">Awaiting live data feed...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- RRG Signal Framework -->
-    <h3 class="section-title">Relative rotation <span style="color:var(--text-muted); font-weight:normal; font-size:0.85rem;">RRG signal framework</span></h3>
-    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Use the phase as a decision aid, not as a standalone trading signal. (13 sectors tracked)</p>
-    
-    <div class="rrg-grid">
-        <div class="rrg-card extended">
-            <h4>Extended</h4>
-            <p>Trim / take profits</p>
-        </div>
-        <div class="rrg-card neutral">
-            <h4>Neutral</h4>
-            <p>Hold / monitor</p>
-        </div>
-        <div class="rrg-card recovery">
-            <h4>Early recovery</h4>
-            <p>Accumulate selectively</p>
-        </div>
-        <div class="rrg-card dip">
-            <h4>Buy-the-dip</h4>
-            <p>Scale in carefully</p>
-        </div>
-    </div>
-
-    <!-- Market Snapshot -->
-    <h3 class="section-title">Market snapshot</h3>
-    <div class="snapshot-grid">
-        <div class="snapshot-card">
-            <h5>Technology</h5>
-            <p>Strong YTD / weakening</p>
-        </div>
-        <div class="snapshot-card">
-            <h5>Industrials</h5>
-            <p>Strong / extended</p>
-        </div>
-        <div class="snapshot-card">
-            <h5>Financials</h5>
-            <p>Leadership shift</p>
-        </div>
-        <div class="snapshot-card">
-            <h5>Health Care</h5>
-            <p>Early recovery</p>
-        </div>
-        <div class="snapshot-card">
-            <h5>Energy</h5>
-            <p>Positive momentum</p>
-        </div>
-    </div>
-
-    <!-- Sector Rotation Map -->
-    <div class="table-container">
-        <div class="table-header">
-            <h3 class="section-title" style="margin-bottom:0;">Sector rotation map</h3>
-        </div>
-        <p style="padding: 0 20px 15px; font-size: 0.85rem; color: var(--text-muted);">Current phase, action and relative change from the supplied research snapshot.</p>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sector</th>
-                        <th>Ticker</th>
-                        <th>Phase</th>
-                        <th>Action</th>
-                        <th>Weight</th>
-                        <th>Change</th>
-                    </tr>
-                </thead>
-                <tbody id="rotation-body">
-                    <tr>
-                        <td colspan="6" class="empty-state">Awaiting live data feed...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Footer -->
     <footer class="footer">
-        <p>Dashboard for personal research · Market data may be delayed or unavailable.</p>
-        <p>Last update: <span id="last-update">—</span></p>
+        <p>Dashboard for personal research · Prices delayed by market close.</p>
     </footer>
 </div>
 
 <script>
-    // Simulate live data fetching
-    const refreshBtn = document.getElementById('refresh-btn');
-    const dataStatus = document.getElementById('data-status');
-    const lastUpdate = document.getElementById('last-update');
-    const holdingsBody = document.getElementById('holdings-body');
-    const rotationBody = document.getElementById('rotation-body');
+    // 1. Base data extracted directly from your Excel sheet
+    const baseHoldings = [
+        { ticker: 'MSFT', role: 'Quality Moat', monthly: 60 },
+        { ticker: 'AVGO', role: 'Quality Moat', monthly: 60 },
+        { ticker: 'V', role: 'Quality Moat', monthly: 40 },
+        { ticker: 'MA', role: 'Quality Moat', monthly: 40 },
+        { ticker: 'SPGI', role: 'Quality Moat', monthly: 35 },
+        { ticker: 'UNH', role: 'Quality Moat', monthly: 35 },
+        { ticker: 'COST', role: 'Quality Moat', monthly: 30 },
+        { ticker: 'AAPL', role: 'Quality Moat', monthly: 50 },
+        { ticker: 'GOOGL', role: 'Quality Moat', monthly: 50 },
+        { ticker: 'JNJ', role: 'Dividend Growth', monthly: 50 },
+        { ticker: 'VIG', role: 'Dividend Growth', monthly: 50 },
+        { ticker: 'GLDM', role: 'Gold', monthly: 50 },
+        { ticker: 'SPMO', role: 'Momentum', monthly: 75 },
+        { ticker: 'SPLG', role: 'Large Cap', monthly: 200 },
+        { ticker: 'VXUS', role: 'International', monthly: 100 },
+        { ticker: 'AVUV', role: 'Small Value', monthly: 75 },
+        { ticker: 'SPYI', role: 'High Income', monthly: 50 },
+        { ticker: 'QQQI', role: 'High Income', monthly: 75 },
+        { ticker: 'IWMI', role: 'High Income', monthly: 100 },
+        { ticker: 'TSPY', role: 'High Income', monthly: 150 },
+        { ticker: 'TMGN', role: 'High Income', monthly: 125 }
+    ];
 
-    function updateTimestamp() {
-        const now = new Date();
-        const options = { 
-            year: 'numeric', month: 'short', day: 'numeric', 
-            hour: '2-digit', minute: '2-digit', second: '2-digit' 
-        };
-        lastUpdate.textContent = now.toLocaleDateString('en-US', options);
+    // 2. Render function
+    function renderTable(data) {
+        const tbody = document.getElementById('holdings-body');
+        tbody.innerHTML = '';
+        
+        data.forEach(item => {
+            const price = item.price ? `$${item.price.toFixed(2)}` : 'N/A';
+            let changeHtml = 'N/A';
+            let changeClass = '';
+            
+            if (item.change !== null && item.change !== undefined) {
+                const changeVal = item.change.toFixed(2);
+                changeClass = item.change >= 0 ? 'positive' : 'negative';
+                const arrow = item.change >= 0 ? '▲' : '▼';
+                changeHtml = `<span class="${changeClass}">${arrow} ${Math.abs(changeVal)}%</span>`;
+            }
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${item.ticker}</strong></td>
+                    <td>${item.role}</td>
+                    <td>$${item.monthly}</td>
+                    <td>${price}</td>
+                    <td>${changeHtml}</td>
+                </tr>
+            `;
+        });
     }
 
-    refreshBtn.addEventListener('click', () => {
-        // Show loading state
-        dataStatus.textContent = 'Fetching latest data...';
-        dataStatus.style.color = 'var(--accent-yellow)';
-        refreshBtn.disabled = true;
-        refreshBtn.style.opacity = '0.6';
+    // 3. Fetch live data generated by GitHub Actions
+    async function init() {
+        // Render base data first so table isn't empty
+        renderTable(baseHoldings.map(h => ({...h, price: null, change: null})));
 
-        // Simulate network delay
-        setTimeout(() => {
-            dataStatus.textContent = 'Data endpoint unavailable (Demo Mode)';
-            dataStatus.style.color = 'var(--text-muted)';
-            refreshBtn.disabled = false;
-            refreshBtn.style.opacity = '1';
-            updateTimestamp();
+        try {
+            // Fetch the auto-generated data.json (cache buster added)
+            const res = await fetch('data.json?t=' + new Date().getTime());
+            if (!res.ok) throw new Error('Network response was not ok');
+            const liveData = await res.json();
             
-            // In a real app, you would fetch data here and populate the tables
-            // For now, we just update the timestamp to show the refresh worked
-        }, 1500);
-    });
+            // Merge live prices with base data
+            const merged = baseHoldings.map(h => {
+                const live = liveData[h.ticker];
+                return {
+                    ...h,
+                    price: live ? live.price : null,
+                    change: live ? live.change : null
+                };
+            });
 
-    // Initial timestamp
-    updateTimestamp();
+            renderTable(merged);
+            document.getElementById('last-update').textContent = liveData.last_updated || 'Just now';
+        } catch (err) {
+            console.log('Live data not available yet, showing static base data.', err);
+            document.getElementById('last-update').textContent = 'Awaiting first GitHub Action run...';
+        }
+    }
+
+    init();
 </script>
-
 </body>
 </html>
