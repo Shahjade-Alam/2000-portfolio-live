@@ -1,87 +1,87 @@
 {
   "MSFT": {
-    "price": 507.29,
-    "change": -1.22
+    "price": 500.35,
+    "change": -1.37
   },
   "AVGO": {
-    "price": 370.34,
-    "change": 0.42
+    "price": 369.12,
+    "change": -0.33
   },
   "V": {
-    "price": 379.37,
-    "change": -0.58
+    "price": 377.69,
+    "change": -0.44
   },
   "MA": {
-    "price": 589.31,
-    "change": -1.01
+    "price": 588.05,
+    "change": -0.21
   },
   "SPGI": {
-    "price": 435.84,
-    "change": -1.59
+    "price": 430.05,
+    "change": -1.33
   },
   "UNH": {
-    "price": 389.41,
-    "change": -0.9
+    "price": 396.26,
+    "change": 1.76
   },
   "COST": {
-    "price": 943.89,
-    "change": -0.17
+    "price": 946.91,
+    "change": 0.32
   },
   "AAPL": {
-    "price": 316.85,
-    "change": -0.89
+    "price": 326.05,
+    "change": 2.91
   },
   "GOOGL": {
-    "price": 339.35,
-    "change": -2.09
+    "price": 336.03,
+    "change": -0.98
   },
   "JNJ": {
-    "price": 265.85,
-    "change": -0.82
+    "price": 268.65,
+    "change": 1.05
   },
   "VIG": {
-    "price": 242.07,
-    "change": -0.41
+    "price": 241.55,
+    "change": -0.21
   },
   "GLDM": {
-    "price": 88.11,
-    "change": -0.1
+    "price": 86.36,
+    "change": -1.99
   },
   "SPMO": {
-    "price": 147.09,
-    "change": 0.21
+    "price": 146.35,
+    "change": -0.5
   },
   "SPLG": {
     "price": NaN,
     "change": NaN
   },
   "VXUS": {
-    "price": 87.32,
-    "change": -0.23
-  },
-  "AVUV": {
-    "price": 124.97,
-    "change": -0.48
-  },
-  "SPYI": {
-    "price": 53.65,
+    "price": 87.18,
     "change": -0.15
   },
+  "AVUV": {
+    "price": 124.5,
+    "change": -0.38
+  },
+  "SPYI": {
+    "price": 53.49,
+    "change": -0.29
+  },
   "QQQI": {
-    "price": 54.6,
-    "change": 0.13
+    "price": 54.22,
+    "change": -0.69
   },
   "IWMI": {
-    "price": 51.87,
-    "change": -0.47
+    "price": 51.58,
+    "change": -0.56
   },
   "TSPY": {
-    "price": 25.67,
-    "change": -0.35
+    "price": 25.26,
+    "change": -1.6
   },
   "TMGN": {
-    "price": 24.69,
-    "change": 0.12
+    "price": 24.51,
+    "change": -0.73
   },
-  "last_updated": "2026-09-01 11:15:49"
+  "last_updated": "2026-09-01 16:12:27"
 }
