@@ -9,23 +9,23 @@
   },
   "V": {
     "price": 379.37,
-    "change": NaN
+    "change": -0.58
   },
   "MA": {
     "price": 589.31,
-    "change": NaN
+    "change": -1.01
   },
   "SPGI": {
     "price": 435.84,
-    "change": NaN
+    "change": -1.59
   },
   "UNH": {
     "price": 389.41,
-    "change": NaN
+    "change": -0.9
   },
   "COST": {
     "price": 943.89,
-    "change": NaN
+    "change": -0.17
   },
   "AAPL": {
     "price": 316.85,
@@ -37,19 +37,19 @@
   },
   "JNJ": {
     "price": 265.85,
-    "change": NaN
+    "change": -0.82
   },
   "VIG": {
     "price": 242.07,
-    "change": NaN
+    "change": -0.41
   },
   "GLDM": {
     "price": 88.11,
-    "change": NaN
+    "change": -0.1
   },
   "SPMO": {
     "price": 147.09,
-    "change": NaN
+    "change": 0.21
   },
   "SPLG": {
     "price": NaN,
@@ -57,31 +57,31 @@
   },
   "VXUS": {
     "price": 87.32,
-    "change": NaN
+    "change": -0.23
   },
   "AVUV": {
     "price": 124.97,
-    "change": NaN
+    "change": -0.48
   },
   "SPYI": {
     "price": 53.65,
-    "change": NaN
+    "change": -0.15
   },
   "QQQI": {
     "price": 54.6,
-    "change": NaN
+    "change": 0.13
   },
   "IWMI": {
     "price": 51.87,
-    "change": NaN
+    "change": -0.47
   },
   "TSPY": {
     "price": 25.67,
-    "change": NaN
+    "change": -0.35
   },
   "TMGN": {
     "price": 24.69,
-    "change": NaN
+    "change": 0.12
   },
-  "last_updated": "2026-09-01 04:01:22"
+  "last_updated": "2026-09-01 11:15:49"
 }
