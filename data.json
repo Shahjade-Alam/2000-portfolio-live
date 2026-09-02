@@ -1,87 +1,87 @@
 {
   "MSFT": {
-    "price": 501.02,
-    "change": -1.24
+    "price": 494.95,
+    "change": -1.21
   },
   "AVGO": {
-    "price": 369.68,
-    "change": -0.18
+    "price": 370.39,
+    "change": 0.19
   },
   "V": {
-    "price": 372.67,
-    "change": -1.77
+    "price": 379.39,
+    "change": 1.8
   },
   "MA": {
-    "price": 581.1,
-    "change": -1.39
+    "price": 588.48,
+    "change": 1.27
   },
   "SPGI": {
-    "price": 440.21,
-    "change": 1.0
+    "price": 433.87,
+    "change": -1.44
   },
   "UNH": {
-    "price": 396.3,
-    "change": 1.77
+    "price": 400.7,
+    "change": 1.11
   },
   "COST": {
-    "price": 939.96,
-    "change": -0.42
+    "price": 932.88,
+    "change": -0.75
   },
   "AAPL": {
-    "price": 325.13,
-    "change": 2.61
+    "price": 326.06,
+    "change": 0.29
   },
   "GOOGL": {
-    "price": 335.02,
-    "change": -1.28
+    "price": 338.2,
+    "change": 0.95
   },
   "JNJ": {
-    "price": 271.19,
-    "change": 2.01
+    "price": 273.64,
+    "change": 0.9
   },
   "VIG": {
-    "price": 241.09,
-    "change": -0.4
+    "price": 241.8,
+    "change": 0.29
   },
   "GLDM": {
-    "price": 85.59,
-    "change": -2.86
+    "price": 86.45,
+    "change": 1.0
   },
   "SPMO": {
-    "price": 145.54,
-    "change": -1.05
+    "price": 146.29,
+    "change": 0.51
   },
   "SPLG": {
     "price": NaN,
     "change": NaN
   },
   "VXUS": {
-    "price": 86.71,
-    "change": -0.7
+    "price": 86.99,
+    "change": 0.32
   },
   "AVUV": {
-    "price": 124.1,
-    "change": -0.7
+    "price": 125.94,
+    "change": 1.49
   },
   "SPYI": {
-    "price": 53.36,
-    "change": -0.54
+    "price": 53.58,
+    "change": 0.42
   },
   "QQQI": {
-    "price": 53.99,
-    "change": -1.12
+    "price": 54.12,
+    "change": 0.23
   },
   "IWMI": {
-    "price": 51.34,
-    "change": -1.01
+    "price": 51.74,
+    "change": 0.77
   },
   "TSPY": {
-    "price": 25.16,
-    "change": -0.85
+    "price": 25.32,
+    "change": 0.64
   },
   "TMGN": {
-    "price": 24.42,
-    "change": -1.09
+    "price": 24.41,
+    "change": -0.04
   },
-  "last_updated": "2026-09-02 10:49:22"
+  "last_updated": "2026-09-02 16:08:03"
 }
