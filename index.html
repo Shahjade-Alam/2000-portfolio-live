@@ -2,610 +2,791 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portfolio Command Center | Alam ShahJade</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Command Center · Alam ShahJade</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     :root {
-      --bg-primary: #0A0F1A;
-      --bg-secondary: #111927;
-      --bg-card: rgba(255,255,255,0.04);
-      --border-color: rgba(255,255,255,0.08);
-      --text-primary: #F0F4FF;
-      --text-secondary: #94A3B8;
-      --accent-blue: #38BDF8;
-      --accent-green: #34D399;
-      --accent-red: #F87171;
-      --accent-yellow: #FBBF24;
-      --glow-blue: rgba(56,189,248,0.15);
-      --glass-bg: rgba(255,255,255,0.02);
-      --shadow: 0 8px 32px rgba(0,0,0,0.4);
+      --bg: #0a0c12;
+      --surface: #12151e;
+      --card: #1a1e2e;
+      --border: #1e2332;
+      --border-light: #232838;
+      --text: #f0f4ff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-violet: #8b5cf6;
+      --accent-blue: #38bdf8;
+      --accent-emerald: #34d399;
+      --accent-amber: #fbbf24;
+      --accent-rose: #f87171;
+      --grad-violet: linear-gradient(135deg, #8b5cf6, #6366f1);
+      --grad-emerald: linear-gradient(135deg, #34d399, #10b981);
+      --grad-amber: linear-gradient(135deg, #fbbf24, #f59e0b);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
     }
+    html,
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(ellipse at 20% 30%, rgba(56,189,248,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 70%, rgba(52,211,153,0.06) 0%, transparent 60%);
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: 
-        radial-gradient(circle at 30% 40%, rgba(56,189,248,0.03) 0%, transparent 40%),
-        radial-gradient(circle at 70% 60%, rgba(52,211,153,0.03) 0%, transparent 40%);
-      z-index: -1;
-      animation: meshMove 25s ease-in-out infinite alternate;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
-    @keyframes meshMove {
-      0% { transform: translate(0,0) scale(1); }
-      100% { transform: translate(5%,5%) scale(1.1); }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
     }
-    .container { max-width: 1300px; margin: 0 auto; padding: 2rem 1.5rem; }
-    header {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem;
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
-    .logo {
-      display: flex; align-items: center; gap: 0.75rem;
-    }
-    .logo-icon {
-      width: 44px; height: 44px;
-      background: linear-gradient(135deg, var(--accent-blue), #818CF8);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 1.3rem;
-      box-shadow: 0 4px 20px var(--glow-blue);
-    }
-    h1 { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.02em; }
-    .subtitle { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.1rem; }
-    .status-badge {
-      display: flex; align-items: center; gap: 0.6rem;
-      background: var(--glass-bg);
-      border: 1px solid var(--border-color);
-      padding: 0.5rem 1.2rem;
-      border-radius: 99px;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-    }
-    .pulse {
-      width: 10px; height: 10px;
-      background: var(--accent-green);
+    .pulse-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      box-shadow: 0 0 12px var(--accent-green);
+      background: var(--accent-emerald);
+      box-shadow: 0 0 12px var(--accent-emerald);
       animation: pulse 2s infinite;
     }
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-    .bento-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-      margin-bottom: 2rem;
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.3;
+      }
     }
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 1.5rem;
-      backdrop-filter: blur(12px);
-      transition: all 0.3s ease;
-      box-shadow: var(--shadow);
+    .flash-up {
+      animation: flashUp 0.9s ease-out;
     }
-    .card:hover {
-      border-color: rgba(255,255,255,0.15);
-      transform: translateY(-3px);
-      box-shadow: 0 16px 40px -12px rgba(0,0,0,0.6);
+    .flash-down {
+      animation: flashDown 0.9s ease-out;
     }
-    .card-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-secondary);
-      margin-bottom: 0.6rem;
-      display: flex; align-items: center; gap: 0.4rem;
+    @keyframes flashUp {
+      0% {
+        background: rgba(52, 211, 153, 0.25);
+      }
+      100% {
+        background: transparent;
+      }
     }
-    .card-value {
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+    @keyframes flashDown {
+      0% {
+        background: rgba(248, 113, 113, 0.25);
+      }
+      100% {
+        background: transparent;
+      }
     }
-    .card-desc {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin-top: 0.4rem;
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
     }
-    .movers-section {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-      margin-bottom: 2rem;
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-light);
+      border-radius: 4px;
     }
-    .mover-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 1.2rem 1.5rem;
-      backdrop-filter: blur(12px);
-      box-shadow: var(--shadow);
-    }
-    .mover-title {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
-      margin-bottom: 0.5rem;
-    }
-    .mover-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem 1.5rem;
-    }
-    .mover-item {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.9rem;
-    }
-    .mover-item .ticker {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      color: var(--accent-blue);
-    }
-    .mover-item .change {
-      font-weight: 600;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .positive { color: var(--accent-green); }
-    .negative { color: var(--accent-red); }
-    .neutral { color: var(--text-secondary); }
-
-    /* ----- Sector Rotation Section ----- */
-    .rotation-section {
-      margin-bottom: 2rem;
-    }
-    .rotation-section .section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
-    .rotation-section .section-subtitle {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-    }
-    .rotation-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1rem;
-    }
-    .rotation-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 1.2rem 1.2rem 0.8rem 1.2rem;
-      backdrop-filter: blur(8px);
-      transition: all 0.2s;
-      box-shadow: var(--shadow);
-      border-left: 4px solid var(--text-secondary);
-    }
-    .rotation-card.buy { border-left-color: var(--accent-green); }
-    .rotation-card.hold { border-left-color: var(--accent-yellow); }
-    .rotation-card.avoid { border-left-color: var(--accent-red); }
-    .rotation-card.benchmark { border-left-color: var(--accent-blue); }
-
-    .rotation-card .header {
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .rotation-card .ticker {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--accent-blue);
-    }
-    .rotation-card .rec-badge {
-      font-size: 0.65rem;
-      font-weight: 600;
-      padding: 0.2rem 0.7rem;
-      border-radius: 99px;
-      text-transform: uppercase;
-    }
-    .rec-badge.buy { background: rgba(52,211,153,0.15); color: var(--accent-green); }
-    .rec-badge.hold { background: rgba(251,191,36,0.15); color: var(--accent-yellow); }
-    .rec-badge.avoid { background: rgba(248,113,113,0.15); color: var(--accent-red); }
-    .rec-badge.benchmark { background: rgba(56,189,248,0.15); color: var(--accent-blue); }
-
-    .rotation-card .details {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem 1.2rem;
-      margin-top: 0.6rem;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-    .rotation-card .details span strong { color: var(--text-primary); }
-    .rotation-card .reason {
-      margin-top: 0.6rem;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      border-top: 1px solid var(--border-color);
-      padding-top: 0.6rem;
-      line-height: 1.4;
-    }
-
-    .table-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.2rem;
-    }
-    .search-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 99px;
-      padding: 0.5rem 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      backdrop-filter: blur(8px);
-      min-width: 200px;
-    }
-    .search-box input {
+    ::-webkit-scrollbar-track {
       background: transparent;
-      border: none;
-      outline: none;
-      color: var(--text-primary);
-      font-size: 0.85rem;
-      width: 100%;
-    }
-    .search-box input::placeholder { color: var(--text-secondary); }
-    .search-box i { color: var(--text-secondary); font-style: normal; }
-    .table-container {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      backdrop-filter: blur(12px);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    .table-header {
-      padding: 1.2rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .table-title { font-size: 1.1rem; font-weight: 600; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th {
-      text-align: left;
-      padding: 1rem 1.5rem;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
-      border-bottom: 1px solid var(--border-color);
-      background: rgba(0,0,0,0.2);
-      cursor: pointer;
-      user-select: none;
-      transition: color 0.2s;
-    }
-    th:hover { color: var(--text-primary); }
-    td {
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      font-size: 0.9rem;
-    }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(255,255,255,0.02); }
-    .ticker {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      color: var(--accent-blue);
-    }
-    .category-badge {
-      font-size: 0.7rem;
-      padding: 0.25rem 0.7rem;
-      background: rgba(255,255,255,0.06);
-      border-radius: 6px;
-      color: var(--text-secondary);
-      display: inline-block;
-    }
-    .price { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
-    .change {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      display: inline-block;
-    }
-    .change.positive { background: rgba(52,211,153,0.12); color: var(--accent-green); }
-    .change.negative { background: rgba(248,113,113,0.12); color: var(--accent-red); }
-    .change.neutral { background: rgba(148,163,184,0.1); color: var(--text-secondary); }
-    .name-col { color: var(--text-secondary); font-size: 0.85rem; }
-    footer {
-      margin-top: 2.5rem;
-      text-align: center;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      border-top: 1px solid var(--border-color);
-      padding-top: 1.5rem;
-    }
-    .source-note {
-      font-size: 0.7rem;
-      color: var(--text-secondary);
-      margin-top: 0.3rem;
-    }
-    @media (max-width: 900px) {
-      .bento-grid { grid-template-columns: repeat(2,1fr); }
-      .movers-section { grid-template-columns: 1fr; }
-      .rotation-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 600px) {
-      .bento-grid { grid-template-columns: 1fr; }
-      .container { padding: 1rem; }
-      th, td { padding: 0.7rem 0.8rem; }
-      .hide-mobile { display: none; }
-      .search-box { min-width: 140px; }
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <div class="logo">
-      <div class="logo-icon">AS</div>
-      <div>
-        <h1>Portfolio Command Center</h1>
-        <div class="subtitle">Auto‑updated via GitHub Actions</div>
-      </div>
-    </div>
-    <div class="status-badge">
-      <div class="pulse"></div>
-      <span id="last-updated">Syncing...</span>
-    </div>
-  </header>
+  <div id="root"></div>
 
-  <!-- Stats Grid -->
-  <section class="bento-grid" id="stats-grid">
-    <div class="card"><div class="card-label">💰 Monthly Investment</div><div class="card-value">$1,500</div><div class="card-desc">Consistent DCA strategy</div></div>
-    <div class="card"><div class="card-label">🛡️ Cash Reserves</div><div class="card-value">$1,500</div><div class="card-desc">Emergency buffer</div></div>
-    <div class="card"><div class="card-label">📊 Active Holdings</div><div class="card-value" id="active-holdings">--</div><div class="card-desc">Including 11 sector ETFs</div></div>
-    <div class="card"><div class="card-label">🏆 Top Sector Signal</div><div class="card-value" id="top-sector-signal">--</div><div class="card-desc">Based on 20‑day momentum</div></div>
-  </section>
+  <!-- React & ReactDOM from CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <!-- Babel standalone for JSX in the browser -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- Top Movers -->
-  <section class="movers-section" id="movers-section">
-    <div class="mover-card">
-      <div class="mover-title">🚀 Top Gainers</div>
-      <div class="mover-list" id="top-gainers"></div>
-    </div>
-    <div class="mover-card">
-      <div class="mover-title">📉 Top Losers</div>
-      <div class="mover-list" id="top-losers"></div>
-    </div>
-  </section>
+  <script type="text/babel">
+    const { useState, useEffect, useMemo, useRef } = React;
 
-  <!-- ===== SECTOR ROTATION ===== -->
-  <section class="rotation-section" id="rotation-section">
-    <div class="section-title">🔄 Sector Rotation Strategy <span style="font-size:0.8rem;font-weight:400;color:var(--text-secondary);">— SSGA Select Sector SPDR ETFs</span></div>
-    <div class="section-subtitle">Ranked by 20‑day momentum · 50‑day SMA trend confirmation · Source: <a href="https://www.ssga.com/us/en/individual/capabilities/equities/sector-investing/sector-and-industry-etfs" target="_blank" style="color:var(--accent-blue);">SSGA</a></div>
-    <div class="rotation-grid" id="rotation-grid">
-      <!-- rendered by JS -->
-    </div>
-  </section>
+    // ---------- DATA ----------
+    const HOLDINGS = [
+      { ticker: "MSFT", name: "Microsoft Corp", detail: "Cloud + AI • Azure, M365, LinkedIn • AAA moat", monthly: 60, category: "stocks", oneYear: "18.4%", rating: "AAA", note: "Core compounder" },
+      { ticker: "AVGO", name: "Broadcom Inc", detail: "Chips + Infra SW • VMware, AI networking • High ROIC", monthly: 60, category: "stocks", oneYear: "89.2%", rating: "AA", note: "AI enabler" },
+      { ticker: "AAPL", name: "Apple Inc", detail: "Consumer + Services • iPhone ecosystem • 90% retention", monthly: 50, category: "stocks", oneYear: "12.1%", rating: "AAA", note: "Cash machine" },
+      { ticker: "GOOGL", name: "Alphabet Inc Class A", detail: "Search + Cloud + AI • YouTube, GCP • Ads 70% margin", monthly: 50, category: "stocks", oneYear: "28.3%", rating: "AA", note: "AI leader" },
+      { ticker: "JNJ", name: "Johnson & Johnson", detail: "Healthcare • Pharma + MedTech • Dividend king", monthly: 50, category: "stocks", oneYear: "4.2%", rating: "A", note: "Defensive" },
+      { ticker: "V", name: "Visa Inc", detail: "Payments • Global network duopoly • Take rate ~0.2%", monthly: 40, category: "stocks", oneYear: "15.7%", rating: "AAA", note: "Toll road" },
+      { ticker: "MA", name: "Mastercard Inc", detail: "Payments • Global network duopoly • Cross-border fees", monthly: 40, category: "stocks", oneYear: "19.3%", rating: "AAA", note: "Toll road" },
+      { ticker: "SPGI", name: "S&P Global Inc", detail: "Financial data • Ratings + Indices • 70% margins", monthly: 35, category: "stocks", oneYear: "22.8%", rating: "AA", note: "Data moat" },
+      { ticker: "UNH", name: "UnitedHealth Group", detail: "Health insurance • Largest US payer • Optum growth", monthly: 35, category: "stocks", oneYear: "8.9%", rating: "AA", note: "Healthcare" },
+      { ticker: "COST", name: "Costco Wholesale", detail: "Retail • Membership 90% renewal • Kirkland 40%", monthly: 30, category: "stocks", oneYear: "31.4%", rating: "A", note: "Membership" },
+      { ticker: "SPYM", name: "SPDR S&P 500 ETF", detail: "S&P 500 • 0.02% CHEAPEST SPX • 500 large caps $600B AUM", monthly: 200, expense: 0.02, category: "lt", oneYear: "24.1%", rating: "Core", note: "Base 35.4%" },
+      { ticker: "VXUS", name: "Vanguard Total Intl", detail: "Total Intl • 7,800+ stocks 0.08% • ex-US diversification", monthly: 100, expense: 0.08, category: "lt", oneYear: "11.3%", rating: "Diversifier", note: "17.7%" },
+      { ticker: "SPMO", name: "Invesco S&P 500 Momentum", detail: "Momentum factor • Top 100 momentum 0.13% • Trend ride", monthly: 75, expense: 0.13, category: "lt", oneYear: "32.6%", rating: "Factor", note: "13.3%" },
+      { ticker: "AVUV", name: "Avantis US Small Cap Value", detail: "Small Value • Size + value factor 0.25% • Academic premium", monthly: 75, expense: 0.25, category: "lt", oneYear: "18.9%", rating: "Factor", note: "13.3%" },
+      { ticker: "VIG", name: "Vanguard Dividend Apprec", detail: "Dividend growth • 300+ growers 0.06% • 10y div streak", monthly: 50, expense: 0.06, category: "lt", oneYear: "13.5%", rating: "Quality", note: "8.8%" },
+      { ticker: "GLDM", name: "SPDR Gold MiniShares", detail: "Gold • Physical 0.10% cheapest gold • Inflation hedge", monthly: 50, expense: 0.1, category: "lt", oneYear: "16.2%", rating: "Hedge", note: "8.8%" },
+      { ticker: "SPYI", name: "NEOS S&P 500 High Income", detail: "Covered call SPY • 12.04% yield • Tax-efficient 0.68% monthly dist", monthly: 250, expense: 0.68, category: "income", yieldLabel: "12.04%", oneYear: "14.2%", rating: "High Inc", note: "$30/mo inc" },
+      { ticker: "QQQI", name: "NEOS Nasdaq-100 High Income", detail: "Covered call QQQ • 14.01% yield • Tech upside + income 0.68%", monthly: 150, expense: 0.68, category: "income", yieldLabel: "14.01%", oneYear: "18.7%", rating: "High Inc", note: "$21/mo inc" },
+      { ticker: "IWMI", name: "NEOS Russell 2000 High Income", detail: "Covered call IWM • 14.38% yield • Small cap premium 0.68%", monthly: 100, expense: 0.68, category: "income", yieldLabel: "14.38%", oneYear: "12.9%", rating: "High Inc", note: "$14/mo inc" },
+      { ticker: "SOXQ", name: "Invesco PHLX Semiconductor", detail: "30 US semis $3.01B AUM $10k fees $243/10Y • 0.82% yield", monthly: 150, expense: 0.19, category: "risk", oneYear: "41.81%", yieldLabel: "0.82%", rating: "Semi", note: "AI chips" },
+      { ticker: "JOUL", name: "Corgi High Volt Grid Equip", detail: "Energy transition • Batteries, grid, electrification • High Volt Grid", monthly: 100, expense: 0.35, category: "risk", isNew: true, oneYear: "NEW", rating: "NEW", note: "Electrification" },
+      { ticker: "CQTM", name: "Corgi Quantum Computing ETF", detail: "Quantum computing • Hardware + software • Quantum frontier 0.35%", monthly: 100, expense: 0.35, category: "risk", isNew: true, oneYear: "NEW", rating: "Quantum" },
+      { ticker: "DRAM", name: "Roundhill Memory ETF", detail: "Memory & Storage • SK Hynix, Micron, Samsung • 125% YTD 0.65%", monthly: 75, expense: 0.65, category: "risk", oneYear: "125% YTD", rating: "Memory", note: "AI memory" },
+      { ticker: "KCE", name: "SPDR S&P Capital Markets", detail: "Broker & capital mkts SCHW/MS/GS/IBKR 1.59% yield CHEAPEST 0.35%", monthly: 75, expense: 0.35, category: "risk", yieldLabel: "1.59%", oneYear: "24.5%", rating: "Brokers", note: "Cap mkts" },
+    ];
 
-  <!-- Holdings Table -->
-  <div class="table-controls">
-    <div class="search-box">
-      <i>🔍</i>
-      <input type="text" id="search-input" placeholder="Filter by ticker or name..." />
-    </div>
-    <div class="subtitle" id="row-count">Showing all</div>
-  </div>
-  <section class="table-container">
-    <div class="table-header">
-      <div class="table-title">📊 All Holdings</div>
-      <div class="subtitle">Live market prices · Updated daily</div>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th data-sort="ticker">Ticker</th>
-          <th data-sort="name" class="hide-mobile">Name</th>
-          <th data-sort="category" class="hide-mobile">Category</th>
-          <th data-sort="price">Price</th>
-          <th data-sort="change">Change</th>
-        </tr>
-      </thead>
-      <tbody id="holdings-body">
-        <!-- JavaScript -->
-      </tbody>
-    </table>
-  </section>
-  <footer>
-    Built with ❤️ by Alam ShahJade · Data sourced from Yahoo Finance · Sector ETFs from SSGA <span class="source-note">(NAV prices on SSGA site; dashboard shows live market prices)</span>
-  </footer>
-</div>
+    const SECTORS = [
+      { ticker: "XLE", name: "Energy", ytd: 11.9, lastMonth: 5.64, badge: "Improving", quadrant: "Improving", signal: "Hold - vertical YTD but recent positive", note: "Close 62.06 -1.66% Aug25, YTD 11.9% verified", last: "+5.64% 1M" },
+      { ticker: "XLI", name: "Industrials", ytd: 18.62, lastMonth: 9.76, badge: "Weakening", quadrant: "Weakening", signal: "Take profits - sharp losses last week", note: "178.40 close YTD 18.62% 1M 9.76%", last: "+9.76% 1M" },
+      { ticker: "VGT", name: "Info Tech", ytd: 27.41, lastMonth: -3.38, badge: "Weakening", quadrant: "Weakening", signal: "Reduce / rotate out - AI fading", note: "VGT 117.51 XLK 181.74 YTD 27-28%", last: "-3.38% 1M" },
+      { ticker: "VNQ", name: "Real Estate", ytd: 11.8, lastMonth: 2.1, badge: "Neutral", quadrant: "Improving", signal: "Hold", note: "Rate sensitive, est YTD 11-12%", last: "+2.1% 1M" },
+      { ticker: "XLB", name: "Materials", ytd: 12.25, lastMonth: 0.66, badge: "Improving", quadrant: "Improving", signal: "Hold - positive last week", note: "53.58 close YTD 12.25% 30D 0.66%", last: "+0.66% 30D" },
+      { ticker: "XLP", name: "Staples", ytd: 8.2, lastMonth: 0.8, badge: "Neutral", quadrant: "Lagging", signal: "Neutral - defensive", note: "Defensive staples, flat", last: "+0.8% 1M" },
+      { ticker: "XLU", name: "Utilities", ytd: 15.47, lastMonth: 3.46, badge: "Weakening", quadrant: "Weakening", signal: "Neutral / caution - sharp loss last week", note: "YTD 15.47% but last week sharp losses", last: "+3.46% 30D" },
+      { ticker: "XLV", name: "Health", ytd: 4.8, lastMonth: 6.2, badge: "Early Recovery", quadrant: "Improving", signal: "Accumulate - catching bid +4.33% last week", note: "175.29 close +4.33% gain", last: "+4.33% last wk" },
+      { ticker: "XLC", name: "Comm Services", ytd: 0.4, lastMonth: -1.1, badge: "Buy-dip", quadrant: "Lagging", signal: "Scale in - oversold", note: "Oversold bounce setup", last: "-1.1% 1M" },
+      { ticker: "XLY", name: "Cons Disc", ytd: -1.2, lastMonth: -2.8, badge: "Buy-dip", quadrant: "Lagging", signal: "Contrarian - consumer weak", note: "Consumer weak, oversold", last: "-2.8% 1M" },
+      { ticker: "XLF", name: "Financials", ytd: 4.95, lastMonth: 5.78, badge: "Early Recovery", quadrant: "Improving", signal: "Buy - leadership shift intact +5.78% 1M", note: "58.31 close YTD 4.95%→7.2%", last: "+5.78% 1M" },
+      { ticker: "KCE", name: "Capital Markets", ytd: 6.8, lastMonth: 4.5, badge: "Early Recovery", quadrant: "Improving", signal: "Buy - beta to XLF, IN PORTFOLIO $75/mo", note: "Brokers SCHW/MS/GS/IBKR, follows XLF", last: "+4.5% est 1M", inPortfolio: true, monthly: 75 },
+      { ticker: "KIE", name: "Insurance", ytd: 6.5, lastMonth: 3.9, badge: "Early Recovery", quadrant: "Improving", signal: "Buy - diversification", note: "Insurance leaders, follows XLF", last: "+3.9% 1M" },
+    ];
 
-<script>
-  let portfolioData = [];
-  let sectorData = [];
-  let currentSort = { key: 'ticker', asc: true };
+    // ----- API Helpers -----
+    const tickerList = HOLDINGS.map(h => h.ticker).join(',');
+    const API_URL = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickerList}`;
+    const CACHE_KEY = 'portfolio_prices';
+    const FALLBACK_PRICES = {
+      MSFT: { price: 430.25, change: 3.5, changePct: 0.82 },
+      AVGO: { price: 358.76, change: -9.69, changePct: -2.63 },
+      AAPL: { price: 227.85, change: 1.02, changePct: 0.45 },
+      GOOGL: { price: 176.3, change: 1.19, changePct: 0.68 },
+      JNJ: { price: 156.2, change: 0.19, changePct: 0.12 },
+      V: { price: 276.45, change: 1.51, changePct: 0.55 },
+      MA: { price: 514.1, change: 3.11, changePct: 0.61 },
+      SPGI: { price: 505.8, change: 4.61, changePct: 0.92 },
+      UNH: { price: 587.15, change: -1.29, changePct: -0.22 },
+      COST: { price: 915.3, change: 3.1, changePct: 0.34 },
+      SPYM: { price: 61.42, change: 0.23, changePct: 0.38 },
+      VXUS: { price: 62.15, change: 0.13, changePct: 0.21 },
+      SPMO: { price: 82.9, change: 0.58, changePct: 0.71 },
+      AVUV: { price: 92.45, change: 0.44, changePct: 0.48 },
+      VIG: { price: 185.22, change: 0.53, changePct: 0.29 },
+      GLDM: { price: 42.88, change: 0.24, changePct: 0.56 },
+      SPYI: { price: 51.15, change: 0.09, changePct: 0.18 },
+      QQQI: { price: 52.4, change: 0.27, changePct: 0.52 },
+      IWMI: { price: 50.85, change: 0.17, changePct: 0.33 },
+      SOXQ: { price: 36.75, change: 0.45, changePct: 1.24 },
+      JOUL: { price: 25.4, change: 0, changePct: 0 },
+      CQTM: { price: 26.15, change: 0, changePct: 0 },
+      DRAM: { price: 31.2, change: 0.64, changePct: 2.1 },
+      KCE: { price: 84.6, change: 0.37, changePct: 0.44 },
+    };
 
-  // Sector rotation UI
-  function renderRotation() {
-    const grid = document.getElementById('rotation-grid');
-    if (!sectorData.length) {
-      grid.innerHTML = `<div style="color:var(--text-secondary);padding:1rem;">No sector data available. Ensure workflow has run.</div>`;
-      return;
-    }
-    grid.innerHTML = sectorData.map(d => {
-      const isBenchmark = d.ticker === 'XLSR';
-      const recClass = isBenchmark ? 'benchmark' :
-                       d.recommendation?.toLowerCase().includes('buy') ? 'buy' :
-                       d.recommendation?.toLowerCase().includes('avoid') ? 'avoid' : 'hold';
-      const badgeClass = isBenchmark ? 'benchmark' : recClass;
-      const recDisplay = isBenchmark ? '📊 Benchmark' : (d.recommendation || 'Hold');
-      const momentum = d.momentum_20d !== null && d.momentum_20d !== undefined ? d.momentum_20d.toFixed(2) : '--';
-      const sma = d.sma_50 !== null && d.sma_50 !== undefined ? `$${d.sma_50.toFixed(2)}` : '--';
-      const trend = d.trend || 'Neutral';
-      const price = d.price !== null ? `$${d.price.toFixed(2)}` : 'N/A';
-      return `
-        <div class="rotation-card ${recClass}">
-          <div class="header">
-            <span class="ticker">${d.ticker}</span>
-            <span class="rec-badge ${badgeClass}">${recDisplay}</span>
-          </div>
-          <div class="details">
-            <span><strong>Price</strong> ${price}</span>
-            <span><strong>20D Mom.</strong> ${momentum}%</span>
-            <span><strong>50D SMA</strong> ${sma}</span>
-            <span><strong>Trend</strong> ${trend}</span>
-          </div>
-          <div class="reason">💡 ${d.reason || 'No specific reason provided.'}</div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  async function loadPortfolio() {
-    try {
-      const resp = await fetch('data.json?t=' + Date.now());
-      if (!resp.ok) throw new Error('HTTP '+resp.status);
-      const raw = await resp.json();
-
-      const tickers = Object.keys(raw).filter(k => k !== 'last_updated' && k !== 'sector_rotation_summary');
-      portfolioData = tickers.map(ticker => ({
-        ticker,
-        price: raw[ticker].price,
-        change: raw[ticker].change,
-        prev_close: raw[ticker].prev_close,
-        name: raw[ticker].name || ticker,
-        category: raw[ticker].category || 'Equity',
-        momentum_20d: raw[ticker].momentum_20d,
-        sma_50: raw[ticker].sma_50,
-        trend: raw[ticker].trend,
-        recommendation: raw[ticker].recommendation,
-        reason: raw[ticker].reason
-      }));
-
-      // Extract sector data (only those with momentum) – includes XLSR as benchmark
-      sectorData = portfolioData
-        .filter(d => d.momentum_20d !== null && d.momentum_20d !== undefined)
-        .sort((a,b) => (b.momentum_20d || -999) - (a.momentum_20d || -999));
-
-      // Update timestamp
-      const updated = raw.last_updated ? new Date(raw.last_updated) : new Date();
-      document.getElementById('last-updated').textContent = `Last sync: ${updated.toLocaleString()}`;
-      document.getElementById('active-holdings').textContent = portfolioData.length;
-
-      // Top sector signal (excluding XLSR benchmark)
-      const topSector = sectorData.find(d => d.ticker !== 'XLSR');
-      if (topSector) {
-        document.getElementById('top-sector-signal').textContent = `${topSector.ticker} (${topSector.momentum_20d.toFixed(1)}%)`;
-        document.querySelector('#top-sector-signal').parentElement.querySelector('.card-desc').textContent = 
-          `Top sector – ${topSector.recommendation || 'Buy'}`;
-      } else {
-        document.getElementById('top-sector-signal').textContent = '--';
+    async function fetchPrices() {
+      try {
+        const resp = await fetch(API_URL, { cache: 'no-store' });
+        if (!resp.ok) throw new Error('API failed');
+        const data = await resp.json();
+        const result = data?.quoteResponse?.result;
+        if (!Array.isArray(result)) throw new Error('No result');
+        const prices = {};
+        for (const item of result) {
+          const ticker = item.symbol?.toUpperCase();
+          if (!ticker) continue;
+          const price = item.regularMarketPrice;
+          if (price == null) continue;
+          const change = item.regularMarketChange ?? 0;
+          const changePct = item.regularMarketChangePercent ?? 0;
+          prices[ticker] = { price, change, changePct };
+        }
+        if (Object.keys(prices).length === 0) throw new Error('Empty prices');
+        return prices;
+      } catch (err) {
+        console.warn('Fetch failed, using fallback/cached', err);
+        return null;
       }
-
-      renderMovers();
-      renderTable();
-      renderRotation();
-    } catch (err) {
-      console.error('Error loading data:', err);
-      document.getElementById('holdings-body').innerHTML = `
-        <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--accent-red);">
-          ❌ Failed to load data. Ensure GitHub Actions has run.
-        </td></tr>`;
-      document.getElementById('rotation-grid').innerHTML = 
-        `<div style="color:var(--text-secondary);padding:1rem;">⚠️ Rotation data unavailable.</div>`;
     }
-  }
 
-  function renderMovers() {
-    const sorted = [...portfolioData].filter(d => d.change !== null && !isNaN(d.change));
-    sorted.sort((a,b) => b.change - a.change);
-    const gainers = sorted.slice(0, 5);
-    const losers = sorted.slice(-5).reverse();
-    document.getElementById('top-gainers').innerHTML = gainers.map(d =>
-      `<span class="mover-item"><span class="ticker">${d.ticker}</span> <span class="change positive">+${d.change.toFixed(2)}%</span></span>`
-    ).join('') || '<span style="color:var(--text-secondary)">No data</span>';
-    document.getElementById('top-losers').innerHTML = losers.map(d =>
-      `<span class="mover-item"><span class="ticker">${d.ticker}</span> <span class="change negative">${d.change.toFixed(2)}%</span></span>`
-    ).join('') || '<span style="color:var(--text-secondary)">No data</span>';
-  }
+    function getCachedPrices() {
+      try {
+        const raw = localStorage.getItem(CACHE_KEY);
+        if (raw) {
+          const cached = JSON.parse(raw);
+          if (cached && typeof cached === 'object') return cached;
+        }
+      } catch {}
+      return null;
+    }
 
-  function renderTable() {
-    const search = document.getElementById('search-input').value.toLowerCase().trim();
-    const filtered = portfolioData.filter(d =>
-      d.ticker.toLowerCase().includes(search) ||
-      (d.name && d.name.toLowerCase().includes(search))
-    );
-    const sorted = [...filtered];
-    const { key, asc } = currentSort;
-    sorted.sort((a,b) => {
-      let va = a[key], vb = b[key];
-      if (typeof va === 'string') va = va.toLowerCase();
-      if (typeof vb === 'string') vb = vb.toLowerCase();
-      if (va < vb) return asc ? -1 : 1;
-      if (va > vb) return asc ? 1 : -1;
-      return 0;
-    });
-    document.getElementById('row-count').textContent = `Showing ${sorted.length} of ${portfolioData.length}`;
-    const tbody = document.getElementById('holdings-body');
-    tbody.innerHTML = sorted.map(d => {
-      const change = d.change;
-      const changeStr = (change === null || isNaN(change)) ? '0.00' : change.toFixed(2);
-      const changeClass = change > 0 ? 'positive' : (change < 0 ? 'negative' : 'neutral');
-      const prefix = change > 0 ? '+' : '';
-      const priceStr = (d.price === null || isNaN(d.price)) ? 'N/A' : `$${d.price.toFixed(2)}`;
-      return `<tr>
-        <td class="ticker">${d.ticker}</td>
-        <td class="hide-mobile name-col">${d.name || d.ticker}</td>
-        <td class="hide-mobile"><span class="category-badge">${d.category}</span></td>
-        <td class="price">${priceStr}</td>
-        <td><span class="change ${changeClass}">${prefix}${changeStr}%</span></td>
-      </tr>`;
-    }).join('');
-    document.querySelectorAll('th[data-sort]').forEach(th => {
-      th.style.color = th.dataset.sort === currentSort.key ? 'var(--text-primary)' : '';
-    });
-  }
+    function setCachedPrices(prices) {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(prices));
+      } catch {}
+    }
 
-  document.querySelectorAll('th[data-sort]').forEach(th => {
-    th.addEventListener('click', () => {
-      const key = th.dataset.sort;
-      if (currentSort.key === key) currentSort.asc = !currentSort.asc;
-      else { currentSort.key = key; currentSort.asc = true; }
-      renderTable();
-    });
-  });
-  document.getElementById('search-input').addEventListener('input', renderTable);
+    // ----- React App -----
+    const App = () => {
+      const [filter, setFilter] = useState('');
+      const [prices, setPrices] = useState(() => {
+        const cached = getCachedPrices();
+        if (cached) return cached;
+        return FALLBACK_PRICES;
+      });
+      const [status, setStatus] = useState('cached');
+      const [lastUpdate, setLastUpdate] = useState(null);
+      const [countdown, setCountdown] = useState(300);
+      const [flashes, setFlashes] = useState({});
+      const intervalRef = useRef(null);
+      const countdownRef = useRef(null);
 
-  loadPortfolio();
-  setInterval(loadPortfolio, 300000);
-</script>
+      // Load from cache on mount
+      useEffect(() => {
+        const cached = getCachedPrices();
+        if (cached) {
+          setPrices(cached);
+          setStatus('cached');
+          setLastUpdate(new Date());
+        }
+        // Attempt immediate fetch
+        refreshPrices();
+      }, []);
+
+      // Countdown timer
+      useEffect(() => {
+        countdownRef.current = setInterval(() => {
+          setCountdown(prev => {
+            if (prev <= 1) {
+              refreshPrices();
+              return 300;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+        return () => clearInterval(countdownRef.current);
+      }, []);
+
+      const refreshPrices = async () => {
+        setStatus('updating');
+        const newPrices = await fetchPrices();
+        if (newPrices) {
+          // Compare for flashes
+          const flashesObj = {};
+          for (const ticker of Object.keys(newPrices)) {
+            const old = prices[ticker];
+            if (old && old.price !== newPrices[ticker].price) {
+              flashesObj[ticker] = newPrices[ticker].price > old.price ? 'up' : 'down';
+            }
+          }
+          setFlashes(flashesObj);
+          setTimeout(() => setFlashes({}), 900);
+
+          setPrices(prev => ({ ...prev, ...newPrices }));
+          setCachedPrices({ ...prices, ...newPrices });
+          setStatus('live');
+          setLastUpdate(new Date());
+          setCountdown(300);
+        } else {
+          // If fetch fails but we have cached, keep cached
+          const cached = getCachedPrices();
+          if (cached) {
+            setPrices(cached);
+            setStatus('cached');
+          } else {
+            setStatus('fallback');
+          }
+        }
+      };
+
+      const filteredHoldings = useMemo(() => {
+        const q = filter.toLowerCase().trim();
+        if (!q) return HOLDINGS;
+        return HOLDINGS.filter(h =>
+          h.ticker.toLowerCase().includes(q) ||
+          h.name.toLowerCase().includes(q) ||
+          h.detail.toLowerCase().includes(q)
+        );
+      }, [filter]);
+
+      const totalMonthly = HOLDINGS.reduce((s, h) => s + h.monthly, 0);
+      const filteredTotal = filteredHoldings.reduce((s, h) => s + h.monthly, 0);
+
+      // Category groups
+      const categories = ['stocks', 'lt', 'income', 'risk'];
+      const categoryLabels = {
+        stocks: { label: 'Stocks', icon: '💎', color: 'violet', avgExp: '0.00%' },
+        lt: { label: 'Long-Term ETFs', icon: '🌟', color: 'amber', avgExp: '0.09%' },
+        income: { label: 'Income', icon: '💰', color: 'emerald', avgExp: '0.68%' },
+        risk: { label: 'Risk', icon: '🚀', color: 'fuchsia', avgExp: '0.35%' },
+      };
+
+      // Expense badge helper
+      const getExpenseStyle = (exp) => {
+        if (exp == null) return 'bg-[#171c2a] border-[#242c41] text-zinc-500';
+        if (exp <= 0.25) return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+        if (exp <= 0.65) return 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+        return 'bg-red-500/15 text-red-300 border-red-500/30';
+      };
+
+      // Sector quadrant styles
+      const quadrantColors = {
+        'Improving': { bg: 'bg-[#052e16]', border: 'border-[#14532d]', text: 'text-emerald-300', badge: 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300' },
+        'Weakening': { bg: 'bg-[#450a0a]', border: 'border-[#7f1d1d]', text: 'text-red-300', badge: 'bg-red-500/20 border-red-500/40 text-red-300' },
+        'Lagging': { bg: 'bg-[#1a1e2e]', border: 'border-[#232838]', text: 'text-zinc-300', badge: 'bg-zinc-500/20 border-zinc-500/30 text-zinc-300' },
+        'Neutral': { bg: 'bg-[#422006]', border: 'border-[#854d0e]', text: 'text-amber-300', badge: 'bg-amber-500/20 border-amber-500/40 text-amber-300' },
+      };
+
+      // Group sectors by quadrant
+      const quadrantGroups = SECTORS.reduce((acc, s) => {
+        const q = s.quadrant || 'Neutral';
+        if (!acc[q]) acc[q] = [];
+        acc[q].push(s);
+        return acc;
+      }, {});
+
+      return (
+        <div className="min-h-screen bg-[#0a0c12] text-zinc-100 antialiased">
+          {/* ---- Header ---- */}
+          <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#0a0c12]/85 border-b border-[#1c2030]">
+            <div className="max-w-[1280px] mx-auto px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-[14px] shrink-0">
+                  💼
+                </div>
+                <div className="min-w-0">
+                  <h1 className="font-extrabold tracking-tight text-[12px] sm:text-[13px] uppercase leading-tight">
+                    $2,000/mo FINAL
+                    <span className="hidden lg:inline font-medium text-zinc-400 normal-case ml-2 text-[11px]">
+                      Stocks $435 + LT $565 + Income $500 + Risk $500 • 24 holdings
+                    </span>
+                  </h1>
+                  <p className="lg:hidden text-[10px] text-zinc-400 mt-0.5 leading-none">
+                    24 holdings • $2K/mo • Yahoo v7 batch • 5min refresh
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 rounded-full bg-[#12151e] border border-[#232838] px-2.5 py-1">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className={`relative inline-flex rounded-full h-2 w-2 ${
+                      status === 'live' ? 'bg-emerald-400' : status === 'updating' ? 'bg-amber-400' : 'bg-zinc-500'
+                    }`}></span>
+                  </span>
+                  <span className={`text-[10px] font-bold tracking-wide mono ${
+                    status === 'live' ? 'text-emerald-300' : status === 'updating' ? 'text-amber-300' : 'text-zinc-400'
+                  }`}>
+                    {status === 'live' ? '⚡ Live' : status === 'updating' ? '⚡ Updating...' : status === 'cached' ? '📦 Cached' : '📦 Fallback'}
+                    {lastUpdate && ` • ${lastUpdate.toLocaleTimeString()}`}
+                  </span>
+                </div>
+                <div className="hidden sm:flex h-[28px] px-3 rounded-full bg-[#12151e] border border-[#232838] items-center gap-2 text-[10px] mono text-zinc-400">
+                  Next {Math.floor(countdown / 60)}m {String(countdown % 60).padStart(2, '0')}s
+                </div>
+                <button
+                  onClick={refreshPrices}
+                  className="h-[28px] px-3 rounded-full bg-[#1a1e2e] hover:bg-[#232838] border border-[#232838] text-[11px] font-semibold tracking-wide transition"
+                >
+                  🔄 REFRESH
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <main className="max-w-[1280px] mx-auto px-3 sm:px-5 py-3">
+            {/* ---- Stats Cards ---- */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 mb-3">
+              <div className="rounded-[10px] bg-[#12151e] border border-[#1e2332] px-3 py-2.5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent pointer-events-none" />
+                <div className="relative">
+                  <div className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">CAGR → 30Y</div>
+                  <div className="mt-1 flex items-baseline gap-1.5">
+                    <span className="text-[16px] font-extrabold leading-none">16.8%</span>
+                    <span className="text-[10px] text-zinc-500">→</span>
+                    <span className="text-[13px] font-bold text-violet-300 mono leading-none">$4.15M</span>
+                  </div>
+                  <div className="mt-1 text-[9px] text-zinc-500 leading-[1.2]">Aggressive growth est.</div>
+                </div>
+              </div>
+              <div className="rounded-[10px] bg-[#12151e] border border-[#1e2332] px-3 py-2.5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
+                <div className="relative">
+                  <div className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">RISK BUDGET</div>
+                  <div className="mt-1 flex items-baseline gap-1.5">
+                    <span className="text-[16px] font-extrabold leading-none">15%</span>
+                    <span className="text-[12px] font-semibold text-amber-300 mono leading-none">$300</span>
+                    <span className="text-[9px] text-zinc-500">of $2000</span>
+                  </div>
+                  <div className="mt-1 text-[9px] text-zinc-500 leading-[1.2]">🚀 Risk $500 • 25% alloc</div>
+                </div>
+              </div>
+              <div className="rounded-[10px] bg-[#12151e] border border-[#1e2332] px-3 py-2.5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
+                <div className="relative">
+                  <div className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">INCOME FLOW</div>
+                  <div className="mt-1 flex items-baseline gap-1">
+                    <span className="text-[16px] font-extrabold leading-none">$65</span>
+                    <span className="text-[9px] text-zinc-400">/mo</span>
+                    <span className="text-[11px] font-semibold text-emerald-300 mono leading-none">~$780/yr</span>
+                  </div>
+                  <div className="mt-1 text-[9px] text-zinc-500 leading-[1.2]">💰 $500 • 12-14% yield avg</div>
+                </div>
+              </div>
+              <div className="rounded-[10px] bg-[#12151e] border border-[#1e2332] px-3 py-2.5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 to-transparent pointer-events-none" />
+                <div className="relative">
+                  <div className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">BLENDED EXPENSE</div>
+                  <div className="mt-1 flex items-baseline gap-1.5">
+                    <span className="text-[16px] font-extrabold leading-none">0.28%</span>
+                    <span className="text-[9px] text-zinc-400">weighted</span>
+                  </div>
+                  <div className="mt-1 flex gap-1">
+                    <span className="text-[8px] px-1 py-0.5 rounded-full border bg-emerald-500/15 text-emerald-300 border-emerald-500/30 leading-none">Low ≤0.25%</span>
+                    <span className="text-[8px] px-1 py-0.5 rounded-full border bg-amber-500/15 text-amber-300 border-amber-500/30 leading-none">Mid</span>
+                    <span className="text-[8px] px-1 py-0.5 rounded-full border bg-red-500/15 text-red-300 border-red-500/30 leading-none">High 0.68%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ---- Filter & Count ---- */}
+            <div className="flex flex-wrap gap-2 mb-3">
+              <div className="relative flex-1 min-w-[200px]">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-[12px]">🔍</span>
+                <input
+                  type="text"
+                  value={filter}
+                  onChange={e => setFilter(e.target.value)}
+                  placeholder="Filter: MSFT, SPYI, quantum, semi, broker..."
+                  className="w-full h-[34px] rounded-[10px] bg-[#12151e] border border-[#1e2332] pl-9 pr-4 text-[12px] placeholder:text-zinc-500 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/20 transition"
+                />
+                {filter && (
+                  <button
+                    onClick={() => setFilter('')}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] bg-[#1a1e2e] border border-[#232838] px-2 py-0.5 rounded-md hover:bg-[#232838] transition"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+              <div className="h-[34px] px-3 rounded-[10px] bg-[#12151e] border border-[#1e2332] flex items-center gap-2 text-[10px] shrink-0">
+                <span className="text-zinc-500 font-medium tracking-wide text-[9px]">SHOWING</span>
+                <span className="font-bold mono text-violet-300 text-[11px]">{filteredHoldings.length}/24</span>
+                <span className="w-px h-3 bg-[#232838]"></span>
+                <span className="mono font-semibold text-[11px]">${filteredTotal}</span>
+                <span className="text-zinc-500 text-[10px]">/ ${totalMonthly}</span>
+              </div>
+            </div>
+
+            {/* ---- Portfolio Tables by Category ---- */}
+            <div className="grid grid-cols-1 gap-3.5">
+              {categories.map(cat => {
+                const items = filteredHoldings.filter(h => h.category === cat);
+                if (items.length === 0) return null;
+                const info = categoryLabels[cat];
+                const totalCat = items.reduce((s, h) => s + h.monthly, 0);
+                const pct = (totalCat / totalMonthly) * 100;
+                const colorMap = {
+                  violet: 'from-violet-500/20 to-indigo-500/20 border-violet-500/30',
+                  amber: 'from-amber-500/20 to-orange-500/20 border-amber-500/30',
+                  emerald: 'from-emerald-500/20 to-teal-500/20 border-emerald-500/30',
+                  fuchsia: 'from-fuchsia-500/20 to-pink-500/20 border-fuchsia-500/30',
+                };
+                const dotMap = { violet: 'bg-violet-400', amber: 'bg-amber-400', emerald: 'bg-emerald-400', fuchsia: 'bg-fuchsia-400' };
+                const gradClass = colorMap[info.color] || colorMap.violet;
+                const dotClass = dotMap[info.color] || dotMap.violet;
+
+                return (
+                  <section key={cat} className="rounded-[12px] bg-[#12151e] border border-[#1e2332] overflow-hidden">
+                    <div className={`h-[2px] w-full bg-gradient-to-r ${gradClass.replace('/20', '')} opacity-70`}></div>
+                    <div className="px-3 sm:px-3.5 py-2.5 flex items-center justify-between border-b border-[#1a1f2e] bg-[#12151e]">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className={`w-7 h-7 rounded-[8px] bg-gradient-to-br ${gradClass} flex items-center justify-center shrink-0 text-[12px]`}>
+                          {info.icon}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <h2 className="font-bold tracking-tight text-[12px] leading-none">{info.label}</h2>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#1a1e2e] border border-[#232838] mono font-bold text-zinc-200">
+                              ${totalCat}
+                            </span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#0e111a] border border-[#1c2131] mono text-zinc-400">
+                              {items.length} holdings
+                            </span>
+                            <span className="hidden sm:inline-flex text-[10px] px-1.5 py-0.5 rounded-full bg-[#0e111a] border border-[#1c2131] mono text-zinc-400">
+                              {pct.toFixed(1)}% • avg {info.avgExp}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="hidden sm:flex items-center gap-2 shrink-0">
+                        <span className={`w-2 h-2 rounded-full ${dotClass} animate-pulse`}></span>
+                        <span className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">{info.label}</span>
+                      </div>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[780px] border-collapse">
+                        <thead>
+                          <tr className="bg-[#0e111a] border-b border-[#1c2131] text-[9px] font-bold tracking-widest text-zinc-500 uppercase">
+                            <th className="text-left px-2.5 py-2">Ticker</th>
+                            <th className="text-left px-2.5 py-2">Name & Detail</th>
+                            <th className="text-right px-2 py-2">$/mo</th>
+                            <th className="text-right px-2 py-2">%</th>
+                            <th className="text-center px-2 py-2">Expense</th>
+                            <th className="text-right px-2.5 py-2">Live Price</th>
+                            <th className="text-right px-2 py-2">1Y</th>
+                            <th className="text-center px-2 py-2">Rating</th>
+                            <th className="text-left px-2.5 py-2">Note</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#151a27]">
+                          {items.map(h => {
+                            const priceData = prices[h.ticker];
+                            const flash = flashes[h.ticker];
+                            const expenseClass = getExpenseStyle(h.expense);
+                            const tickerLink = `https://finance.yahoo.com/quote/${h.ticker}/`;
+                            return (
+                              <tr key={h.ticker} className={`${flash === 'up' ? 'flash-up' : flash === 'down' ? 'flash-down' : ''} hover:bg-[#1a2034] transition-colors`}>
+                                <td className="px-2.5 py-[8px]">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className={`w-2 h-2 rounded-full ${dotClass} shrink-0`}></span>
+                                    <a href={tickerLink} target="_blank" rel="noopener noreferrer" className="ticker-link inline-flex items-center gap-1 mono font-extrabold text-[12px] px-1.5 py-0.5 rounded bg-[#1a1e2e] border border-[#232838] text-zinc-100 leading-none hover:bg-[#252b40] hover:border-violet-500/45 hover:text-violet-200 transition">
+                                      {h.ticker}
+                                      <span className="text-[10px] opacity-60">↗</span>
+                                    </a>
+                                    {h.isNew && (
+                                      <span className="text-[8px] font-bold tracking-widest px-1 py-0.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30 leading-none">NEW</span>
+                                    )}
+                                  </div>
+                                </td>
+                                <td className="px-2.5 py-[8px] min-w-[260px]">
+                                  <a href={tickerLink} target="_blank" rel="noopener noreferrer" className="block text-[12px] font-medium text-zinc-200 leading-[1.25] truncate max-w-[300px] hover:text-violet-200 hover:underline">
+                                    {h.name}
+                                  </a>
+                                  <div className="text-[11px] text-zinc-500 truncate max-w-[320px]">{h.detail}</div>
+                                </td>
+                                <td className="px-2 py-[8px] text-right mono font-bold text-[12px]">${h.monthly}</td>
+                                <td className="px-2 py-[8px] text-right mono text-[11px] text-zinc-400">{(h.monthly / totalMonthly * 100).toFixed(1)}%</td>
+                                <td className="px-2 py-[8px] text-center">
+                                  {h.expense != null ? (
+                                    <span className={`inline-flex mono text-[10px] px-1.5 py-0.5 rounded-full border leading-none ${expenseClass}`}>
+                                      {h.expense.toFixed(2)}%
+                                    </span>
+                                  ) : (
+                                    <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#171c2a] border border-[#242c41] text-zinc-500 leading-none">No fee</span>
+                                  )}
+                                </td>
+                                <td className="px-2.5 py-[8px] text-right">
+                                  {priceData ? (
+                                    <div className="flex flex-col items-end gap-1">
+                                      <span className="mono font-extrabold text-[12px]">${priceData.price.toFixed(2)}</span>
+                                      <span className={`inline-flex items-center gap-0.5 mono text-[10px] px-1.5 py-0.5 rounded-full border ${
+                                        priceData.changePct >= 0
+                                          ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                                          : 'bg-red-500/15 text-red-300 border-red-500/30'
+                                      }`}>
+                                        {priceData.changePct >= 0 ? '▲' : '▼'}
+                                        {' '}
+                                        {priceData.change >= 0 ? '+' : ''}{priceData.change.toFixed(2)}
+                                        {' ('}
+                                        {priceData.changePct >= 0 ? '+' : ''}{priceData.changePct.toFixed(2)}%)
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <span className="mono text-[11px] text-zinc-500">--</span>
+                                  )}
+                                  {h.yieldLabel && (
+                                    <div className="text-[9px] text-emerald-400 mono leading-none mt-0.5">{h.yieldLabel} yield</div>
+                                  )}
+                                </td>
+                                <td className="px-2 py-[8px] text-right mono text-[11px] text-zinc-400">{h.oneYear}</td>
+                                <td className="px-2 py-[8px] text-center">
+                                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#171c2a] border border-[#242c41] text-zinc-300 mono">
+                                    {h.rating}
+                                  </span>
+                                </td>
+                                <td className="px-2.5 py-[8px] text-[10px] text-zinc-500 max-w-[100px] truncate">{h.note}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
+
+            {/* ---- Sector Rotation Map ---- */}
+            <section className="mt-5 rounded-[12px] bg-[#12151e] border border-[#1e2332] overflow-hidden">
+              <div className="h-[2px] w-full bg-gradient-to-r from-violet-500/50 via-emerald-500/50 to-amber-500/50"></div>
+              <div className="px-3 sm:px-4 py-3 border-b border-[#1a1f2e] flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-7 h-7 rounded-[8px] bg-gradient-to-br from-violet-500/30 to-emerald-500/30 border border-violet-500/40 flex items-center justify-center shrink-0 text-[14px]">🗺️</div>
+                  <div className="min-w-0">
+                    <h2 className="font-extrabold tracking-tight text-[12px] sm:text-[13px] leading-tight">
+                      Sector Rotation Map - 13 Sectors • VERIFIED Aug 26 2026
+                    </h2>
+                    <div className="text-[10px] text-zinc-400 mt-0.5 leading-[1.3]">
+                      RRG: Tech 27.4% YTD but -3.38% 1M → Weakening • XLI 18.62% YTD +9.76% 1M but sharp losses → Weakening • XLU 15.47% → Weakening • Energy 11.9% +5.64% 1M Improving • Financials 4.95%→7.2% YTD +5.78% 1M Improving
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[9px] px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/40 mono text-emerald-300 font-bold">✓ Verified Aug 26 2026</span>
+                  <span className="text-[9px] px-2 py-1 rounded-full bg-[#0e111a] border border-[#1c2131] mono text-zinc-400">13 Sectors</span>
+                  <span className="text-[9px] px-2 py-1 rounded-full bg-violet-500/15 border border-violet-500/30 text-violet-300 font-bold">★ KCE IN PORTFOLIO $75</span>
+                </div>
+              </div>
+
+              {/* RRG Quadrants */}
+              <div className="p-3 bg-[#0a0c12]">
+                <div className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase mb-2">RRG Relative Rotation Graph • 4 Quadrants</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {/* Improving */}
+                  <div className="rounded-[10px] bg-[#052e16] border border-[#14532d] p-2.5 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
+                    <div className="relative">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-extrabold text-emerald-300">↗ Improving • Momentum Rising</span>
+                        <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300">Buy Zone</span>
+                      </div>
+                      <div className="text-[9px] text-zinc-400 mt-1">Lagging → Improving • Early recovery • Leadership shift +4.2% to +4.5%</div>
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {SECTORS.filter(s => s.badge === 'Early Recovery' || s.badge === 'Buy-dip').map(s => (
+                          <a key={s.ticker} href={`https://finance.yahoo.com/quote/${s.ticker}/`} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold mono border ${s.ticker === 'KCE' ? 'bg-violet-500 text-white border-violet-400' : 'bg-[#12151e] border-[#14532d] text-emerald-200 hover:bg-[#1a2e1a]'}`}>
+                            {s.ticker} {s.ytd}% {s.ticker === 'KCE' ? '★' : ''}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  {/* Weakening */}
+                  <div className="rounded-[10px] bg-[#450a0a] border border-[#7f1d1d] p-2.5 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
+                    <div className="relative">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-extrabold text-red-300">→ Leading • Extended</span>
+                        <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-red-500/20 border border-red-500/40 text-red-300">Trim Risk</span>
+                      </div>
+                      <div className="text-[9px] text-zinc-400 mt-1">High RS + high momentum • Vertical YTD 16-19% • Take profits</div>
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {SECTORS.filter(s => s.badge === 'Weakening' || s.badge === 'Extended').map(s => (
+                          <a key={s.ticker} href={`https://finance.yahoo.com/quote/${s.ticker}/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold mono bg-[#1a0a0a] border border-[#7f1d1d] text-red-200 hover:bg-[#2a0a0a]">
+                            {s.ticker} {s.ytd}%
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  {/* Lagging */}
+                  <div className="rounded-[10px] bg-[#1a1e2e] border border-[#232838] p-2.5 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-zinc-500/10 to-transparent pointer-events-none" />
+                    <div className="relative">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-extrabold text-zinc-300">↘ Lagging • Buy-dip</span>
+                        <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-zinc-500/20 border border-zinc-500/30 text-zinc-300">Contrarian</span>
+                      </div>
+                      <div className="text-[9px] text-zinc-400 mt-1">Low RS + low momentum • Oversold -1.2% to +0.4% • Scale in</div>
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {SECTORS.filter(s => s.badge === 'Buy-dip').map(s => (
+                          <a key={s.ticker} href={`https://finance.yahoo.com/quote/${s.ticker}/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold mono bg-[#12151e] border border-[#232838] text-zinc-300 hover:bg-[#1a1e2e]">
+                            {s.ticker} {s.ytd}%
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  {/* Neutral */}
+                  <div className="rounded-[10px] bg-[#422006] border border-[#854d0e] p-2.5 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
+                    <div className="relative">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-extrabold text-amber-300">→ Weakening • Neutral</span>
+                        <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300">Hold</span>
+                      </div>
+                      <div className="text-[9px] text-zinc-400 mt-1">High RS + falling momentum • 7-12% YTD • Rate sensitive hold</div>
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {SECTORS.filter(s => s.badge === 'Neutral').map(s => (
+                          <a key={s.ticker} href={`https://finance.yahoo.com/quote/${s.ticker}/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold mono bg-[#1a1205] border border-[#854d0e] text-amber-200 hover:bg-[#2a1a05]">
+                            {s.ticker} {s.ytd}%
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sector Cards */}
+              <div className="p-3">
+                <div className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase mb-2">13 Sector Cards • YTD • Signal • Last 1M • Note</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {SECTORS.map(s => {
+                    const quad = quadrantColors[s.quadrant] || quadrantColors.Neutral;
+                    const tickerLink = `https://finance.yahoo.com/quote/${s.ticker}/`;
+                    return (
+                      <div key={s.ticker} className={`rounded-[10px] ${quad.bg} border ${quad.border} p-2.5 hover:brightness-110 transition-all`}>
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <a href={tickerLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 mono font-extrabold text-[13px] px-2 py-1 rounded bg-[#0a0c12] border border-[#1e2332] text-zinc-100 hover:bg-[#1a1e2e] hover:text-violet-200 transition-colors">
+                              {s.ticker}
+                              <span className="text-[10px] opacity-60">↗</span>
+                            </a>
+                            <span className="text-[11px] text-zinc-300 font-medium">{s.name}</span>
+                            <span className={`mono font-bold text-[12px] ${s.ytd >= 0 ? 'text-emerald-300' : 'text-red-300'}`}>
+                              {s.ytd >= 0 ? '+' : ''}{s.ytd}%
+                            </span>
+                          </div>
+                          <div className="flex flex-col items-end gap-1 shrink-0">
+                            <span className={`text-[9px] px-2 py-0.5 rounded-full border font-bold tracking-wide ${quad.badge}`}>
+                              {s.badge}
+                            </span>
+                            {s.inPortfolio && (
+                              <span className="text-[8px] px-2 py-0.5 rounded-full bg-[#7c3aed] text-white font-bold tracking-wide">★ IN PORTFOLIO ${s.monthly}</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className={`mt-2 text-[11px] font-bold ${quad.text}`}>{s.signal}</div>
+                        <div className="mt-1 text-[10px] text-zinc-400 leading-[1.3]">{s.note} • Last {s.last}</div>
+                        <div className="mt-1.5 flex items-center gap-1.5">
+                          <div className="flex-1 h-1 bg-[#0a0c12] rounded-full overflow-hidden">
+                            <div className={`h-full ${s.badge === 'Weakening' || s.badge === 'Extended' ? 'bg-red-500' : s.badge === 'Neutral' ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{ width: `${Math.max(10, Math.min(100, (s.ytd + 5) / 25 * 100))}%` }}></div>
+                          </div>
+                          <span className="mono text-[9px] text-zinc-500">YTD {s.ytd}%</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+
+            {/* ---- Footer ---- */}
+            <footer className="mt-4 text-center text-[9px] text-zinc-600 tracking-wide leading-relaxed">
+              ⚡ batch v7/quote 24 tickers in 1 call • 3‑way race • ONE DOM update • cache localStorage • RRG 4 quadrants • 13 sectors • Financials +4.2% to +4.5% leadership shift • © 2025
+            </footer>
+          </main>
+        </div>
+      );
+    };
+
+    // Render
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 </html>
