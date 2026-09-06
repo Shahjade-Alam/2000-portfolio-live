@@ -2,9 +2,8 @@ name: Update Portfolio Data
 
 on:
   schedule:
-    # Runs at 21:00 UTC every weekday (after US market close)
     - cron: '0 21 * * 1-5'
-  workflow_dispatch:  # manual trigger
+  workflow_dispatch:
 
 jobs:
   update-data:
