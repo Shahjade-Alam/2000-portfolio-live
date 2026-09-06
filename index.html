@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Portfolio Command Center | Alam ShahJade</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -296,31 +296,25 @@
     }
     .table-title { font-size: 1.1rem; font-weight: 600; }
 
-    /* ---- Table columns with explicit widths ---- */
+    /* Table with horizontal scroll on mobile */
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed;
+      min-width: 600px; /* ensures horizontal scroll on small screens */
     }
     th, td {
       padding: 1rem 0.75rem;
       border-bottom: 1px solid var(--border-color);
       font-size: 0.9rem;
       text-align: left;
-      overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
     }
     th:first-child, td:first-child { padding-left: 1.5rem; }
     th:last-child, td:last-child { padding-right: 1.5rem; }
-
-    /* Column widths */
-    th:nth-child(1), td:nth-child(1) { width: 10%; }  /* Ticker */
-    th:nth-child(2), td:nth-child(2) { width: 30%; }  /* Name */
-    th:nth-child(3), td:nth-child(3) { width: 18%; }  /* Category */
-    th:nth-child(4), td:nth-child(4) { width: 20%; }  /* Price */
-    th:nth-child(5), td:nth-child(5) { width: 22%; }  /* Change */
-
     th {
       font-size: 0.7rem;
       text-transform: uppercase;
@@ -397,44 +391,24 @@
       .bento-grid { grid-template-columns: repeat(2,1fr); }
       .movers-section { grid-template-columns: 1fr; }
       .rotation-grid { grid-template-columns: 1fr; }
-      table { table-layout: auto; }
-      th:nth-child(2), td:nth-child(2),
-      th:nth-child(3), td:nth-child(3) {
-        width: auto;
-        min-width: 100px;
-      }
+      .table-wrapper { overflow-x: auto; }
+      table { min-width: 500px; }
+      th, td { padding: 0.75rem 0.5rem; font-size: 0.8rem; }
+      th:first-child, td:first-child { padding-left: 0.75rem; }
+      th:last-child, td:last-child { padding-right: 0.75rem; }
     }
     @media (max-width: 600px) {
       .bento-grid { grid-template-columns: 1fr; }
       .container { padding: 1rem; }
-      th, td { padding: 0.6rem 0.5rem; font-size: 0.8rem; }
-      th:first-child, td:first-child { padding-left: 0.75rem; }
-      th:last-child, td:last-child { padding-right: 0.75rem; }
-      .hide-mobile { display: none; }
-      .search-box { min-width: 120px; }
+      h1 { font-size: 1.2rem; }
+      .logo-icon { width: 36px; height: 36px; font-size: 1rem; }
+      .card-value { font-size: 1.4rem; }
+      .status-badge { font-size: 0.7rem; padding: 0.3rem 0.8rem; }
       .table-title { font-size: 0.95rem; }
-      /* Stack table columns on mobile */
-      table, thead, tbody, th, td, tr { display: block; }
-      thead tr { position: absolute; top: -9999px; left: -9999px; }
-      tr { border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 0.75rem; padding: 0.5rem; background: var(--bg-card); }
-      td { border: none; position: relative; padding: 0.4rem 0.5rem 0.4rem 45%; white-space: normal; text-align: left; }
-      td:before { 
-        content: attr(data-label);
-        position: absolute;
-        left: 0.5rem;
-        width: 40%;
-        padding-right: 0.5rem;
-        white-space: nowrap;
-        font-weight: 600;
-        color: var(--text-secondary);
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      td:last-child { border-bottom: none; }
-      .name-col, .category-badge { display: inline; }
+      /* Make table cells wrap text on very small screens */
+      th, td { white-space: normal; word-break: break-word; }
+      table { min-width: 400px; }
     }
-    .loading { opacity: 0.6; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -495,20 +469,22 @@
       <div class="table-title">📊 All Holdings</div>
       <div class="subtitle">Live market prices · Updated daily</div>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th data-sort="ticker">Ticker</th>
-          <th data-sort="name" class="hide-mobile">Name</th>
-          <th data-sort="category" class="hide-mobile">Category</th>
-          <th data-sort="price">Price</th>
-          <th data-sort="change">Change</th>
-        </tr>
-      </thead>
-      <tbody id="holdings-body">
-        <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-secondary);">Loading data...</td></tr>
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th data-sort="ticker">Ticker</th>
+            <th data-sort="name" class="hide-mobile">Name</th>
+            <th data-sort="category" class="hide-mobile">Category</th>
+            <th data-sort="price">Price</th>
+            <th data-sort="change">Change</th>
+          </tr>
+        </thead>
+        <tbody id="holdings-body">
+          <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-secondary);">Loading data...</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
   <footer>
     Built with ❤️ by Alam ShahJade · Data sourced from Yahoo Finance · Sector ETFs from SSGA
@@ -662,7 +638,6 @@
       const changeClass = change > 0 ? 'positive' : (change < 0 ? 'negative' : 'neutral');
       const prefix = change > 0 ? '+' : '';
       const priceStr = (d.price === null || isNaN(d.price)) ? 'N/A' : `$${d.price.toFixed(2)}`;
-      // Add data-label attributes for mobile responsive table
       return `<tr>
         <td data-label="Ticker" class="ticker">${d.ticker}</td>
         <td data-label="Name" class="hide-mobile name-col">${d.name || d.ticker}</td>
