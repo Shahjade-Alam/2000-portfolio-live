@@ -3,6 +3,7 @@ import json
 import datetime
 import logging
 import os
+import time
 import pandas as pd
 from typing import Dict, Any
 
@@ -25,14 +26,12 @@ TICKERS = CORE_TICKERS + SECTOR_ETFS
 
 # -------- CATEGORIES --------
 CATEGORIES = {
-    # Core holdings
     'MSFT': 'Tech / AI', 'AVGO': 'Semiconductors', 'V': 'Financials', 'MA': 'Financials',
     'SPGI': 'Financials', 'UNH': 'Healthcare', 'COST': 'Consumer', 'AAPL': 'Tech / Hardware',
     'GOOGL': 'Tech / AI', 'JNJ': 'Healthcare', 'VIG': 'Dividend ETF', 'GLDM': 'Gold',
     'SPMO': 'Momentum ETF', 'SPLG': 'S&P 500 ETF', 'VXUS': 'Intl ETF', 'AVUV': 'Small Value',
     'SPYI': 'Income ETF', 'QQQI': 'Nasdaq Income', 'IWMI': 'Income ETF', 'TSPY': 'Income ETF',
     'TMGN': 'Income ETF',
-    # SSGA Sector ETFs
     'XLC': 'Communication Services', 'XLY': 'Consumer Discretionary', 'XLP': 'Consumer Staples',
     'XLE': 'Energy', 'XLF': 'Financials', 'XLV': 'Health Care',
     'XLI': 'Industrials', 'XLB': 'Materials', 'XLRE': 'Real Estate',
@@ -55,6 +54,7 @@ SECTOR_NAMES = {
 }
 
 def load_previous_data() -> Dict[str, Any]:
+    """Load existing data.json to preserve values if fetch fails."""
     if os.path.exists('data.json'):
         with open('data.json', 'r') as f:
             try:
@@ -63,7 +63,23 @@ def load_previous_data() -> Dict[str, Any]:
                 return {}
     return {}
 
+def fetch_with_retry(tickers, period="60d", max_retries=3):
+    """Fetch data with retry logic."""
+    for attempt in range(max_retries):
+        try:
+            logging.info(f"Attempt {attempt + 1}/{max_retries} to fetch data...")
+            data = yf.download(tickers, period=period, group_by='ticker', progress=False)
+            if not data.empty:
+                return data
+            logging.warning("Data empty, retrying...")
+            time.sleep(2)
+        except Exception as e:
+            logging.warning(f"Attempt {attempt + 1} failed: {e}")
+            time.sleep(2)
+    return None
+
 def fetch_ticker_info(ticker: str) -> Dict[str, Any]:
+    """Fetch ticker name and category with fallback."""
     try:
         t = yf.Ticker(ticker)
         info = t.info
@@ -79,21 +95,25 @@ def fetch_ticker_info(ticker: str) -> Dict[str, Any]:
         return {'name': SECTOR_NAMES.get(ticker, ticker), 'category': CATEGORIES.get(ticker, 'Unknown')}
 
 def get_sector_rotation_signal(ticker: str, df: pd.DataFrame, current_price: float) -> Dict[str, Any]:
+    """Calculate 20-day momentum and 50-day SMA trend."""
     signal = {
         "momentum_20d": None,
         "sma_50": None,
-        "trend": "Neutral",
-        "recommendation": "Hold",
-        "reason": "Insufficient data"
+        "trend": "Neutral"
     }
     try:
         closes = df['Close'].dropna()
         if len(closes) < 30:
             return signal
+        
+        # 20-day momentum
         price_20d_ago = closes.iloc[-21] if len(closes) >= 21 else closes.iloc[0]
         momentum = ((current_price - price_20d_ago) / price_20d_ago) * 100
+        
+        # 50-day SMA
         sma_50 = closes.rolling(50).mean().iloc[-1]
         trend = "Bullish" if current_price > sma_50 else "Bearish" if current_price < sma_50 else "Neutral"
+        
         signal["momentum_20d"] = round(momentum, 2)
         signal["sma_50"] = round(sma_50, 2)
         signal["trend"] = trend
@@ -102,17 +122,34 @@ def get_sector_rotation_signal(ticker: str, df: pd.DataFrame, current_price: flo
     return signal
 
 def fetch_prices() -> Dict[str, Any]:
+    """Main function to fetch all prices and generate sector signals."""
     previous = load_previous_data()
     portfolio = {}
-    logging.info(f"Downloading 60 days of data for {len(TICKERS)} tickers...")
-    data = yf.download(TICKERS, period="60d", group_by='ticker', progress=False)
+    
+    # Fetch data with retry
+    logging.info(f"Fetching 60 days of data for {len(TICKERS)} tickers...")
+    data = fetch_with_retry(TICKERS, period="60d")
+    
+    if data is None:
+        logging.error("Failed to fetch data after multiple retries. Using previous data if available.")
+        # Return previous data with updated timestamp
+        if previous:
+            previous["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            return previous
+        # If no previous data, return empty structure
+        for ticker in TICKERS:
+            portfolio[ticker] = {"price": None, "change": None, "prev_close": None}
+        portfolio["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return portfolio
 
+    # Process each ticker
     for ticker in TICKERS:
         try:
             if len(TICKERS) > 1:
                 df = data[ticker]
             else:
                 df = data
+            
             if df.empty:
                 logging.warning(f"No data for {ticker} – keeping previous if exists")
                 if ticker in previous and ticker != 'last_updated':
@@ -120,6 +157,7 @@ def fetch_prices() -> Dict[str, Any]:
                 else:
                     portfolio[ticker] = {"price": None, "change": None, "prev_close": None}
                 continue
+            
             closes = df['Close'].dropna()
             if len(closes) < 2:
                 current_price = float(closes.iloc[-1])
@@ -129,14 +167,18 @@ def fetch_prices() -> Dict[str, Any]:
                 current_price = float(closes.iloc[-1])
                 prev_close = float(closes.iloc[-2])
                 change_pct = ((current_price - prev_close) / prev_close) * 100
+            
             portfolio[ticker] = {
                 "price": round(current_price, 2),
                 "change": round(change_pct, 2),
                 "prev_close": round(prev_close, 2)
             }
+            
+            # Add sector rotation metrics for sector ETFs
             if ticker in SECTOR_ETFS:
                 sector_signal = get_sector_rotation_signal(ticker, df, current_price)
                 portfolio[ticker].update(sector_signal)
+                
         except Exception as e:
             logging.error(f"Error processing {ticker}: {e}")
             if ticker in previous and ticker != 'last_updated':
@@ -144,7 +186,7 @@ def fetch_prices() -> Dict[str, Any]:
             else:
                 portfolio[ticker] = {"price": None, "change": None, "prev_close": None}
 
-    # Enrich with name / category
+    # Enrich with name and category
     for ticker in TICKERS:
         info = fetch_ticker_info(ticker)
         if ticker in portfolio:
@@ -153,21 +195,27 @@ def fetch_prices() -> Dict[str, Any]:
             portfolio[ticker] = info
             portfolio[ticker].update({"price": None, "change": None, "prev_close": None})
 
-    # Sector Rotation Ranking
-    sector_data = {t: portfolio[t] for t in SECTOR_ETFS if t in portfolio and portfolio[t].get("momentum_20d") is not None}
+    # ---- Sector Rotation Ranking ----
+    sector_data = {t: portfolio[t] for t in SECTOR_ETFS 
+                   if t in portfolio and portfolio[t].get("momentum_20d") is not None}
+    
     if sector_data:
         sorted_sectors = sorted(sector_data.items(), key=lambda x: x[1].get("momentum_20d", -999), reverse=True)
         total = len(sorted_sectors)
+        
         for idx, (ticker, data) in enumerate(sorted_sectors):
+            # Top 1/3 → Buy, Middle → Hold, Bottom 1/3 → Avoid
             if idx < max(1, total // 3):
                 rec = "Overweight (Buy)"
-                reason = f"Strongest 20-day momentum ({data['momentum_20d']}%) among all 11 sectors."
+                reason = f"Strongest 20-day momentum ({data['momentum_20d']}%) among all sectors."
             elif idx >= total - max(1, total // 3):
                 rec = "Underweight (Avoid)"
                 reason = f"Weakest 20-day momentum ({data['momentum_20d']}%) – lagging the market."
             else:
                 rec = "Market Weight (Hold)"
                 reason = f"Neutral momentum ({data['momentum_20d']}%) – in line with sector averages."
+            
+            # Add trend nuance
             if data.get("trend") == "Bullish" and "Buy" in rec:
                 reason += " Also above 50-day SMA, confirming uptrend."
             elif data.get("trend") == "Bearish" and "Avoid" in rec:
@@ -176,13 +224,14 @@ def fetch_prices() -> Dict[str, Any]:
                 reason = f"Caution: high momentum ({data['momentum_20d']}%) but below 50-day SMA – potential rebound."
             elif data.get("trend") == "Bullish" and "Avoid" in rec:
                 reason = f"Despite bullish trend, momentum is weak ({data['momentum_20d']}%) – wait for confirmation."
+            
             if ticker == "XLSR":
                 reason += " XLSR is SSGA's actively managed sector rotation ETF – use as a benchmark."
+            
             portfolio[ticker]["recommendation"] = rec
             portfolio[ticker]["reason"] = reason
-
-    if sector_data:
-        sorted_sectors = sorted(sector_data.items(), key=lambda x: x[1].get("momentum_20d", -999), reverse=True)
+        
+        # Add summary
         portfolio["sector_rotation_summary"] = {
             "top_sector": sorted_sectors[0][0] if sorted_sectors else "N/A",
             "top_momentum": sorted_sectors[0][1].get("momentum_20d") if sorted_sectors else None,
@@ -197,7 +246,13 @@ if __name__ == "__main__":
         data = fetch_prices()
         with open('data.json', 'w') as f:
             json.dump(data, f, indent=2)
-        logging.info("data.json successfully updated.")
+        logging.info("✅ data.json successfully updated.")
+        
+        # Log a sample of the data
+        sample_tickers = ["AAPL", "MSFT", "XLC", "XLK"]
+        for t in sample_tickers:
+            if t in data:
+                logging.info(f"  {t}: ${data[t].get('price', 'N/A')} ({data[t].get('change', 'N/A')}%)")
     except Exception as e:
         logging.error(f"Fatal error: {e}")
         exit(1)
