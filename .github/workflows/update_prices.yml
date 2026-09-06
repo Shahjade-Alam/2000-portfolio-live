@@ -1,39 +1,32 @@
-name: Update Portfolio Prices
+name: Update Portfolio Data
 
 on:
   schedule:
-    # Runs every 6 hours (e.g., 00:00, 06:00, 12:00, 18:00 UTC)
-    - cron: '0 */6 * * *'
-  workflow_dispatch: # Allows you to click "Run workflow" manually in GitHub
+    # Runs at 21:00 UTC every weekday (after US Market Close)
+    - cron: '0 21 * * 1-5'
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # Required to commit changes back to the repo
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install yfinance
+      - name: Install Dependencies
+        run: pip install yfinance
 
-    - name: Fetch latest prices
-      run: python scripts/fetch_prices.py
+      - name: Fetch Prices
+        run: python fetch_prices.py
 
-    - name: Commit and push changes
-      run: |
-        git config --global user.name "GitHub Actions Bot"
-        git config --global user.email "actions@github.com"
-        git add data.json
-        # Only commit if there are changes
-        git diff --staged --quiet || git commit -m "chore: update portfolio prices [skip ci]"
-        git push
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions@github.com'
+          git add data.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update portfolio data" && git push)
