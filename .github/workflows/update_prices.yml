@@ -2,8 +2,9 @@ name: Update Portfolio Data
 
 on:
   schedule:
+    # Runs at 21:00 UTC every weekday (after US market close)
     - cron: '0 21 * * 1-5'
-  workflow_dispatch:
+  workflow_dispatch:  # manual trigger
 
 jobs:
   update-data:
@@ -18,7 +19,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install Dependencies
-        run: pip install yfinance
+        run: pip install yfinance pandas
 
       - name: Fetch Prices
         run: python scripts/fetch_prices.py
