@@ -20,5 +20,17 @@
   "IWMI": { "price": null, "change": null, "prev_close": null, "name": "iShares Russell 2000 Income ETF", "category": "Income ETF" },
   "TSPY": { "price": null, "change": null, "prev_close": null, "name": "T-Rex 2X Long Tesla Daily Target ETF", "category": "Income ETF" },
   "TMGN": { "price": null, "change": null, "prev_close": null, "name": "T-Rex 2X Long Nvidia Daily Target ETF", "category": "Income ETF" },
+  "XLC": { "price": null, "change": null, "prev_close": null, "name": "Communication Services Select Sector SPDR", "category": "Communication Services" },
+  "XLY": { "price": null, "change": null, "prev_close": null, "name": "Consumer Discretionary Select Sector SPDR", "category": "Consumer Discretionary" },
+  "XLP": { "price": null, "change": null, "prev_close": null, "name": "Consumer Staples Select Sector SPDR", "category": "Consumer Staples" },
+  "XLE": { "price": null, "change": null, "prev_close": null, "name": "Energy Select Sector SPDR", "category": "Energy" },
+  "XLF": { "price": null, "change": null, "prev_close": null, "name": "Financial Select Sector SPDR", "category": "Financials" },
+  "XLV": { "price": null, "change": null, "prev_close": null, "name": "Health Care Select Sector SPDR", "category": "Health Care" },
+  "XLI": { "price": null, "change": null, "prev_close": null, "name": "Industrial Select Sector SPDR", "category": "Industrials" },
+  "XLB": { "price": null, "change": null, "prev_close": null, "name": "Materials Select Sector SPDR", "category": "Materials" },
+  "XLRE": { "price": null, "change": null, "prev_close": null, "name": "Real Estate Select Sector SPDR", "category": "Real Estate" },
+  "XLK": { "price": null, "change": null, "prev_close": null, "name": "Technology Select Sector SPDR", "category": "Technology" },
+  "XLU": { "price": null, "change": null, "prev_close": null, "name": "Utilities Select Sector SPDR", "category": "Utilities" },
+  "XLSR": { "price": null, "change": null, "prev_close": null, "name": "SSGA US Sector Rotation ETF", "category": "Sector Rotation ETF" },
   "last_updated": "2026-09-06 00:00:00"
 }
