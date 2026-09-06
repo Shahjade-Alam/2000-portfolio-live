@@ -19,6 +19,7 @@
       --accent-blue: #38BDF8;
       --accent-green: #34D399;
       --accent-red: #F87171;
+      --accent-yellow: #FBBF24;
       --glow-blue: rgba(56,189,248,0.15);
       --glass-bg: rgba(255,255,255,0.02);
       --shadow: 0 8px 32px rgba(0,0,0,0.4);
@@ -165,6 +166,85 @@
     }
     .positive { color: var(--accent-green); }
     .negative { color: var(--accent-red); }
+    .neutral { color: var(--text-secondary); }
+
+    /* ----- Sector Rotation Section ----- */
+    .rotation-section {
+      margin-bottom: 2rem;
+    }
+    .rotation-section .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .rotation-section .section-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+    .rotation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .rotation-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.2rem 1.2rem 0.8rem 1.2rem;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--text-secondary);
+    }
+    .rotation-card.buy { border-left-color: var(--accent-green); }
+    .rotation-card.hold { border-left-color: var(--accent-yellow); }
+    .rotation-card.avoid { border-left-color: var(--accent-red); }
+    .rotation-card.benchmark { border-left-color: var(--accent-blue); }
+
+    .rotation-card .header {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .rotation-card .ticker {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent-blue);
+    }
+    .rotation-card .rec-badge {
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.2rem 0.7rem;
+      border-radius: 99px;
+      text-transform: uppercase;
+    }
+    .rec-badge.buy { background: rgba(52,211,153,0.15); color: var(--accent-green); }
+    .rec-badge.hold { background: rgba(251,191,36,0.15); color: var(--accent-yellow); }
+    .rec-badge.avoid { background: rgba(248,113,113,0.15); color: var(--accent-red); }
+    .rec-badge.benchmark { background: rgba(56,189,248,0.15); color: var(--accent-blue); }
+
+    .rotation-card .details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.2rem;
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    .rotation-card .details span strong { color: var(--text-primary); }
+    .rotation-card .reason {
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.6rem;
+      line-height: 1.4;
+    }
+
     .table-controls {
       display: flex;
       justify-content: space-between;
@@ -271,9 +351,15 @@
       border-top: 1px solid var(--border-color);
       padding-top: 1.5rem;
     }
+    .source-note {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 0.3rem;
+    }
     @media (max-width: 900px) {
       .bento-grid { grid-template-columns: repeat(2,1fr); }
       .movers-section { grid-template-columns: 1fr; }
+      .rotation-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
       .bento-grid { grid-template-columns: 1fr; }
@@ -282,7 +368,6 @@
       .hide-mobile { display: none; }
       .search-box { min-width: 140px; }
     }
-    .loading { opacity: 0.6; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -301,13 +386,15 @@
     </div>
   </header>
 
+  <!-- Stats Grid -->
   <section class="bento-grid" id="stats-grid">
     <div class="card"><div class="card-label">💰 Monthly Investment</div><div class="card-value">$1,500</div><div class="card-desc">Consistent DCA strategy</div></div>
     <div class="card"><div class="card-label">🛡️ Cash Reserves</div><div class="card-value">$1,500</div><div class="card-desc">Emergency buffer</div></div>
-    <div class="card"><div class="card-label">📊 Active Holdings</div><div class="card-value" id="active-holdings">--</div><div class="card-desc">Diversified across categories</div></div>
-    <div class="card"><div class="card-label">📈 Monthly Income Yield</div><div class="card-value">~$78</div><div class="card-desc">Passive income stream</div></div>
+    <div class="card"><div class="card-label">📊 Active Holdings</div><div class="card-value" id="active-holdings">--</div><div class="card-desc">Including 11 sector ETFs</div></div>
+    <div class="card"><div class="card-label">🏆 Top Sector Signal</div><div class="card-value" id="top-sector-signal">--</div><div class="card-desc">Based on 20‑day momentum</div></div>
   </section>
 
+  <!-- Top Movers -->
   <section class="movers-section" id="movers-section">
     <div class="mover-card">
       <div class="mover-title">🚀 Top Gainers</div>
@@ -319,6 +406,16 @@
     </div>
   </section>
 
+  <!-- ===== SECTOR ROTATION ===== -->
+  <section class="rotation-section" id="rotation-section">
+    <div class="section-title">🔄 Sector Rotation Strategy <span style="font-size:0.8rem;font-weight:400;color:var(--text-secondary);">— SSGA Select Sector SPDR ETFs</span></div>
+    <div class="section-subtitle">Ranked by 20‑day momentum · 50‑day SMA trend confirmation · Source: <a href="https://www.ssga.com/us/en/individual/capabilities/equities/sector-investing/sector-and-industry-etfs" target="_blank" style="color:var(--accent-blue);">SSGA</a></div>
+    <div class="rotation-grid" id="rotation-grid">
+      <!-- rendered by JS -->
+    </div>
+  </section>
+
+  <!-- Holdings Table -->
   <div class="table-controls">
     <div class="search-box">
       <i>🔍</i>
@@ -328,8 +425,8 @@
   </div>
   <section class="table-container">
     <div class="table-header">
-      <div class="table-title">📊 Active Holdings</div>
-      <div class="subtitle">Prices delayed by market close</div>
+      <div class="table-title">📊 All Holdings</div>
+      <div class="subtitle">Live market prices · Updated daily</div>
     </div>
     <table>
       <thead>
@@ -342,43 +439,108 @@
         </tr>
       </thead>
       <tbody id="holdings-body">
-        <!-- JavaScript renders rows -->
+        <!-- JavaScript -->
       </tbody>
     </table>
   </section>
   <footer>
-    Built with ❤️ by Alam ShahJade · Data sourced from Yahoo Finance · Updated daily after market close
+    Built with ❤️ by Alam ShahJade · Data sourced from Yahoo Finance · Sector ETFs from SSGA <span class="source-note">(NAV prices on SSGA site; dashboard shows live market prices)</span>
   </footer>
 </div>
 
 <script>
   let portfolioData = [];
+  let sectorData = [];
   let currentSort = { key: 'ticker', asc: true };
+
+  // Sector rotation UI
+  function renderRotation() {
+    const grid = document.getElementById('rotation-grid');
+    if (!sectorData.length) {
+      grid.innerHTML = `<div style="color:var(--text-secondary);padding:1rem;">No sector data available. Ensure workflow has run.</div>`;
+      return;
+    }
+    grid.innerHTML = sectorData.map(d => {
+      const isBenchmark = d.ticker === 'XLSR';
+      const recClass = isBenchmark ? 'benchmark' :
+                       d.recommendation?.toLowerCase().includes('buy') ? 'buy' :
+                       d.recommendation?.toLowerCase().includes('avoid') ? 'avoid' : 'hold';
+      const badgeClass = isBenchmark ? 'benchmark' : recClass;
+      const recDisplay = isBenchmark ? '📊 Benchmark' : (d.recommendation || 'Hold');
+      const momentum = d.momentum_20d !== null && d.momentum_20d !== undefined ? d.momentum_20d.toFixed(2) : '--';
+      const sma = d.sma_50 !== null && d.sma_50 !== undefined ? `$${d.sma_50.toFixed(2)}` : '--';
+      const trend = d.trend || 'Neutral';
+      const price = d.price !== null ? `$${d.price.toFixed(2)}` : 'N/A';
+      return `
+        <div class="rotation-card ${recClass}">
+          <div class="header">
+            <span class="ticker">${d.ticker}</span>
+            <span class="rec-badge ${badgeClass}">${recDisplay}</span>
+          </div>
+          <div class="details">
+            <span><strong>Price</strong> ${price}</span>
+            <span><strong>20D Mom.</strong> ${momentum}%</span>
+            <span><strong>50D SMA</strong> ${sma}</span>
+            <span><strong>Trend</strong> ${trend}</span>
+          </div>
+          <div class="reason">💡 ${d.reason || 'No specific reason provided.'}</div>
+        </div>
+      `;
+    }).join('');
+  }
 
   async function loadPortfolio() {
     try {
       const resp = await fetch('data.json?t=' + Date.now());
+      if (!resp.ok) throw new Error('HTTP '+resp.status);
       const raw = await resp.json();
-      const tickers = Object.keys(raw).filter(k => k !== 'last_updated');
+
+      const tickers = Object.keys(raw).filter(k => k !== 'last_updated' && k !== 'sector_rotation_summary');
       portfolioData = tickers.map(ticker => ({
         ticker,
         price: raw[ticker].price,
         change: raw[ticker].change,
         prev_close: raw[ticker].prev_close,
         name: raw[ticker].name || ticker,
-        category: raw[ticker].category || 'Equity'
+        category: raw[ticker].category || 'Equity',
+        momentum_20d: raw[ticker].momentum_20d,
+        sma_50: raw[ticker].sma_50,
+        trend: raw[ticker].trend,
+        recommendation: raw[ticker].recommendation,
+        reason: raw[ticker].reason
       }));
+
+      // Extract sector data (only those with momentum) – includes XLSR as benchmark
+      sectorData = portfolioData
+        .filter(d => d.momentum_20d !== null && d.momentum_20d !== undefined)
+        .sort((a,b) => (b.momentum_20d || -999) - (a.momentum_20d || -999));
+
+      // Update timestamp
       const updated = raw.last_updated ? new Date(raw.last_updated) : new Date();
       document.getElementById('last-updated').textContent = `Last sync: ${updated.toLocaleString()}`;
       document.getElementById('active-holdings').textContent = portfolioData.length;
+
+      // Top sector signal (excluding XLSR benchmark)
+      const topSector = sectorData.find(d => d.ticker !== 'XLSR');
+      if (topSector) {
+        document.getElementById('top-sector-signal').textContent = `${topSector.ticker} (${topSector.momentum_20d.toFixed(1)}%)`;
+        document.querySelector('#top-sector-signal').parentElement.querySelector('.card-desc').textContent = 
+          `Top sector – ${topSector.recommendation || 'Buy'}`;
+      } else {
+        document.getElementById('top-sector-signal').textContent = '--';
+      }
+
       renderMovers();
       renderTable();
+      renderRotation();
     } catch (err) {
       console.error('Error loading data:', err);
       document.getElementById('holdings-body').innerHTML = `
         <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--accent-red);">
           ❌ Failed to load data. Ensure GitHub Actions has run.
         </td></tr>`;
+      document.getElementById('rotation-grid').innerHTML = 
+        `<div style="color:var(--text-secondary);padding:1rem;">⚠️ Rotation data unavailable.</div>`;
     }
   }
 
