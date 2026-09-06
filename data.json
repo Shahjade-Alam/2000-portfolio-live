@@ -1,87 +1,24 @@
 {
-  "MSFT": {
-    "price": 499.7,
-    "change": -2.04
-  },
-  "AVGO": {
-    "price": 357.9,
-    "change": 0.21
-  },
-  "V": {
-    "price": 375.07,
-    "change": -0.97
-  },
-  "MA": {
-    "price": 579.21,
-    "change": -1.11
-  },
-  "SPGI": {
-    "price": 443.51,
-    "change": -1.57
-  },
-  "UNH": {
-    "price": 397.14,
-    "change": -0.95
-  },
-  "COST": {
-    "price": 915.74,
-    "change": -1.04
-  },
-  "AAPL": {
-    "price": 319.97,
-    "change": -2.51
-  },
-  "GOOGL": {
-    "price": 338.46,
-    "change": -1.11
-  },
-  "JNJ": {
-    "price": 275.23,
-    "change": -1.15
-  },
-  "VIG": {
-    "price": 242.02,
-    "change": -0.46
-  },
-  "GLDM": {
-    "price": 87.73,
-    "change": -0.89
-  },
-  "SPMO": {
-    "price": 149.72,
-    "change": 1.57
-  },
-  "SPLG": {
-    "price": NaN,
-    "change": NaN
-  },
-  "VXUS": {
-    "price": 88.41,
-    "change": 0.5
-  },
-  "AVUV": {
-    "price": 126.93,
-    "change": 0.52
-  },
-  "SPYI": {
-    "price": 53.86,
-    "change": -0.24
-  },
-  "QQQI": {
-    "price": 54.75,
-    "change": 0.18
-  },
-  "IWMI": {
-    "price": 52.19,
-    "change": 0.23
-  },
-  "TSPY": {
-    "price": 25.47,
-    "change": -0.31
-  },
-  "TMGN": {
-    "price": 24.71,
-    "change": -1.0
-  },
-  "last_updated": "2026-09-05 20:02:22"
-} 
+  "MSFT": { "price": null, "change": null, "prev_close": null, "name": "Microsoft Corporation", "category": "Tech / AI" },
+  "AVGO": { "price": null, "change": null, "prev_close": null, "name": "Broadcom Inc.", "category": "Semiconductors" },
+  "V": { "price": null, "change": null, "prev_close": null, "name": "Visa Inc.", "category": "Financials" },
+  "MA": { "price": null, "change": null, "prev_close": null, "name": "Mastercard Incorporated", "category": "Financials" },
+  "SPGI": { "price": null, "change": null, "prev_close": null, "name": "S&P Global Inc.", "category": "Financials" },
+  "UNH": { "price": null, "change": null, "prev_close": null, "name": "UnitedHealth Group Inc.", "category": "Healthcare" },
+  "COST": { "price": null, "change": null, "prev_close": null, "name": "Costco Wholesale Corporation", "category": "Consumer" },
+  "AAPL": { "price": null, "change": null, "prev_close": null, "name": "Apple Inc.", "category": "Tech / Hardware" },
+  "GOOGL": { "price": null, "change": null, "prev_close": null, "name": "Alphabet Inc.", "category": "Tech / AI" },
+  "JNJ": { "price": null, "change": null, "prev_close": null, "name": "Johnson & Johnson", "category": "Healthcare" },
+  "VIG": { "price": null, "change": null, "prev_close": null, "name": "Vanguard Dividend Appreciation ETF", "category": "Dividend ETF" },
+  "GLDM": { "price": null, "change": null, "prev_close": null, "name": "SPDR Gold MiniShares Trust", "category": "Gold" },
+  "SPMO": { "price": null, "change": null, "prev_close": null, "name": "Invesco S&P 500 Momentum ETF", "category": "Momentum ETF" },
+  "SPLG": { "price": null, "change": null, "prev_close": null, "name": "SPDR Portfolio S&P 500 ETF", "category": "S&P 500 ETF" },
+  "VXUS": { "price": null, "change": null, "prev_close": null, "name": "Vanguard Total International Stock ETF", "category": "Intl ETF" },
+  "AVUV": { "price": null, "change": null, "prev_close": null, "name": "Avantis US Small Cap Value ETF", "category": "Small Value" },
+  "SPYI": { "price": null, "change": null, "prev_close": null, "name": "NEOS S&P 500 High Income ETF", "category": "Income ETF" },
+  "QQQI": { "price": null, "change": null, "prev_close": null, "name": "NEOS Nasdaq 100 High Income ETF", "category": "Nasdaq Income" },
+  "IWMI": { "price": null, "change": null, "prev_close": null, "name": "iShares Russell 2000 Income ETF", "category": "Income ETF" },
+  "TSPY": { "price": null, "change": null, "prev_close": null, "name": "T-Rex 2X Long Tesla Daily Target ETF", "category": "Income ETF" },
+  "TMGN": { "price": null, "change": null, "prev_close": null, "name": "T-Rex 2X Long Nvidia Daily Target ETF", "category": "Income ETF" },
+  "last_updated": "2026-09-06 00:00:00"
+}
