@@ -21,7 +21,7 @@ jobs:
         run: pip install yfinance
 
       - name: Fetch Prices
-        run: python fetch_prices.py
+        run: python scripts/fetch_prices.py
 
       - name: Commit and Push Changes
         run: |
