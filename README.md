@@ -2,48 +2,34 @@
 
 A live, auto‑updating portfolio dashboard with **built‑in sector rotation strategy** using **official State Street Global Advisors (SSGA) Select Sector SPDR ETFs**.
 
-## ✨ Features
+## 🚨 First Time Setup – IMPORTANT
 
-- **Automated daily updates** – runs after US market close (weekdays).
-- **Rich data** – price, change, company name, category.
-- **Sector Rotation Insights** – analyzes all 11 GICS sectors using SSGA ETFs:
-  - XLC (Communication Services), XLY (Consumer Discretionary), XLP (Consumer Staples)
-  - XLE (Energy), XLF (Financials), XLV (Health Care)
-  - XLI (Industrials), XLB (Materials), XLRE (Real Estate)
-  - XLK (Technology), XLU (Utilities)
-  - Plus XLSR (SSGA US Sector Rotation ETF) as a benchmark
-- **Actionable signals** – each sector card shows **recommendation** (Overweight/Buy, Market Weight/Hold, Underweight/Avoid) and a **reason**.
-- **Interactive UI** – sortable table, search filter, top gainers/losers.
-- **Futuristic design** – glassmorphism, dynamic gradients.
-- **Zero‑cost hosting** – deploy on GitHub Pages.
+After pushing these files, you MUST manually trigger the workflow:
 
-## 📋 Sector ETFs Source
+1. Go to your repository on GitHub
+2. Click the **Actions** tab
+3. Select **Update Portfolio Data** on the left
+4. Click **Run workflow** → **Run workflow**
+5. Wait 1-2 minutes for it to complete
+6. Refresh your GitHub Pages site
 
-All sector ETFs are sourced from **State Street Global Advisors**:
-- [SSGA Sector and Industry ETFs](https://www.ssga.com/us/en/individual/capabilities/equities/sector-investing/sector-and-industry-etfs)
+The workflow will then run automatically every weekday at 21:00 UTC.
 
-The dashboard fetches **live market prices** via Yahoo Finance (not delayed NAVs shown on the SSGA website).
+## 🔍 Debugging
 
-## 🧠 How the Sector Rotation Works
+If prices still show `N/A`:
 
-- **20‑day momentum** measures short‑term strength.
-- **50‑day SMA** confirms the trend (Bullish if price > SMA, Bearish if below).
-- Sectors are ranked by momentum – top 1/3 get **Overweight (Buy)**, middle **Market Weight (Hold)**, bottom 1/3 **Underweight (Avoid)**.
-- The reason field explains the decision (e.g., *"Strongest momentum among all 11 sectors"* or *"Below 50‑day SMA – confirming downtrend"*).
-- XLSR is shown as a **benchmark** – it's SSGA's actively managed sector rotation ETF.
+1. Check the workflow logs:
+   - Go to **Actions** → **Update Portfolio Data** → click the latest run
+   - Look for errors in the **Fetch Prices** step
 
-## 🚀 Getting Started
+2. Common issues:
+   - **Rate limiting** – the script now has retry logic
+   - **Network issues** – GitHub Actions has outbound internet access
+   - **Ticker changes** – verify ticker symbols are still valid
 
-1. Clone your repo and add these files.
-2. Enable GitHub Pages (Settings > Pages > Deploy from `main` branch).
-3. Manually trigger the workflow (Actions > Update Portfolio Data > Run workflow).
-4. Visit your GitHub Pages URL.
-
-## 🔧 Customization
-
-- Edit `CORE_TICKERS` and `SECTOR_ETFS` in `fetch_prices.py`.
-- Adjust the ranking logic (top/bottom percentages) inside the ranking loop.
-
-## 📄 License
-
-MIT © Alam ShahJade
+3. Test locally:
+   ```bash
+   pip install yfinance pandas
+   python scripts/fetch_prices.py
+   cat data.json  # should show real prices
