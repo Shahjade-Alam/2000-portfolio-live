@@ -2,9 +2,9 @@ import yfinance as yf
 import json
 import datetime
 import logging
+import os
 from typing import Dict, Any
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 TICKERS = [
@@ -13,7 +13,6 @@ TICKERS = [
     "SPYI", "QQQI", "IWMI", "TSPY", "TMGN"
 ]
 
-# Category mapping (for display)
 CATEGORIES = {
     'MSFT': 'Tech / AI', 'AVGO': 'Semiconductors', 'V': 'Financials', 'MA': 'Financials',
     'SPGI': 'Financials', 'UNH': 'Healthcare', 'COST': 'Consumer', 'AAPL': 'Tech / Hardware',
@@ -23,14 +22,22 @@ CATEGORIES = {
     'TMGN': 'Income ETF'
 }
 
+def load_previous_data() -> Dict[str, Any]:
+    """Load existing data.json to preserve values if fetch fails."""
+    if os.path.exists('data.json'):
+        with open('data.json', 'r') as f:
+            try:
+                return json.load(f)
+            except:
+                return {}
+    return {}
+
 def fetch_ticker_info(ticker: str) -> Dict[str, Any]:
-    """Fetch short name and category for a ticker."""
     try:
         t = yf.Ticker(ticker)
         info = t.info
         name = info.get('shortName', ticker)
         sector = info.get('sector', '')
-        # Use category from mapping if available, else sector
         category = CATEGORIES.get(ticker, sector if sector else 'Equity')
         return {'name': name, 'category': category}
     except Exception as e:
@@ -38,11 +45,11 @@ def fetch_ticker_info(ticker: str) -> Dict[str, Any]:
         return {'name': ticker, 'category': CATEGORIES.get(ticker, 'Unknown')}
 
 def fetch_prices() -> Dict[str, Any]:
-    """Fetch price data for all tickers with robust error handling."""
+    previous = load_previous_data()
     portfolio = {}
-    # Download 5 days to ensure at least two closes (for change calculation)
     logging.info(f"Downloading data for {len(TICKERS)} tickers...")
-    data = yf.download(TICKERS, period="5d", group_by='ticker', progress=False)
+    # Use a longer period to ensure at least two closes
+    data = yf.download(TICKERS, period="10d", group_by='ticker', progress=False)
 
     for ticker in TICKERS:
         try:
@@ -52,14 +59,15 @@ def fetch_prices() -> Dict[str, Any]:
                 df = data
 
             if df.empty:
-                logging.warning(f"No data for {ticker}")
-                portfolio[ticker] = {"price": None, "change": None, "prev_close": None}
+                logging.warning(f"No data for {ticker} – keeping previous value if exists")
+                if ticker in previous and ticker != 'last_updated':
+                    portfolio[ticker] = {k: v for k, v in previous[ticker].items() if k not in ['name','category']}
+                else:
+                    portfolio[ticker] = {"price": None, "change": None, "prev_close": None}
                 continue
 
-            # Get the last two closes (if available)
             closes = df['Close'].dropna()
             if len(closes) < 2:
-                # Only one day -> change = 0
                 current_price = float(closes.iloc[-1])
                 prev_close = current_price
                 change_pct = 0.0
@@ -75,14 +83,21 @@ def fetch_prices() -> Dict[str, Any]:
             }
         except Exception as e:
             logging.error(f"Error processing {ticker}: {e}")
-            portfolio[ticker] = {"price": None, "change": None, "prev_close": None}
+            if ticker in previous and ticker != 'last_updated':
+                portfolio[ticker] = {k: v for k, v in previous[ticker].items() if k not in ['name','category']}
+            else:
+                portfolio[ticker] = {"price": None, "change": None, "prev_close": None}
 
-    # Enrich with name and category
+    # Enrich with name and category (always fetch fresh)
     for ticker in TICKERS:
         info = fetch_ticker_info(ticker)
-        portfolio[ticker].update(info)
+        if ticker in portfolio:
+            portfolio[ticker].update(info)
+        else:
+            # fallback: use previous or dummy
+            portfolio[ticker] = info
+            portfolio[ticker].update({"price": None, "change": None, "prev_close": None})
 
-    # Add timestamp
     portfolio["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return portfolio
 
