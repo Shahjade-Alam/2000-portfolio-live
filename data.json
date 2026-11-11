@@ -140,9 +140,9 @@
     "category": "Income ETF"
   },
   "TMGN": {
-    "price": 23.05,
-    "change": 1.63,
-    "prev_close": 22.68,
+    "price": 24.07,
+    "change": 4.43,
+    "prev_close": 23.05,
     "name": "TappAlpha Cboe Magnificent 10 G",
     "category": "Income ETF"
   },
@@ -293,7 +293,7 @@
   "sector_rotation_summary": {
     "top_sector": "XLV",
     "top_momentum": 9.5,
-    "last_updated_rotation": "2026-11-10 03:19:05"
+    "last_updated_rotation": "2026-11-11 01:07:16"
   },
-  "last_updated": "2026-11-10 03:19:05"
+  "last_updated": "2026-11-11 01:07:16"
 }
