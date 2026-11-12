@@ -1,92 +1,92 @@
 {
   "MSFT": {
-    "price": 545.18,
-    "change": 2.75,
-    "prev_close": 530.61,
+    "price": 533.16,
+    "change": -2.2,
+    "prev_close": 545.18,
     "name": "Microsoft Corporation",
     "category": "Tech / AI"
   },
   "AVGO": {
-    "price": 319.48,
-    "change": 8.78,
-    "prev_close": 293.69,
+    "price": 331.98,
+    "change": 3.91,
+    "prev_close": 319.48,
     "name": "Broadcom Inc.",
     "category": "Semiconductors"
   },
   "V": {
-    "price": 422.16,
-    "change": -0.12,
-    "prev_close": 422.65,
+    "price": 423.0,
+    "change": 0.38,
+    "prev_close": 421.38,
     "name": "Visa Inc.",
     "category": "Financials"
   },
   "MA": {
-    "price": 655.81,
-    "change": 0.48,
-    "prev_close": 652.7,
+    "price": 658.84,
+    "change": 0.46,
+    "prev_close": 655.81,
     "name": "Mastercard Incorporated",
     "category": "Financials"
   },
   "SPGI": {
-    "price": 471.09,
-    "change": 0.7,
-    "prev_close": 467.8,
+    "price": 473.38,
+    "change": 0.49,
+    "prev_close": 471.09,
     "name": "S&P Global Inc.",
     "category": "Financials"
   },
   "UNH": {
-    "price": 397.62,
-    "change": 0.88,
-    "prev_close": 394.15,
+    "price": 405.12,
+    "change": 1.89,
+    "prev_close": 397.62,
     "name": "UnitedHealth Group Incorporated",
     "category": "Healthcare"
   },
   "COST": {
-    "price": 1066.18,
-    "change": 1.2,
-    "prev_close": 1053.56,
+    "price": 1066.14,
+    "change": -0.0,
+    "prev_close": 1066.18,
     "name": "Costco Wholesale Corporation",
     "category": "Consumer"
   },
   "AAPL": {
-    "price": 350.69,
-    "change": 2.43,
-    "prev_close": 342.37,
+    "price": 348.51,
+    "change": -0.62,
+    "prev_close": 350.69,
     "name": "Apple Inc.",
     "category": "Tech / Hardware"
   },
   "GOOGL": {
-    "price": 288.15,
-    "change": 1.18,
-    "prev_close": 284.78,
+    "price": 287.38,
+    "change": -0.27,
+    "prev_close": 288.15,
     "name": "Alphabet Inc.",
     "category": "Tech / AI"
   },
   "JNJ": {
-    "price": 282.11,
-    "change": 2.13,
-    "prev_close": 276.22,
+    "price": 280.78,
+    "change": -0.47,
+    "prev_close": 282.11,
     "name": "Johnson & Johnson",
     "category": "Healthcare"
   },
   "VIG": {
-    "price": 249.25,
-    "change": 2.43,
-    "prev_close": 243.34,
+    "price": 249.89,
+    "change": 0.26,
+    "prev_close": 249.25,
     "name": "Vanguard Div Appreciation ETF",
     "category": "Dividend ETF"
   },
   "GLDM": {
-    "price": 81.91,
-    "change": 1.87,
-    "prev_close": 80.41,
+    "price": 79.75,
+    "change": -2.64,
+    "prev_close": 81.91,
     "name": "SPDR Gold MiniShares Trust",
     "category": "Gold"
   },
   "SPMO": {
-    "price": 129.89,
-    "change": 4.4,
-    "prev_close": 124.41,
+    "price": 129.64,
+    "change": -0.19,
+    "prev_close": 129.89,
     "name": "Invesco S&P 500 Momentum ETF",
     "category": "Momentum ETF"
   },
@@ -98,185 +98,185 @@
     "category": "S&P 500 ETF"
   },
   "VXUS": {
-    "price": 83.22,
-    "change": 2.84,
-    "prev_close": 80.92,
+    "price": 82.66,
+    "change": -0.67,
+    "prev_close": 83.22,
     "name": "Vanguard Total International St",
     "category": "Intl ETF"
   },
   "AVUV": {
-    "price": 122.51,
-    "change": 2.33,
-    "prev_close": 119.72,
+    "price": 122.17,
+    "change": -0.28,
+    "prev_close": 122.51,
     "name": "Avantis U.S. Small Cap Value ET",
     "category": "Small Value"
   },
   "SPYI": {
-    "price": 52.33,
-    "change": 2.03,
-    "prev_close": 51.29,
+    "price": 52.21,
+    "change": -0.23,
+    "prev_close": 52.33,
     "name": "NEOS S&P 500 High Income ETF",
     "category": "Income ETF"
   },
   "QQQI": {
-    "price": 51.02,
-    "change": 3.11,
-    "prev_close": 49.48,
+    "price": 50.78,
+    "change": -0.47,
+    "prev_close": 51.02,
     "name": "NEOS Nasdaq 100 High Income ETF",
     "category": "Nasdaq Income"
   },
   "IWMI": {
-    "price": 49.36,
-    "change": 2.75,
-    "prev_close": 48.04,
+    "price": 49.15,
+    "change": -0.43,
+    "prev_close": 49.36,
     "name": "NEOS Russell 2000 High Income E",
     "category": "Income ETF"
   },
   "TSPY": {
-    "price": 24.55,
-    "change": 2.33,
-    "prev_close": 23.99,
+    "price": 24.47,
+    "change": -0.33,
+    "prev_close": 24.55,
     "name": "TappAlpha S&P 500 Growth & Dail",
     "category": "Income ETF"
   },
   "TMGN": {
-    "price": 24.07,
-    "change": 4.43,
-    "prev_close": 23.05,
+    "price": 24.02,
+    "change": -0.21,
+    "prev_close": 24.07,
     "name": "TappAlpha Cboe Magnificent 10 G",
     "category": "Income ETF"
   },
   "XLC": {
-    "price": 107.36,
-    "change": 2.45,
-    "prev_close": 104.79,
-    "momentum_20d": -3.67,
-    "sma_50": 109.59,
+    "price": 107.76,
+    "change": 0.37,
+    "prev_close": 107.36,
+    "momentum_20d": -4.03,
+    "sma_50": 109.53,
     "trend": "Bearish",
     "name": "Communication Services Select Sector SPDR",
     "category": "Communication Services",
     "recommendation": "Underweight (Avoid)",
-    "reason": "Weakest 20-day momentum (-3.67%) \u2013 lagging the market. Also below 50-day SMA, confirming downtrend."
+    "reason": "Weakest 20-day momentum (-4.03%) \u2013 lagging the market. Also below 50-day SMA, confirming downtrend."
   },
   "XLY": {
-    "price": 121.01,
-    "change": 2.92,
-    "prev_close": 117.58,
-    "momentum_20d": 7.78,
-    "sma_50": 113.36,
+    "price": 121.05,
+    "change": 0.03,
+    "prev_close": 121.01,
+    "momentum_20d": 7.73,
+    "sma_50": 113.45,
     "trend": "Bullish",
     "name": "Consumer Discretionary Select Sector SPDR",
     "category": "Consumer Discretionary",
     "recommendation": "Overweight (Buy)",
-    "reason": "Strongest 20-day momentum (7.78%) among all sectors. Also above 50-day SMA, confirming uptrend."
+    "reason": "Strongest 20-day momentum (7.73%) among all sectors. Also above 50-day SMA, confirming uptrend."
   },
   "XLP": {
-    "price": 90.89,
-    "change": 0.9,
-    "prev_close": 90.08,
-    "momentum_20d": 7.68,
-    "sma_50": 85.0,
+    "price": 91.03,
+    "change": 0.15,
+    "prev_close": 90.89,
+    "momentum_20d": 8.12,
+    "sma_50": 85.13,
     "trend": "Bullish",
     "name": "Consumer Staples Select Sector SPDR",
     "category": "Consumer Staples",
     "recommendation": "Overweight (Buy)",
-    "reason": "Strongest 20-day momentum (7.68%) among all sectors. Also above 50-day SMA, confirming uptrend."
+    "reason": "Strongest 20-day momentum (8.12%) among all sectors. Also above 50-day SMA, confirming uptrend."
   },
   "XLE": {
-    "price": 61.94,
-    "change": 0.52,
-    "prev_close": 61.62,
-    "momentum_20d": -6.17,
-    "sma_50": 64.95,
+    "price": 62.21,
+    "change": 0.44,
+    "prev_close": 61.94,
+    "momentum_20d": -7.43,
+    "sma_50": 64.92,
     "trend": "Bearish",
     "name": "Energy Select Sector SPDR",
     "category": "Energy",
     "recommendation": "Underweight (Avoid)",
-    "reason": "Weakest 20-day momentum (-6.17%) \u2013 lagging the market. Also below 50-day SMA, confirming downtrend."
+    "reason": "Weakest 20-day momentum (-7.43%) \u2013 lagging the market. Also below 50-day SMA, confirming downtrend."
   },
   "XLF": {
-    "price": 57.99,
-    "change": 1.45,
-    "prev_close": 57.16,
-    "momentum_20d": 5.34,
-    "sma_50": 55.86,
+    "price": 58.29,
+    "change": 0.52,
+    "prev_close": 57.99,
+    "momentum_20d": 6.33,
+    "sma_50": 55.87,
     "trend": "Bullish",
     "name": "Financial Select Sector SPDR",
     "category": "Financials",
     "recommendation": "Market Weight (Hold)",
-    "reason": "Neutral momentum (5.34%) \u2013 in line with sector averages."
+    "reason": "Neutral momentum (6.33%) \u2013 in line with sector averages."
   },
   "XLV": {
-    "price": 188.33,
-    "change": 1.91,
-    "prev_close": 184.8,
-    "momentum_20d": 9.5,
-    "sma_50": 173.54,
+    "price": 188.88,
+    "change": 0.29,
+    "prev_close": 188.33,
+    "momentum_20d": 11.33,
+    "sma_50": 173.92,
     "trend": "Bullish",
     "name": "Health Care Select Sector SPDR",
     "category": "Health Care",
     "recommendation": "Overweight (Buy)",
-    "reason": "Strongest 20-day momentum (9.5%) among all sectors. Also above 50-day SMA, confirming uptrend."
+    "reason": "Strongest 20-day momentum (11.33%) among all sectors. Also above 50-day SMA, confirming uptrend."
   },
   "XLI": {
-    "price": 168.89,
-    "change": 3.82,
-    "prev_close": 162.67,
-    "momentum_20d": -0.15,
-    "sma_50": 169.17,
+    "price": 168.73,
+    "change": -0.09,
+    "prev_close": 168.89,
+    "momentum_20d": 0.04,
+    "sma_50": 169.06,
     "trend": "Bearish",
     "name": "Industrial Select Sector SPDR",
     "category": "Industrials",
     "recommendation": "Market Weight (Hold)",
-    "reason": "Neutral momentum (-0.15%) \u2013 in line with sector averages."
+    "reason": "Neutral momentum (0.04%) \u2013 in line with sector averages."
   },
   "XLB": {
-    "price": 52.94,
-    "change": 1.91,
-    "prev_close": 51.95,
-    "momentum_20d": 7.08,
-    "sma_50": 50.86,
+    "price": 52.85,
+    "change": -0.17,
+    "prev_close": 52.94,
+    "momentum_20d": 6.3,
+    "sma_50": 50.87,
     "trend": "Bullish",
     "name": "Materials Select Sector SPDR",
     "category": "Materials",
-    "recommendation": "Overweight (Buy)",
-    "reason": "Strongest 20-day momentum (7.08%) among all sectors. Also above 50-day SMA, confirming uptrend."
+    "recommendation": "Market Weight (Hold)",
+    "reason": "Neutral momentum (6.3%) \u2013 in line with sector averages."
   },
   "XLRE": {
-    "price": 44.64,
-    "change": 1.45,
-    "prev_close": 44.0,
-    "momentum_20d": 6.49,
-    "sma_50": 42.46,
+    "price": 44.58,
+    "change": -0.13,
+    "prev_close": 44.64,
+    "momentum_20d": 6.57,
+    "sma_50": 42.47,
     "trend": "Bullish",
     "name": "Real Estate Select Sector SPDR",
     "category": "Real Estate",
-    "recommendation": "Market Weight (Hold)",
-    "reason": "Neutral momentum (6.49%) \u2013 in line with sector averages."
+    "recommendation": "Overweight (Buy)",
+    "reason": "Strongest 20-day momentum (6.57%) among all sectors. Also above 50-day SMA, confirming uptrend."
   },
   "XLK": {
-    "price": 170.88,
-    "change": 3.73,
-    "prev_close": 164.74,
-    "momentum_20d": -12.98,
-    "sma_50": 188.09,
+    "price": 168.91,
+    "change": -1.15,
+    "prev_close": 170.88,
+    "momentum_20d": -13.94,
+    "sma_50": 187.74,
     "trend": "Bearish",
     "name": "Technology Select Sector SPDR",
     "category": "Technology",
     "recommendation": "Underweight (Avoid)",
-    "reason": "Weakest 20-day momentum (-12.98%) \u2013 lagging the market. Also below 50-day SMA, confirming downtrend."
+    "reason": "Weakest 20-day momentum (-13.94%) \u2013 lagging the market. Also below 50-day SMA, confirming downtrend."
   },
   "XLU": {
-    "price": 43.79,
-    "change": 1.53,
-    "prev_close": 43.13,
-    "momentum_20d": 5.19,
-    "sma_50": 41.71,
+    "price": 43.73,
+    "change": -0.14,
+    "prev_close": 43.79,
+    "momentum_20d": 4.44,
+    "sma_50": 41.74,
     "trend": "Bullish",
     "name": "Utilities Select Sector SPDR",
     "category": "Utilities",
     "recommendation": "Market Weight (Hold)",
-    "reason": "Neutral momentum (5.19%) \u2013 in line with sector averages."
+    "reason": "Neutral momentum (4.44%) \u2013 in line with sector averages."
   },
   "XLSR": {
     "price": 65.02,
@@ -285,15 +285,15 @@
     "momentum_20d": -3.87,
     "sma_50": 66.27,
     "trend": "Bearish",
-    "name": "SSGA US Sector Rotation ETF",
-    "category": "Sector Rotation ETF",
     "recommendation": "Underweight (Avoid)",
-    "reason": "Weakest 20-day momentum (-3.87%) \u2013 lagging the market. Also below 50-day SMA, confirming downtrend. XLSR is SSGA's actively managed sector rotation ETF \u2013 use as a benchmark."
+    "reason": "Weakest 20-day momentum (-3.87%) \u2013 lagging the market. Also below 50-day SMA, confirming downtrend. XLSR is SSGA's actively managed sector rotation ETF \u2013 use as a benchmark.",
+    "name": "SSGA US Sector Rotation ETF",
+    "category": "Sector Rotation ETF"
   },
   "sector_rotation_summary": {
     "top_sector": "XLV",
-    "top_momentum": 9.5,
-    "last_updated_rotation": "2026-11-11 01:07:16"
+    "top_momentum": 11.33,
+    "last_updated_rotation": "2026-11-12 02:10:14"
   },
-  "last_updated": "2026-11-11 01:07:16"
+  "last_updated": "2026-11-12 02:10:14"
 }
